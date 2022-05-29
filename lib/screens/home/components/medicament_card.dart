@@ -43,7 +43,7 @@ class MedicamentCard extends StatelessWidget {
                           topRight: Radius.circular(7),
                         ),
                         image: const DecorationImage(
-                          fit: BoxFit.fill,
+                          fit: BoxFit.cover,
                           image: AssetImage(
                               "assets/images/comprime1.jpg"),
                         ))),

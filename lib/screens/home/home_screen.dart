@@ -108,7 +108,7 @@ class HomeScreen extends StatelessWidget {
   AppBar buildAppBar() {
     return AppBar(
       elevation: 0,
-      backgroundColor: kPrimaryColor,
+      // backgroundColor: kPrimaryColor,
       leading: const Padding(
         padding: EdgeInsets.only(left: kDefaultPadding),
         child: Center(
