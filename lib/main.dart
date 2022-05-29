@@ -18,8 +18,8 @@ class App extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Pharmacy CM',
       theme: ThemeData(
-        // primarySwatch: kPrimaryColor,
-        scaffoldBackgroundColor: kColorWhite,
+        primarySwatch: kPrimaryColor,
+        scaffoldBackgroundColor: kBackgroundColor,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       getPages: AppPages.pages,
