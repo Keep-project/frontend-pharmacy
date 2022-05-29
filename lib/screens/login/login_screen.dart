@@ -3,6 +3,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pharmacy_app/components/custom_text_field.dart';
 import 'package:pharmacy_app/core/app_colors.dart';
 import 'package:pharmacy_app/core/app_sizes.dart';
 import 'package:pharmacy_app/router/app_router.dart';
@@ -16,7 +17,7 @@ class LoginScreen extends StatelessWidget {
       child: Scaffold(
         body: SingleChildScrollView(
           child: Container(
-            height: Get.height,
+            height: Get.height-24,
             padding:
                 const EdgeInsets.symmetric(horizontal: kDefaultPadding * 1.5),
             child: Column(
@@ -31,7 +32,7 @@ class LoginScreen extends StatelessWidget {
                     fontWeight: FontWeight.w900,
                   ),
                 ),
-                const SizedBox(height: kDefaultPadding * 2),
+                const SizedBox(height: kDefaultPadding*3,),
                 CustomTextField(
                   onChanged: (string) {
                     print(string);
@@ -40,16 +41,7 @@ class LoginScreen extends StatelessWidget {
                   hintText: "Entrez votre nom",
                   iconData: CupertinoIcons.person_fill,
                 ),
-                const SizedBox(height: kDefaultPadding),
-                CustomTextField(
-                  onChanged: (string) {
-                    print(string);
-                  },
-                  onTap:(){},
-                  hintText: "Entrez votre email",
-                  iconData: CupertinoIcons.mail_solid,
-                ),
-                const SizedBox(height: kDefaultPadding),
+                const SizedBox(height: kDefaultPadding*1.5),
                 CustomTextField(
                   onChanged: (string) {
                     print(string);
@@ -58,26 +50,30 @@ class LoginScreen extends StatelessWidget {
                   hintText: "Entrez votre mot de passe",
                   iconData: CupertinoIcons.eye_fill,
                 ),
-                const Spacer(),
-                Container(
-                  height: 40,
-                  decoration: BoxDecoration(
-                    color: kTextColor,
-                    borderRadius: BorderRadius.circular(kDefaultRadius - 2),
-                  ),
-                  child: const Center(
-                    child: Text(
-                      "Enregistrer",
-                      style: TextStyle(
-                        color: kColorWhite,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
+                const SizedBox(height: kDefaultPadding*4),
+                InkWell(
+                  onTap: (){Get.toNamed(AppRoutes.HOME);},
+                  child: Container(
+                    height: 50,
+                    decoration: BoxDecoration(
+                      color: kTextColor,
+                      borderRadius: BorderRadius.circular(kDefaultRadius - 2),
+                    ),
+                    child: const Center(
+                      child: Text(
+                        "Se connecter",
+                        style: TextStyle(
+                          color: kWhiteColor,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                     ),
                   ),
                 ),
-                const SizedBox(height: kDefaultPadding*4,),
+                const SizedBox(height: kDefaultPadding*2,),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const Text(
                       "Avez-vous un compte? ",
@@ -108,47 +104,6 @@ class LoginScreen extends StatelessWidget {
             ),
           ),
         ),
-      ),
-    );
-  }
-}
-
-class CustomTextField extends StatelessWidget {
-  final Function(String string)? onChanged;
-  final String? hintText;
-  final IconData? iconData;
-  final Function()? onTap;
-  const CustomTextField({
-    Key? key,
-    this.onChanged,
-    this.hintText,
-    this.iconData, this.onTap,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border.all(
-          width: 1.5,
-          color: kTextColor,
-        ),
-        borderRadius: BorderRadius.circular(kDefaultRadius - 2),
-      ),
-      child: TextField(
-        onChanged: (String value) {
-          onChanged!(value);
-        },
-        decoration: InputDecoration(
-            prefixIcon: InkWell(
-              onTap: (){onTap!();},
-              child: Icon(iconData!, color: kTextColor)),
-            enabledBorder: InputBorder.none,
-            focusedBorder: InputBorder.none,
-            hintText: hintText,
-            contentPadding: const EdgeInsets.only(
-                left: 10, top: 16, bottom: 16, right: 10)),
       ),
     );
   }
