@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 const kWhiteColor = Color(0xFFFFFFFF);
 
-const MaterialColor kPrimaryColor = MaterialColor(
+const MaterialColor kPrimaryColor =  MaterialColor(
   0xFF0C9869,
   <int, Color>{
     50: Color(0xFF0C9869), //10%

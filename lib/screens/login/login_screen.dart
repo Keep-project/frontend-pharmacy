@@ -29,7 +29,7 @@ class LoginScreen extends StatelessWidget {
                   style: TextStyle(
                     color: kTextColor,
                     fontSize: 24,
-                    fontWeight: FontWeight.w900,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
                 const SizedBox(height: kDefaultPadding*3,),
