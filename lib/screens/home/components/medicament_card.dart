@@ -56,7 +56,7 @@ class MedicamentCard extends StatelessWidget {
                     child: Container(
                         padding: const EdgeInsets.all(5),
                         decoration: BoxDecoration(
-                          color: kPrimaryColor.withOpacity(.6),
+                          color: kTextColor2.withOpacity(.8),
                           borderRadius: const BorderRadius.only(
                             topRight: Radius.circular(7),
                             bottomLeft: Radius.circular(7),

@@ -111,7 +111,7 @@ class DetailScreen extends GetView<DetailScreenController> {
                                   Text(
                                     "Yaoundé, Cameroun",
                                     style: TextStyle(
-                                      fontSize: 16,
+                                      fontSize: 14,
                                       color: kDarkColor,
                                     ),
                                   ),
@@ -195,7 +195,7 @@ class DetailScreen extends GetView<DetailScreenController> {
                                   Text(
                                     "Yaoundé, Cameroun",
                                     style: TextStyle(
-                                      fontSize: 16,
+                                      fontSize: 14,
                                       color: kOrangeColor,
                                     ),
                                   ),
@@ -205,11 +205,11 @@ class DetailScreen extends GetView<DetailScreenController> {
                             const Spacer(),
                             Container(
                                 padding: const EdgeInsets.symmetric(
-                                    horizontal: kDefaultPadding/1.5,
-                                    vertical: kDefaultPadding /2),
+                                    horizontal: kDefaultPadding / 1.5,
+                                    vertical: kDefaultPadding / 2),
                                 decoration: BoxDecoration(
                                   borderRadius:
-                                      BorderRadius.circular(kDefaultRadius/2),
+                                      BorderRadius.circular(kDefaultRadius / 1.3),
                                   color: kTextColor2,
                                 ),
                                 child: const Text(
@@ -221,9 +221,34 @@ class DetailScreen extends GetView<DetailScreenController> {
                                 )),
                           ],
                         ),
-                        const SizedBox(height: kDefaultMargin *3),
-                        const TitleText(title: "Vous trouverez Doliprane 200mg à:"),
-                        const SizedBox(height: kDefaultMargin),
+                        const SizedBox(height: kDefaultMargin * 3),
+                        const TitleText(
+                            title: "Vous trouverez Doliprane 200mg à:"),
+                        const SizedBox(height: kDefaultMargin * 1.5),
+                        const PharmacyCard(
+                          name: "Pharmacie de Medong",
+                          phone: "Tel: +237 652 310 829",
+                          stock: 45,
+                          status: "Ouverte",
+                        ),
+                        const PharmacyCard(
+                          name: "Pharmacie de TKC",
+                          phone: "Tel: +237 652 310 829",
+                          stock: 83,
+                          status: "Fermée",
+                        ),
+                        const PharmacyCard(
+                          name: "Pharmacie de Biyem-Assi",
+                          phone: "Tel: +237 652 310 829",
+                          stock: 72,
+                          status: "Ouverte",
+                        ),
+                        const PharmacyCard(
+                          name: "Pharmacie de Nlongkak",
+                          phone: "Tel: +237 652 310 829",
+                          stock: 31,
+                          status: "Ouverte",
+                        ),
                       ],
                     ),
                   ),
@@ -232,6 +257,81 @@ class DetailScreen extends GetView<DetailScreenController> {
             ],
           );
         }),
+      ),
+    );
+  }
+}
+
+class PharmacyCard extends StatelessWidget {
+  final String name;
+  final String phone;
+  final int stock;
+  final String status;
+  const PharmacyCard({
+    Key? key, required this.name, required this.phone, required this.stock, required this.status,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      color: kWhiteColor,
+      elevation: 2,
+      shadowColor: kTextColor.withOpacity(.4),
+      clipBehavior: Clip.antiAlias,
+      margin: const EdgeInsets.only(bottom: kDefaultMargin),
+      shape: RoundedRectangleBorder(
+          borderRadius:
+              BorderRadius.circular(kDefaultRadius)),
+      child: Container(
+        height: 100,
+        width: double.infinity,
+        padding: const EdgeInsets.all(kDefaultPadding / 2),
+        child: Row(
+          children: [
+            const Icon(CupertinoIcons.gift_fill,
+                color: kTextColor2, size: 55),
+            const SizedBox(width: kDefaultPadding / 1.5),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(name,
+                  style: const TextStyle(
+                    color: kDarkColor,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                Text(phone,
+                  style: const TextStyle(
+                    color: kDarkColor,
+                  ),
+                ),
+                const Spacer(),
+                Row(
+                  children: [
+                    Text(
+                      "Stock: $stock",
+                      style: const TextStyle(
+                        color: kDarkColor,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    const Spacer(),
+                      Text(status,
+                      style: const TextStyle(
+                        color: kOrangeColor,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
+                ),
+                const Spacer(),
+              ]),
+            ),
+          ],
+        ),
       ),
     );
   }

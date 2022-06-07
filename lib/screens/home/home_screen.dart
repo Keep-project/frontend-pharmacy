@@ -18,6 +18,14 @@ class HomeScreen extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         appBar: buildAppBar(),
+        floatingActionButton: FloatingActionButton(
+            onPressed: () {
+              showDialog(
+                  context: context,
+                  builder: (context) => const ActionsDialog());
+            },
+            backgroundColor: kTextColor2,
+            child: const Icon(Icons.add, color: kWhiteColor, size: 36)),
         body: Container(
           height: Get.height,
           width: Get.width,
@@ -31,7 +39,7 @@ class HomeScreen extends StatelessWidget {
                 TextSpan(
                   text: "Bienvenu sur ",
                   style: TextStyle(
-                    color: kTextColor,
+                    color: kTextColor2,
                     fontSize: 20,
                     fontWeight: FontWeight.w600,
                   ),
@@ -46,7 +54,7 @@ class HomeScreen extends StatelessWidget {
                 )
               ])),
               const SizedBox(height: kDefaultPadding - 4),
-              const SearchBarAndButton(),
+              SearchBarAndButton(context: context),
               const SizedBox(height: kDefaultMargin * 2.2),
               const TitleText(title: "Catégories"),
               const SizedBox(height: kDefaultMargin * 1.6),
@@ -108,7 +116,7 @@ class HomeScreen extends StatelessWidget {
   AppBar buildAppBar() {
     return AppBar(
       elevation: 0,
-      // backgroundColor: kWhiteColor,
+      backgroundColor: kTextColor2,
       leading: const Padding(
         padding: EdgeInsets.only(left: kDefaultPadding),
         child: Center(
@@ -145,4 +153,94 @@ class HomeScreen extends StatelessWidget {
   }
 }
 
+class ActionsDialog extends StatelessWidget {
+  const ActionsDialog({
+    Key? key,
+  }) : super(key: key);
 
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      backgroundColor: kWhiteColor,
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(kDefaultRadius * 1.3)),
+      alignment: Alignment.center,
+      child: Container(
+        height: 300,
+        width: 200,
+        padding: const EdgeInsets.all(kDefaultPadding),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              "Actions",
+              style: TextStyle(
+                color: kTextColor2,
+                fontSize: 22,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            const Divider(thickness: 1.7,),
+            const SizedBox(
+              height: kDefaultMargin,
+            ),
+            GestureDetector(
+               onTap: () {print("Ajouter une pharmacie");},
+              child: Row(
+                children: [
+                  const Text(
+                    "Ajouter une pharmacie",
+                    style: TextStyle(
+                      color: kTextColor2,
+                      fontSize: 16,
+                    ),
+                  ),
+                  const Spacer(),
+                  Container(
+                    height: 30,
+                    width: 30,
+                    decoration: const BoxDecoration(
+                      color: kTextColor2,
+                      shape: BoxShape.circle,
+                    ),
+                    child: const Center(
+                      child: Icon(Icons.add, color: kWhiteColor, size: 26),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: kDefaultMargin*1.5),
+            GestureDetector(
+              onTap: () {print("Ajouter un médicament");},
+              child: Row(
+                children: [
+                  const Text(
+                    "Ajouter un médicament",
+                    style: TextStyle(
+                      color: kTextColor2,
+                      fontSize: 16,
+                    ),
+                  ),
+                  const Spacer(),
+                  Container(
+                    height: 30,
+                    width: 30,
+                    decoration: const BoxDecoration(
+                      color: kTextColor2,
+                      shape: BoxShape.circle,
+                    ),
+                    child: const Center(
+                      child: Icon(Icons.add, color: kWhiteColor, size: 26),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: kDefaultMargin),
+          ],
+        ),
+      ),
+    );
+  }
+}

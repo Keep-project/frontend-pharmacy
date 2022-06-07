@@ -7,8 +7,9 @@ import 'package:pharmacy_app/core/app_sizes.dart';
 
 
 class SearchBarAndButton extends StatelessWidget {
+  final BuildContext context;
   const SearchBarAndButton({
-    Key? key,
+    Key? key, required this.context,
   }) : super(key: key);
 
   @override
@@ -61,7 +62,9 @@ class SearchBarAndButton extends StatelessWidget {
         ),
         const SizedBox(width: 5),
         InkWell(
-          onTap: () {},
+          onTap: () {
+            showDialog(context: context, builder: (context) => const FilterDialog());
+          },
           child: Container(
             height: 45,
             width: 45,
@@ -75,6 +78,27 @@ class SearchBarAndButton extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+}
+
+
+class FilterDialog extends StatelessWidget {
+  const FilterDialog({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      backgroundColor:  kWhiteColor,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(kDefaultRadius*2)),
+      alignment: Alignment.topRight,
+      child: Container(
+        height: 300,
+        width: 200,
+        padding: const EdgeInsets.all(kDefaultPadding),
+      ),
     );
   }
 }
