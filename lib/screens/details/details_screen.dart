@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:pharmacy_app/components/title_text.dart';
 import 'package:pharmacy_app/core/app_colors.dart';
 import 'package:pharmacy_app/core/app_sizes.dart';
+import 'package:pharmacy_app/router/app_router.dart';
 import 'package:pharmacy_app/screens/details/details.dart';
 
 class DetailScreen extends GetView<DetailScreenController> {
@@ -203,22 +204,27 @@ class DetailScreen extends GetView<DetailScreenController> {
                               ],
                             ),
                             const Spacer(),
-                            Container(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: kDefaultPadding / 1.5,
-                                    vertical: kDefaultPadding / 2),
-                                decoration: BoxDecoration(
-                                  borderRadius:
-                                      BorderRadius.circular(kDefaultRadius / 1.3),
-                                  color: kTextColor2,
-                                ),
-                                child: const Text(
-                                  "Voir sur la map",
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    color: kWhiteColor,
+                            GestureDetector(
+                              onTap: (){
+                                Get.toNamed(AppRoutes.MAPVIEW);
+                              },
+                              child: Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: kDefaultPadding / 1.5,
+                                      vertical: kDefaultPadding / 2),
+                                  decoration: BoxDecoration(
+                                    borderRadius:
+                                        BorderRadius.circular(kDefaultRadius / 1.3),
+                                    color: kTextColor2,
                                   ),
-                                )),
+                                  child: const Text(
+                                    "Voir sur la map",
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      color: kWhiteColor,
+                                    ),
+                                  )),
+                            ),
                           ],
                         ),
                         const SizedBox(height: kDefaultMargin * 3),

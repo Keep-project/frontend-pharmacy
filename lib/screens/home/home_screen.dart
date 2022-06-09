@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:pharmacy_app/components/title_text.dart';
 import 'package:pharmacy_app/core/app_colors.dart';
 import 'package:pharmacy_app/core/app_sizes.dart';
+import 'package:pharmacy_app/router/app_router.dart';
 import 'package:pharmacy_app/screens/home/components/category_item.dart';
 import 'package:pharmacy_app/screens/home/components/medicament_card.dart';
 import 'package:pharmacy_app/screens/home/components/search_custom_button.dart';
@@ -74,7 +75,7 @@ class HomeScreen extends StatelessWidget {
                   const Spacer(),
                   InkWell(
                     onTap: () {
-                      print("Voir plus");
+                      Get.toNamed(AppRoutes.MEDICAMENTS);
                     },
                     child: Container(
                       padding: const EdgeInsets.symmetric(vertical: 8),
@@ -101,7 +102,7 @@ class HomeScreen extends StatelessWidget {
                     childAspectRatio: 0.725,
                     physics: const NeverScrollableScrollPhysics(),
                     children: [
-                      ...List.generate(100, (index) => const MedicamentCard()),
+                      ...List.generate(10, (index) => const MedicamentCard()),
                     ],
                   ),
                 ),
@@ -185,7 +186,7 @@ class ActionsDialog extends StatelessWidget {
               height: kDefaultMargin,
             ),
             GestureDetector(
-               onTap: () {print("Ajouter une pharmacie");},
+               onTap: () {Get.toNamed(AppRoutes.PHARMACIEFORM);},
               child: Row(
                 children: [
                   const Text(
@@ -212,7 +213,7 @@ class ActionsDialog extends StatelessWidget {
             ),
             const SizedBox(height: kDefaultMargin*1.5),
             GestureDetector(
-              onTap: () {print("Ajouter un médicament");},
+              onTap: () {Get.toNamed(AppRoutes.MEDICAMENTSFORM);},
               child: Row(
                 children: [
                   const Text(
