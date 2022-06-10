@@ -28,7 +28,7 @@ List<PieChartSectionData> getSections() => PieData.data.asMap().map<int, PieChar
     color: data.color,
     value: data.percent,
     title: "${data.percent}%\n${data.name}",
-    radius: 120,
+    radius: 90,
     titleStyle: const TextStyle(
       color: kWhiteColor,
       fontSize: 18,
