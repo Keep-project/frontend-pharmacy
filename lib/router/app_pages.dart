@@ -2,6 +2,7 @@
 
 import 'package:get/get.dart';
 import 'package:pharmacy_app/router/app_router.dart';
+import 'package:pharmacy_app/screens/dashbord/dashbord.dart';
 import 'package:pharmacy_app/screens/details/details.dart';
 import 'package:pharmacy_app/screens/home/home.dart';
 import 'package:pharmacy_app/screens/login/login.dart';
@@ -63,6 +64,12 @@ class AppPages {
       name: AppRoutes.ONBOARDING,
       page: () => const OnboardingScreen(),
       binding: OnboardingScreenBinding(),
+    ),
+
+    GetPage(
+      name: AppRoutes.DASHBORD,
+      page: () => const DashbordScreen(),
+      binding: DashbordScreenBinding(),
     ),
   ]; 
 }

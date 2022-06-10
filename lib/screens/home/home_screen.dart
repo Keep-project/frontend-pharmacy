@@ -132,9 +132,9 @@ class HomeScreen extends StatelessWidget {
         ),
       ),
       actions: [
-        InkWell(
+        GestureDetector(
           onTap: () {
-            print("Profil");
+            Get.toNamed(AppRoutes.DASHBORD);
           },
           child: Container(
             height: 45,

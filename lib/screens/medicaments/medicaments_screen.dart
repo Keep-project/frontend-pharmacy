@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:pharmacy_app/components/title_text.dart';
 import 'package:pharmacy_app/core/app_colors.dart';
 import 'package:pharmacy_app/core/app_sizes.dart';
+import 'package:pharmacy_app/router/app_router.dart';
 import 'package:pharmacy_app/screens/home/components/medicament_card.dart';
 import 'package:pharmacy_app/screens/home/components/search_custom_button.dart';
 import 'package:pharmacy_app/screens/medicaments/medicaments.dart';
@@ -72,7 +73,7 @@ class MedicamentScreen extends GetView<MedicamentscreenController> {
       actions: [
         InkWell(
           onTap: () {
-            print("Profil");
+            Get.toNamed(AppRoutes.DASHBORD);
           },
           child: Container(
             height: 45,
