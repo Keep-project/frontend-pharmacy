@@ -15,4 +15,5 @@ class AppRoutes {
   static const String ONBOARDING = "/onboarding";
   static const String DASHBORD = "/dashboard";
   static const String RENDEZVOUS = "/rendezvous";
+  static const String RENDEZVOUSDETAILS = "/rendezvous_details";
 }

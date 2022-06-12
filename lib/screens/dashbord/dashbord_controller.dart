@@ -24,20 +24,10 @@ class DashbordScreenController extends GetxController {
 
   DateTime now = DateTime.now();
 
-  @override
-  void onInit() {
-    lastDayOfMonth();
-    super.onInit();
-  }
+  // @override
+  // void onInit() {
+  //   super.onInit();
+  // }
 
-  int lastDayOfMonth() {
-    DateTime lastDayOfMonth = DateTime(now.year, now.month + 1, 0);
-    DateTime currentDate =  DateTime.parse("${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')} 00:00:00.0");
-    
-    print("Le dernier jour du mois sera le : ${lastDayOfMonth.day}");
-
-    final dateName = DateFormat('EEEE, d MMM yyyy').format(currentDate);
-    print("date name $dateName");
-    return lastDayOfMonth.day;
-  }
+  
 }
