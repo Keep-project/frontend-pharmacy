@@ -12,6 +12,7 @@ import 'package:pharmacy_app/screens/medicaments/medicaments.dart';
 import 'package:pharmacy_app/screens/onboarding/onboarding.dart';
 import 'package:pharmacy_app/screens/pharmacie_form/pharmacie_form.dart';
 import 'package:pharmacy_app/screens/register/register.dart';
+import 'package:pharmacy_app/screens/rendez_vous/rendez_vous.dart';
 
 class AppPages {
   
@@ -70,6 +71,11 @@ class AppPages {
       name: AppRoutes.DASHBORD,
       page: () => const DashbordScreen(),
       binding: DashbordScreenBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.RENDEZVOUS,
+      page: () => const RendezVousScreen(),
+      binding: RendezVousScreenBinding(),
     ),
   ]; 
 }

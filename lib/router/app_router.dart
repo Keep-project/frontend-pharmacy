@@ -14,4 +14,5 @@ class AppRoutes {
   static const String PHARMACIEFORM = "/pharmacie_form";
   static const String ONBOARDING = "/onboarding";
   static const String DASHBORD = "/dashboard";
+  static const String RENDEZVOUS = "/rendezvous";
 }

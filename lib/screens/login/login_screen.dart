@@ -27,7 +27,7 @@ class LoginScreen extends StatelessWidget {
                 const Text(
                   "Connexion",
                   style: TextStyle(
-                    color: kTextColor,
+                    color: kTextColor2,
                     fontSize: 24,
                     fontWeight: FontWeight.w600,
                   ),
@@ -56,7 +56,7 @@ class LoginScreen extends StatelessWidget {
                   child: Container(
                     height: 50,
                     decoration: BoxDecoration(
-                      color: kTextColor,
+                      color: kTextColor2,
                       borderRadius: BorderRadius.circular(kDefaultRadius - 2),
                     ),
                     child: const Center(
@@ -78,8 +78,7 @@ class LoginScreen extends StatelessWidget {
                     const Text(
                       "Avez-vous un compte? ",
                       style: TextStyle(
-                        color: kDarkColor,
-                        // fontSize: 16,
+                        color: kTextColor2,
                         fontWeight: FontWeight.w600,
                       ),
                     ),
@@ -91,7 +90,6 @@ class LoginScreen extends StatelessWidget {
                           "Créer un compte",
                           style: TextStyle(
                             color: kOrangeColor,
-                            // fontSize: 16,
                             fontWeight: FontWeight.w600,
                           ),
                         ),

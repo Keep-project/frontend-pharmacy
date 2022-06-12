@@ -23,7 +23,7 @@ class CustomTextField extends StatelessWidget {
         color: Colors.white,
         border: Border.all(
           width: 1.5,
-          color: kTextColor,
+          color: kTextColor2,
         ),
         borderRadius: BorderRadius.circular(kDefaultRadius - 2),
       ),
@@ -34,7 +34,7 @@ class CustomTextField extends StatelessWidget {
         decoration: InputDecoration(
             prefixIcon: InkWell(
               onTap: (){onTap!();},
-              child: Icon(iconData!, color: kTextColor)),
+              child: Icon(iconData!, color: kTextColor2)),
             enabledBorder: InputBorder.none,
             focusedBorder: InputBorder.none,
             hintText: hintText,

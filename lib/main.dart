@@ -23,7 +23,7 @@ class App extends StatelessWidget {
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       getPages: AppPages.pages,
-      initialRoute: AppRoutes.ONBOARDING,
+      initialRoute: AppRoutes.RENDEZVOUS,
     );
   }
 }

@@ -26,13 +26,13 @@ class RegisterScreen extends StatelessWidget {
                 const SizedBox(height: kDefaultMargin,),
                 IconButton(
                   onPressed: (){Get.back();},
-                  icon: const Icon(CupertinoIcons.arrow_left, size: 36, color: kTextColor),
+                  icon: const Icon(CupertinoIcons.arrow_left, size: 36, color: kTextColor2),
                 ),
                 const Spacer(),
                 const Text(
                   "Créer un compte",
                   style: TextStyle(
-                    color: kTextColor,
+                    color: kTextColor2,
                     fontSize: 24,
                     fontWeight: FontWeight.w600,
                   ),
@@ -71,7 +71,7 @@ class RegisterScreen extends StatelessWidget {
                   child: Container(
                     height: 50,
                     decoration: BoxDecoration(
-                      color: kTextColor,
+                      color: kTextColor2,
                       borderRadius: BorderRadius.circular(kDefaultRadius - 2),
                     ),
                     child: const Center(

@@ -22,16 +22,19 @@ class Data{
 
 }
 
-List<PieChartSectionData> getSections() => PieData.data.asMap().map<int, PieChartSectionData>((index, data){
+List<PieChartSectionData> getSections(int touchIndex) => PieData.data.asMap().map<int, PieChartSectionData>((index, data){
   
+  final bool isTouched = index == touchIndex;
+  final double fontSize = isTouched ? 20 : 16;
+  final double radius = isTouched ? 90 : 80;
   final value = PieChartSectionData(
     color: data.color,
     value: data.percent,
     title: "${data.percent}%\n${data.name}",
-    radius: 90,
-    titleStyle: const TextStyle(
+    radius: radius,
+    titleStyle: TextStyle(
       color: kWhiteColor,
-      fontSize: 18,
+      fontSize: fontSize,
       fontWeight: FontWeight.w600,
     ),
   );

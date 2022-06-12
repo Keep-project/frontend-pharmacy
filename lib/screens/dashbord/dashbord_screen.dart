@@ -1,13 +1,17 @@
 
+// ignore_for_file: avoid_print
+
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:pharmacy_app/components/title_text.dart';
 import 'package:pharmacy_app/core/app_colors.dart';
 import 'package:pharmacy_app/core/app_sizes.dart';
 import 'package:pharmacy_app/screens/dashbord/components/pie_data.dart';
 import 'package:pharmacy_app/screens/dashbord/dashbord_controller.dart';
+import 'package:pharmacy_app/screens/home/components/medicament_card.dart';
 
 
 class DashbordScreen extends GetView<DashbordScreenController> {
@@ -32,20 +36,55 @@ class DashbordScreen extends GetView<DashbordScreenController> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const SizedBox( height: kDefaultMargin*2),
+                    const TitleText(title: "Bienvenue sur votre Dashbord",),
+                    
+                    // Text("Le dernier jour du mois est ${controller.lastDayOfMonth.month}/${controller.lastDayOfMonth.day}"),
+                    const SizedBox( height: kDefaultMargin*2),
                     const TitleText(title: "Statistiques",),
-                    const SizedBox( height: kDefaultMargin*10),
-                    Container(
-                      height: 300,
-                      width: Get.width,
-                      child: PieChart(
-                        PieChartData(
-                          borderData: FlBorderData(show: false),
-                          sectionsSpace: 0,
-                          centerSpaceRadius: 60,
-                          sections: getSections(),
+                    const SizedBox( height: kDefaultMargin),
+                    Center(
+                      child: Container(
+                        height: 300,
+                        width: Get.width,
+                        decoration: const BoxDecoration(
+                          // color: Colors.black,
+                        ),
+                        child: PieChart(
+                          PieChartData(
+                            pieTouchData: PieTouchData(
+                              touchCallback: (touchEvent, pieTouchResponse){
+                                if (pieTouchResponse != null && ( pieTouchResponse.touchedSection is FlLongPressEnd || pieTouchResponse.touchedSection is FlPanEndEvent)){
+                                  controller.touchIndex = -1;
+                                }
+                                else{
+                                  try {
+                                    controller.touchIndex = pieTouchResponse!.touchedSection!.touchedSectionIndex;
+                                    controller.update();
+                                  } catch (e) {
+                                    print(e);
+                                  }
+                                }
+                              }
+                            ),
+                            borderData: FlBorderData(show: false),
+                            sectionsSpace: 0,
+                            centerSpaceRadius: 50,
+                            sections: getSections(controller.touchIndex),
+                          ),
                         ),
                       ),
                     ),
+                    const SizedBox( height: kDefaultMargin*4),
+                    const TitleText(title: "Médicaments récents(06)",),
+                    const SizedBox( height: kDefaultMargin*2),
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: List.generate(8, (index) => Container(
+                          margin: const EdgeInsets.only(right: kDefaultMargin*2),
+                          child: const MedicamentCard())),
+                      ),
+                    ),                   
                   ],
                 ))
             );
