@@ -20,14 +20,16 @@ class RendezVousScreen extends GetView<RendezVousScreenController> {
         body: GetBuilder<RendezVousScreenController>(builder: (controller) {
           return Container(
             padding: const EdgeInsets.only(
-                left: kDefaultPadding,
-                right: kDefaultPadding,
-              ),
+              left: kDefaultPadding,
+              right: kDefaultPadding,
+            ),
             child: SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const SizedBox(height: kDefaultPadding * 1.5,),
+                  const SizedBox(
+                    height: kDefaultPadding * 1.5,
+                  ),
                   const SearchBar(),
                   const SizedBox(height: kDefaultMargin * 2),
                   const TitleText(title: "Catégories"),
@@ -72,6 +74,26 @@ class RendezVousScreen extends GetView<RendezVousScreenController> {
                       ),
                     ],
                   ),
+                  const SizedBox(height: kDefaultMargin * 1.5),
+                  ...List.generate(
+                    10,
+                    (index) => Container(
+                      height: 100,
+                      width: double.infinity,
+                      margin: const EdgeInsets.only(bottom: kDefaultMargin * 2),
+                      decoration: BoxDecoration(
+                        color: kWhiteColor,
+                        borderRadius: BorderRadius.circular(kDefaultRadius),
+                        boxShadow: [
+                          BoxShadow(
+                            offset: const Offset(0, 2),
+                            blurRadius: 30,
+                            color: kTextColor2.withOpacity(0.02),
+                          ),
+                        ],
+                      ),
+                    ),
+                  )
                 ],
               ),
             ),
