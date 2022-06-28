@@ -46,7 +46,6 @@ class RendezVousScreenControllerDetails extends GetxController {
 
   void changeSelectedDay(int index) {
     selectedDayIndex = index;
-    print(dayList[index]);
     update();
   }
 }
