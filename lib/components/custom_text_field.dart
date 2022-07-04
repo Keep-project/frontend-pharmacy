@@ -9,11 +9,15 @@ class CustomTextField extends StatelessWidget {
   final String? hintText;
   final IconData? iconData;
   final Function()? onTap;
+  final bool? obscureText;
+  final TextEditingController controller;
   const CustomTextField({
     Key? key,
     this.onChanged,
     this.hintText,
-    this.iconData, this.onTap,
+    this.iconData,
+    this.onTap,
+    this.obscureText, required this.controller,
   }) : super(key: key);
 
   @override
@@ -28,12 +32,14 @@ class CustomTextField extends StatelessWidget {
         borderRadius: BorderRadius.circular(kDefaultRadius - 2),
       ),
       child: TextField(
-        onChanged: (String value) {
-          onChanged!(value);
-        },
+        // onChanged: (String value) {
+        //   onChanged!(value);
+        // },
+        controller: controller,
+        obscureText: obscureText ?? false,
         decoration: InputDecoration(
             prefixIcon: InkWell(
-              onTap: (){onTap!();},
+              onTap: onTap,
               child: Icon(iconData!, color: kTextColor2)),
             enabledBorder: InputBorder.none,
             focusedBorder: InputBorder.none,

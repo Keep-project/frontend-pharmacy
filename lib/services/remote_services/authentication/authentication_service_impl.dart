@@ -16,10 +16,8 @@ class RemoteAuthenticationServiceImpl implements RemoteAuthenticationService {
     LoginRequestModel? loginReqModel,
     Function(dynamic data)? onLoginSuccess,
     Function(dynamic error)? onLoginError}) async {
-
       ApiRequest(
         url: "${Constants.API_URL}/jwt/create",
-        // data: <String, String>{"username": "$login","password": "$password"},
         data: loginReqModel!.toMap(),
       ).post(
         onSuccess: (data){
@@ -38,7 +36,7 @@ class RemoteAuthenticationServiceImpl implements RemoteAuthenticationService {
     Function(dynamic data)? onRegisterSuccess,
     Function(dynamic error)? onRegisterError}) async {
     ApiRequest(
-      url: "${Constants.API_URL}/",
+      url: "${Constants.API_URL}/utilisateur/",
       data: registerReqModel!.toMap(),
     ).post(
        onSuccess: (data){

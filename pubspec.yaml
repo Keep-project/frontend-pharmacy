@@ -40,11 +40,11 @@ dependencies:
   geolocator: ^8.2.1
   image_picker: ^0.8.5+3
   google_place: ^0.4.7
-  google_maps_flutter: ^2.1.7
   geocoding: ^2.0.4
   fl_chart: ^0.51.0
   intl: ^0.17.0
   flutter_svg: ^1.1.0
+  google_maps_flutter: ^2.1.8
 
 dev_dependencies:
   flutter_test:

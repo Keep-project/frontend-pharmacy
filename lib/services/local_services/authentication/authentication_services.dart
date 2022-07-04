@@ -1,9 +1,10 @@
+
 abstract class LocalAuthentificationService {
   Future<bool> saveToken(String token);
-  // Future<bool> hasAuthenticate();
+  Future<void> saveUser(String user);
+  Future<String?> getUser();
+  Future<bool> deleteUser();
   Future<String?> getToken();
   Future<bool> deleteToken();
-  // Future<bool> saveUser(dynamic user);
-  // Future<dynamic> getUser();
-  // Future<bool> deleteUser();
+  Future<bool> hasAuthToken();
 }
