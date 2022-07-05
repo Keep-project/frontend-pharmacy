@@ -36,8 +36,8 @@ class OnboardingScreen extends GetView<OnboardingScreenController> {
                   ),
                   Positioned(
                     bottom: 0,
-                    left: kDefaultMargin*2,
-                    right: kDefaultMargin*2,
+                    left: kDefaultMargin * 2,
+                    right: kDefaultMargin * 2,
                     child: Container(
                       height: 60,
                       width: double.infinity,
@@ -51,34 +51,46 @@ class OnboardingScreen extends GetView<OnboardingScreenController> {
                                 controller.pages.length,
                                 (index) => Container(
                                       height: 10,
-                                      width: controller.currentPageIndex == index ? 25 : 10,
+                                      width:
+                                          controller.currentPageIndex == index
+                                              ? 25
+                                              : 10,
                                       margin: const EdgeInsets.only(
                                           right: kDefaultMargin / 2),
                                       decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(kDefaultRadius*3),
-                                        color: controller.currentPageIndex == index ? kTextColor2 : kWhiteColor.withOpacity(.5),
+                                        borderRadius: BorderRadius.circular(
+                                            kDefaultRadius * 3),
+                                        color:
+                                            controller.currentPageIndex == index
+                                                ? kTextColor2
+                                                : kWhiteColor.withOpacity(.5),
                                       ),
                                     )),
                           ),
                           const Spacer(),
                           GestureDetector(
-                            onTap: (){
-                              if (controller.currentPageIndex == controller.pages.length - 1) {
-                                Get.toNamed(AppRoutes.LOGIN);
+                            onTap: () {
+                              if (controller.currentPageIndex ==
+                                  controller.pages.length - 1) {
+                                controller.verifyToken();
                                 return;
                               }
                               controller.onPressChangedPage();
                             },
                             child: Container(
                               height: 35,
-                              padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: kDefaultPadding),
                               decoration: BoxDecoration(
-                                color: kTextColor2,
-                                borderRadius: BorderRadius.circular(kDefaultRadius*4)
-                              ),
+                                  color: kTextColor2,
+                                  borderRadius: BorderRadius.circular(
+                                      kDefaultRadius * 4)),
                               child: Center(
-                                child: Text( controller.currentPageIndex == controller.pages.length -1 ?
-                                  "Commencer" : "suivant",
+                                child: Text(
+                                  controller.currentPageIndex ==
+                                          controller.pages.length - 1
+                                      ? "Commencer"
+                                      : "suivant",
                                   style: const TextStyle(
                                     color: kWhiteColor,
                                     fontWeight: FontWeight.w600,

@@ -39,21 +39,9 @@ class LoginScreenController extends GetxController{
 
   @override 
   void onInit() async {
-    await verifyToken();
     super.onInit();
   }
 
-  Future verifyToken() async{
-    if ( await _localAuth.hasAuthToken()){
-      Future.delayed(const Duration(milliseconds: 1000), () {
-        //Get.offAllNamed(AppRoutes.LOGIN);
-        Get.offAllNamed(AppRoutes.HOME);
-      });
-    }
-    else{
-      Get.offAllNamed(AppRoutes.LOGIN);
-    }
-  }
 
   Future getUser() async {
     await _userService.getUser(onSuccess: (data) async {
