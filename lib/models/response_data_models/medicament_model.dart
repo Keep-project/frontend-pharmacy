@@ -1,5 +1,7 @@
 
 
+// ignore_for_file: non_constant_identifier_names
+
 import 'dart:convert';
 
 class MedicamentRequestModel {
@@ -35,6 +37,7 @@ class Medicament {
   final int? id;
   final String? nom;
   final int? prix;
+  final String? masse;
   final String? marque;
   final DateTime? date_exp;
   final String? photo;
@@ -52,6 +55,7 @@ class Medicament {
     this.id,
     this.nom,
     this.prix,
+    this.masse,
     this.marque,
     this.date_exp,
     this.photo,
@@ -72,6 +76,7 @@ class Medicament {
       id:  json["id"] ?? 0,
       nom: json["nom"] ?? "",
       prix: json["prix"] ?? 0,
+      masse: json["masse"]?? "",
       marque: json["marque"] ?? "",
       date_exp:json["date_exp"] == null ? null : DateTime.parse(json["date_exp"]),
       photo: json["get_image_url"] ?? "",
@@ -87,10 +92,13 @@ class Medicament {
 
     );
 
+    String dateToString() => "${date_exp!.year.toString().padLeft(4, '0')}-${date_exp!.month.toString().padLeft(2, '0')}-${date_exp!.day.toString().padLeft(2, '0')}";
+
     Map<String, dynamic> toMap() => {
       'id': id,
       'nom': nom,
       'prix': prix,
+      'masse': masse,
       'marque': marque,
       'date_exp': date_exp,
       'photo': photo,

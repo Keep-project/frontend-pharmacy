@@ -4,7 +4,6 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:pharmacy_app/components/title_text.dart';
 import 'package:pharmacy_app/core/app_colors.dart';
@@ -78,11 +77,12 @@ class DashbordScreen extends GetView<DashbordScreenController> {
                     const TitleText(title: "Médicaments récents(06)",),
                     const SizedBox( height: kDefaultMargin*2),
                     SingleChildScrollView(
+                      controller: controller.scrollController,
                       scrollDirection: Axis.horizontal,
                       child: Row(
-                        children: List.generate(8, (index) => Container(
+                        children: List.generate(controller.medicamentsList.length, (index) => Container(
                           margin: const EdgeInsets.only(right: kDefaultMargin*2),
-                          child: const MedicamentCard())),
+                          child: MedicamentCard(medicament: controller.medicamentsList[index]),)),
                       ),
                     ),                   
                   ],

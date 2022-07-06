@@ -4,27 +4,32 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pharmacy_app/components/search_bar.dart';
 import 'package:pharmacy_app/core/app_colors.dart';
-import 'package:pharmacy_app/core/app_sizes.dart';
+import 'package:pharmacy_app/screens/home/components/custom_filter_dialog.dart';
 
 class SearchBarAndButton extends StatelessWidget {
   final BuildContext context;
+  final dynamic controller;
+  final Function()? onTap;
   const SearchBarAndButton({
     Key? key,
     required this.context,
+    required this.controller,
+    required this.onTap,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
-        const Expanded(
-          child: SearchBar(),
+        Expanded(
+          child: SearchBar(controller: controller.searchController, onTap: onTap),
         ),
         const SizedBox(width: 5),
         InkWell(
           onTap: () {
             showDialog(
-                context: context, builder: (context) => const FilterDialog());
+                context: context,
+                builder: (context) => FilterDialog(controller: controller));
           },
           child: Container(
             height: 45,
@@ -39,200 +44,6 @@ class SearchBarAndButton extends StatelessWidget {
           ),
         ),
       ],
-    );
-  }
-}
-
-
-
-class FilterDialog extends StatelessWidget {
-  const FilterDialog({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Dialog(
-      backgroundColor: kWhiteColor,
-      shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(kDefaultRadius)),
-      alignment: Alignment.topRight,
-      child: Container(
-        height: 430,
-        width: 300,
-        padding: const EdgeInsets.all(kDefaultPadding),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              "Filtre",
-              style: TextStyle(
-                fontSize: 20,
-                color: kTextColor2,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-            const SizedBox(height: kDefaultMargin / 2),
-            const Divider(
-              thickness: 1.5,
-            ),
-            const SizedBox(height: kDefaultMargin * 1.5),
-            Text(
-              "catégorie",
-              style: TextStyle(
-                color: kTextColor2.withOpacity(.6),
-              ),
-            ),
-            const SizedBox(height: kDefaultMargin * 1.5),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: const [
-                CustomButton(
-                    libelle: "Tous",
-                    color: kWhiteColor,
-                    backgroundColor: kTextColor2),
-                CustomButton(
-                    libelle: "Enfants",
-                    color: kTextColor2,
-                    backgroundColor: kWhiteColor),
-              ],
-            ),
-            const SizedBox(
-              height: kDefaultPadding * .7,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: const [
-                CustomButton(
-                    libelle: "Adoles.",
-                    color: kTextColor2,
-                    backgroundColor: kWhiteColor),
-                CustomButton(
-                    libelle: "Adultes",
-                    color: kTextColor2,
-                    backgroundColor: kWhiteColor),
-              ],
-            ),
-            const SizedBox(height: kDefaultMargin),
-            const Divider(
-              thickness: 1.5,
-            ),
-            const SizedBox(height: kDefaultMargin - 4),
-            Text(
-              "voie de prise",
-              style: TextStyle(
-                color: kTextColor2.withOpacity(.6),
-              ),
-            ),
-            const SizedBox(height: kDefaultPadding / 6),
-            Row(
-              children: [
-                Row(children: [
-                  Checkbox(
-                      side: const BorderSide(width: 1, color: kTextColor2),
-                      activeColor: kTextColor2,
-                      value: true,
-                      onChanged: (bool? val) {
-                        print(val);
-                      }),
-                  Text("Orale",
-                      style: TextStyle(
-                          fontSize: 16, color: kDarkColor.withOpacity(.7))),
-                ]),
-                Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Checkbox(
-                          side: const BorderSide(width: 1, color: kTextColor2),
-                          activeColor: kTextColor2,
-                          value: false,
-                          onChanged: (bool? val) {
-                            print(val);
-                          }),
-                      Text("Anale",
-                          style: TextStyle(
-                              fontSize: 16, color: kDarkColor.withOpacity(.7))),
-                    ]),
-              ],
-            ),
-            Row(children: [
-              Checkbox(
-                  side: const BorderSide(width: 1, color: kTextColor2),
-                  activeColor: kTextColor2,
-                  value: false,
-                  onChanged: (bool? val) {
-                    print(val);
-                  }),
-              Text("Injection",
-                  style: TextStyle(
-                      fontSize: 16, color: kDarkColor.withOpacity(.7))),
-            ]),
-            const SizedBox(height: kDefaultMargin),
-            GestureDetector(
-              onTap: () {print("Rechercher");},
-              child: Container(
-                padding:
-                    const EdgeInsets.symmetric(vertical: kDefaultPadding / 2),
-                decoration: BoxDecoration(
-                  color: kTextColor2,
-                  border: Border.all(
-                    width: 1.2,
-                    color: kTextColor2,
-                  ),
-                  borderRadius: BorderRadius.circular(kDefaultRadius - 4),
-                ),
-                child: const Center(
-                  child: Text(
-                    'Rechercher',
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: kWhiteColor,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class CustomButton extends StatelessWidget {
-  final String libelle;
-  final Color color;
-  final Color backgroundColor;
-  const CustomButton({
-    Key? key,
-    required this.libelle,
-    required this.color,
-    required this.backgroundColor,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 120,
-      padding: const EdgeInsets.symmetric(vertical: kDefaultPadding / 2),
-      decoration: BoxDecoration(
-        color: backgroundColor,
-        border: Border.all(
-          width: 1.2,
-          color: kTextColor2,
-        ),
-        borderRadius: BorderRadius.circular(kDefaultRadius - 4),
-      ),
-      child: Center(
-        child: Text(
-          libelle,
-          style: TextStyle(
-            fontSize: 16,
-            color: color,
-          ),
-        ),
-      ),
     );
   }
 }

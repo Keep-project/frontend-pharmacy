@@ -8,6 +8,7 @@ import 'package:pharmacy_app/core/app_colors.dart';
 import 'package:pharmacy_app/core/app_sizes.dart';
 import 'package:pharmacy_app/router/app_router.dart';
 import 'package:pharmacy_app/screens/home/components/category_item.dart';
+import 'package:pharmacy_app/screens/home/components/custom_action_dialog.dart';
 import 'package:pharmacy_app/screens/home/components/medicament_card.dart';
 import 'package:pharmacy_app/screens/home/components/search_custom_button.dart';
 import 'package:pharmacy_app/screens/home/home.dart';
@@ -59,17 +60,22 @@ class HomeScreen extends GetView<HomeScreenController> {
                   )
                 ])),
                 const SizedBox(height: kDefaultPadding - 4),
-                SearchBarAndButton(context: context),
+                SearchBarAndButton(context: context, controller: controller, onTap: () async {controller.filterMedicamentsList();}),
                 const SizedBox(height: kDefaultMargin * 2.2),
                 const TitleText(title: "Catégories"),
                 const SizedBox(height: kDefaultMargin * 1.6),
                 SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: Row(children: [
-                    CategoryItem(title: "Tous", onTap: () {}),
-                    CategoryItem(title: "Adolescents", onTap: () {}),
-                    CategoryItem(title: "Enfants", onTap: () {}),
-                    CategoryItem(title: "Adultes", onTap: () {}),
+                    ...List.generate(
+                      controller.categories.length,
+                      (index) => 
+                        CategoryItem(
+                          title: controller.categories[index]['libelle'],
+                          index: index,
+                          controller: controller,
+                          onTap: () { controller.changeSelectedCategory(index); }),
+                    ),
                   ]),
                 ),
                 const SizedBox(height: kDefaultMargin * 2.2),
@@ -100,7 +106,7 @@ class HomeScreen extends GetView<HomeScreenController> {
                         controller.medicamentsList.isEmpty
                     ? const Expanded(
                         child: Center(
-                          child: CircularProgressIndicator(color: kTextColor2),
+                          child: CircularProgressIndicator(color: kOrangeColor),
                         ),
                       )
                     : Expanded(
@@ -112,14 +118,14 @@ class HomeScreen extends GetView<HomeScreenController> {
                             crossAxisAlignment: WrapCrossAlignment.center,
                             children: [
                               ...List.generate(
-                                  controller.medicamentsList.length, (index) => const MedicamentCard()),
-
+                                  controller.medicamentsList.length,
+                                  (index) => MedicamentCard(medicament: controller.medicamentsList[index])),
                               controller.infinityStatus ==
                                       LoadingStatus.searching
                                   ? Container(
                                       padding: const EdgeInsets.all(0),
                                       height: 220,
-                                      width: Get.width / 2 - 32,
+                                      //width: Get.width / 2 - 32,
                                       child: const Center(
                                         child: CircularProgressIndicator(
                                             color: kOrangeColor),
@@ -130,23 +136,24 @@ class HomeScreen extends GetView<HomeScreenController> {
                           ),
                         ),
                       ),
-                      controller.medicamentsList.isEmpty 
-                      && controller.infinityStatus == LoadingStatus.completed ?
-                      Container(
+                controller.medicamentsList.isEmpty &&
+                        controller.infinityStatus == LoadingStatus.completed
+                    ? Container(
                         padding: const EdgeInsets.all(0),
                         width: double.infinity,
                         child: Center(
                           child: Text(
-                            "Ooops !!!\nAucun livre trouvé",
+                            "Ooops !!!\nAucun médicament trouvé",
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                              color:  kGreyColor.withOpacity(0.7),
+                              color: kGreyColor.withOpacity(0.7),
                               fontSize: 20,
                               fontWeight: FontWeight.w400,
                             ),
                           ),
                         ),
-                      ) : Container(),
+                      )
+                    : Container(),
               ],
             ),
           ),
@@ -195,100 +202,4 @@ class HomeScreen extends GetView<HomeScreenController> {
   }
 }
 
-class ActionsDialog extends StatelessWidget {
-  const ActionsDialog({
-    Key? key,
-  }) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    return Dialog(
-      backgroundColor: kWhiteColor,
-      shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(kDefaultRadius * 1.3)),
-      alignment: Alignment.center,
-      child: Container(
-        height: 300,
-        width: 200,
-        padding: const EdgeInsets.all(kDefaultPadding),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              "Actions",
-              style: TextStyle(
-                color: kTextColor2,
-                fontSize: 22,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-            const Divider(
-              thickness: 1.7,
-            ),
-            const SizedBox(
-              height: kDefaultMargin,
-            ),
-            GestureDetector(
-              onTap: () {
-                Get.toNamed(AppRoutes.PHARMACIEFORM);
-              },
-              child: Row(
-                children: [
-                  const Text(
-                    "Ajouter une pharmacie",
-                    style: TextStyle(
-                      color: kTextColor2,
-                      fontSize: 16,
-                    ),
-                  ),
-                  const Spacer(),
-                  Container(
-                    height: 30,
-                    width: 30,
-                    decoration: const BoxDecoration(
-                      color: kTextColor2,
-                      shape: BoxShape.circle,
-                    ),
-                    child: const Center(
-                      child: Icon(Icons.add, color: kWhiteColor, size: 26),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: kDefaultMargin * 1.5),
-            GestureDetector(
-              onTap: () {
-                Get.toNamed(AppRoutes.MEDICAMENTSFORM);
-              },
-              child: Row(
-                children: [
-                  const Text(
-                    "Ajouter un médicament",
-                    style: TextStyle(
-                      color: kTextColor2,
-                      fontSize: 16,
-                    ),
-                  ),
-                  const Spacer(),
-                  Container(
-                    height: 30,
-                    width: 30,
-                    decoration: const BoxDecoration(
-                      color: kTextColor2,
-                      shape: BoxShape.circle,
-                    ),
-                    child: const Center(
-                      child: Icon(Icons.add, color: kWhiteColor, size: 26),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: kDefaultMargin),
-          ],
-        ),
-      ),
-    );
-  }
-}

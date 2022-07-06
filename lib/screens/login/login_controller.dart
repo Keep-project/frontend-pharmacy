@@ -37,16 +37,11 @@ class LoginScreenController extends GetxController{
     super.dispose();
   }
 
-  @override 
-  void onInit() async {
-    super.onInit();
-  }
 
 
   Future getUser() async {
     await _userService.getUser(onSuccess: (data) async {
       await _localAuth.saveUser(json.encode(data.results!.toMap()));
-      // Map<String, dynamic> userJson = await UserInfo.user();
       Future.delayed(const Duration(seconds: 1), (){
         Get.offAllNamed(AppRoutes.HOME);
         loginStatus = LoadingStatus.completed;

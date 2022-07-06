@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print
+// ignore_for_file: avoid_print, non_constant_identifier_names, unused_field, prefer_typing_uninitialized_variables
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -8,11 +8,16 @@ import 'package:pharmacy_app/services/remote_services/medicament/medicament.dart
 
 class HomeScreenController extends GetxController{
   final ScrollController scrollController = ScrollController();
+  TextEditingController searchController = TextEditingController();
+
+
   LoadingStatus infinityStatus = LoadingStatus.initial;
 
   final MedicamentService _medicamentService = MedicamentServiceImpl();
 
   List<Medicament> medicamentsList = <Medicament>[];
+  RxInt selectedCategorieIndex = 0.obs;
+  
 
   int _count = 0;
   var next, previous;
@@ -39,8 +44,49 @@ class HomeScreenController extends GetxController{
   @override
   void dispose() {
     scrollController.dispose();
+    searchController.dispose();
     super.dispose();
   }
+
+
+  List<Map<String, dynamic>> categories = [
+    {
+      'id': 1,
+      'libelle': 'Tous'
+    },
+    {
+      'id': 2,
+      'libelle': 'Adolescents'
+    },
+    {
+      'id': 3,
+      'libelle': 'Enfants'
+    },
+    {
+      'id': 4,
+      'libelle': 'Adultes'
+    },
+  ];
+
+  List<Map<String, dynamic>> voix = [
+    {
+      'id': 1,
+      'libelle': 'Orale',
+      'selected': false,
+    },
+    {
+      'id': 2,
+      'libelle': 'Anale',
+      'selected': false,
+    },
+    {
+      'id': 3,
+      'libelle': 'Injection',
+      'selected': false,
+    },
+    
+  ];
+
 
   Future medicamentList() async {
     infinityStatus = LoadingStatus.searching;
@@ -48,7 +94,6 @@ class HomeScreenController extends GetxController{
     await _medicamentService.medicamentsList(
         url: next,
         onSuccess: (data) {
-          print(data);
           _count = data.count!;
           next = data.next;
           previous = data.previous;
@@ -65,5 +110,27 @@ class HomeScreenController extends GetxController{
           update();
         }
     );
+  }
+
+  void changeSelectedCategory(int index) {
+    selectedCategorieIndex.value = index;
+    update();
+  }
+
+  void changeVoix(int index) {
+    voix[index]['selected'] = !voix[index]['selected'];
+    update();
+  }
+
+
+  Future filterMedicamentsList() async {
+
+    print("filter médicaments");
+
+    if (searchController.text.isNotEmpty) {
+      print("Vous avez fait la recherche pour : ");
+      print(searchController.text.trim());
+    }
+    
   }
 }

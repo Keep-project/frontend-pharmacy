@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
@@ -31,7 +33,7 @@ class RendezVousScreen extends GetView<RendezVousScreenController> {
                   const SizedBox(
                     height: kDefaultPadding * 1.5,
                   ),
-                  const SearchBar(),
+                  SearchBar(controller: controller.searchController, onTap: () {print("Search");}),
                   const SizedBox(height: kDefaultMargin * 2),
                   const TitleText(title: "Catégories"),
                   const SizedBox(height: kDefaultMargin * 1.5),

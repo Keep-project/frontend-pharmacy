@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pharmacy_app/core/app_colors.dart';
 import 'package:pharmacy_app/core/app_sizes.dart';
-import 'package:pharmacy_app/router/app_router.dart';
 import 'package:pharmacy_app/screens/onboarding/onboarding_controller.dart';
 
 class OnboardingScreen extends GetView<OnboardingScreenController> {
@@ -26,8 +25,8 @@ class OnboardingScreen extends GetView<OnboardingScreenController> {
                     decoration: const BoxDecoration(),
                     child: PageView.builder(
                       controller: controller.pageController,
-                      onPageChanged: (int new_index) {
-                        controller.currentPageIndex = new_index;
+                      onPageChanged: (int newIndex) {
+                        controller.currentPageIndex = newIndex;
                         controller.update();
                       },
                       itemCount: controller.pages.length,

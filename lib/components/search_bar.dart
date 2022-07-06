@@ -1,12 +1,18 @@
 
+// ignore_for_file: avoid_print
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pharmacy_app/core/app_colors.dart';
 import 'package:pharmacy_app/core/app_sizes.dart';
 
 class SearchBar extends StatelessWidget {
+  final TextEditingController controller;
+  final Function()? onTap;
   const SearchBar({
     Key? key,
+    required this.controller,
+    required this.onTap,
   }) : super(key: key);
 
   @override
@@ -17,6 +23,7 @@ class SearchBar extends StatelessWidget {
         borderRadius: BorderRadius.circular(kDefaultPadding * 2),
       ),
       child: TextField(
+        controller: controller,
         onChanged: (String string) {},
         style: const TextStyle(
           color: Colors.black,
@@ -33,9 +40,7 @@ class SearchBar extends StatelessWidget {
               fontSize: 16,
             ),
             suffixIcon: InkWell(
-              onTap: () {
-                print("Search");
-              },
+              onTap: onTap,
               child: Container(
                 height: 30,
                 width: 30,

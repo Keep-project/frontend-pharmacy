@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pharmacy_app/core/app_colors.dart';
 import 'package:pharmacy_app/core/app_sizes.dart';
+import 'package:pharmacy_app/models/response_data_models/medicament_model.dart';
 import 'package:pharmacy_app/router/app_router.dart';
 
 
 class MedicamentCard extends StatelessWidget {
+  final Medicament medicament;
   const MedicamentCard({
-    Key? key,
+    Key? key, required this.medicament,
   }) : super(key: key);
 
   @override
@@ -45,11 +47,12 @@ class MedicamentCard extends StatelessWidget {
                             topLeft: Radius.circular(7),
                             topRight: Radius.circular(7),
                           ),
-                          image: const DecorationImage(
+                          image: DecorationImage(
                             fit: BoxFit.cover,
-                            image: AssetImage(
-                                "assets/images/comprime1.jpg"),
-                          ))),
+                            image: NetworkImage(medicament.photo!),
+                          )
+                        )
+                      ),
                   Positioned(
                     top: 0,
                     right: 0,
@@ -62,9 +65,9 @@ class MedicamentCard extends StatelessWidget {
                             bottomLeft: Radius.circular(7),
                           ),
                         ),
-                        child: const Text(
-                          "1700 FCFA",
-                          style: TextStyle(
+                        child: Text(
+                          "${medicament.prix!} FCFA",
+                          style: const TextStyle(
                             color: kWhiteColor,
                             fontWeight: FontWeight.bold,
                           ),
@@ -101,10 +104,9 @@ class MedicamentCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      "Doliprane 200mg",
+                    Text(medicament.nom!.toString().capitalizeFirst!,
                       overflow: TextOverflow.ellipsis,
-                      maxLines: 2,
+                      maxLines: 1,
                       style: TextStyle(
                         color: Colors.black.withOpacity(0.5),
                         fontWeight: FontWeight.w600,
@@ -124,7 +126,7 @@ class MedicamentCard extends StatelessWidget {
                             ),
                           ),
                           TextSpan(
-                              text: "20/03/2023",
+                              text: medicament.dateToString(),
                               style: TextStyle(
                                 color:
                                     Colors.black.withOpacity(0.5),
@@ -134,9 +136,8 @@ class MedicamentCard extends StatelessWidget {
                         ]),
                       ),
                       const Spacer(),
-                      const Text(
-                        "200mg",
-                        style: TextStyle(
+                      Text(medicament.masse!,
+                        style: const TextStyle(
                           color: kOrangeColor,
                           fontWeight: FontWeight.w600,
                           fontSize: 12,
