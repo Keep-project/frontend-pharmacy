@@ -14,6 +14,7 @@ import 'package:pharmacy_app/screens/pharmacie_form/pharmacie_form.dart';
 import 'package:pharmacy_app/screens/register/register.dart';
 import 'package:pharmacy_app/screens/rendez_vous/rendez_vous.dart';
 import 'package:pharmacy_app/screens/rendez_vous_details/rendez_vous_details.dart';
+import 'package:pharmacy_app/screens/start/start.dart';
 
 class AppPages {
   
@@ -28,6 +29,12 @@ class AppPages {
       page: () => const RegisterScreen(),
       binding: RegisterScreenBinding()
     ),
+    GetPage(
+      name: AppRoutes.STARTPAGE,
+      page: () => const StartScreen(),
+      binding: StartScreenBinding(),
+    ),
+
     GetPage(
       name: AppRoutes.HOME,
       page: () => const HomeScreen(),

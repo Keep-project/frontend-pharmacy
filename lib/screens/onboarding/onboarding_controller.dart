@@ -34,7 +34,7 @@ class OnboardingScreenController extends GetxController {
     if ( await _localAuth.hasAuthToken()){
       Future.delayed(const Duration(milliseconds: 800), () {
         //Get.offAllNamed(AppRoutes.LOGIN);
-        Get.offAllNamed(AppRoutes.HOME);
+        Get.offAllNamed(AppRoutes.STARTPAGE);
       });
     }
     else{

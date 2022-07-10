@@ -69,7 +69,6 @@ class Medicament {
     this.created_at,
     this.updated_at });
 
-
     factory Medicament.fromJson(String string) => Medicament.fromMap(json.decode(string));
 
     factory Medicament.fromMap(Map<String, dynamic> json) => Medicament(

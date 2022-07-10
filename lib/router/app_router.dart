@@ -16,4 +16,5 @@ class AppRoutes {
   static const String DASHBORD = "/dashboard";
   static const String RENDEZVOUS = "/rendezvous";
   static const String RENDEZVOUSDETAILS = "/rendezvous_details";
+  static const String STARTPAGE = "/start";
 }

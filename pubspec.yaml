@@ -44,7 +44,9 @@ dependencies:
   fl_chart: ^0.51.0
   intl: ^0.17.0
   flutter_svg: ^1.1.0
-  google_maps_flutter: ^2.1.8
+  google_maps_flutter: ^2.1.8 
+  flutter_polyline_points: ^1.0.0
+  location: ^4.4.0
 
 dev_dependencies:
   flutter_test:
