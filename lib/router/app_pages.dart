@@ -9,12 +9,14 @@ import 'package:pharmacy_app/screens/login/login.dart';
 import 'package:pharmacy_app/screens/mapview/mapview.dart';
 import 'package:pharmacy_app/screens/medicament_form/medicament_form.dart';
 import 'package:pharmacy_app/screens/medicaments/medicaments.dart';
+import 'package:pharmacy_app/screens/mouvement_produit/mouvement_produit.dart';
 import 'package:pharmacy_app/screens/onboarding/onboarding.dart';
 import 'package:pharmacy_app/screens/pharmacie_form/pharmacie_form.dart';
 import 'package:pharmacy_app/screens/register/register.dart';
 import 'package:pharmacy_app/screens/rendez_vous/rendez_vous.dart';
 import 'package:pharmacy_app/screens/rendez_vous_details/rendez_vous_details.dart';
 import 'package:pharmacy_app/screens/start/start.dart';
+import 'package:pharmacy_app/screens/stocks/stock.dart';
 
 class AppPages {
   
@@ -74,7 +76,6 @@ class AppPages {
       page: () => const OnboardingScreen(),
       binding: OnboardingScreenBinding(),
     ),
-
     GetPage(
       name: AppRoutes.DASHBORD,
       page: () => const DashbordScreen(),
@@ -85,11 +86,20 @@ class AppPages {
       page: () => const RendezVousScreen(),
       binding: RendezVousScreenBinding(),
     ),
-
     GetPage(
       name: AppRoutes.RENDEZVOUSDETAILS,
       page: () => const RendezVousScreenDetails(),
       binding: RendezVousScreenDetailsBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.STOCK,
+      page: () => const StockScreen(),
+      binding: StockBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.MOUVEMENT_PRODUIT,
+      page: () => const MouvementMedicamentScreen(),
+      binding: MouvementMedicamentBinding(),
     ),
   ]; 
 }

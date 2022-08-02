@@ -25,4 +25,22 @@ class MedicamentServiceImpl implements MedicamentService {
       }
     });
   }
+
+  @override
+  Future getMedicamentsById(
+      {String? idMedicament,
+      Function(dynamic data)? onSuccess,
+      Function(dynamic date)? onError}) async {
+    ApiRequest(
+      url: "${Constants.API_URL}/medicament/$idMedicament",
+      data: {},
+      token: await _localAuth.getToken(),
+    ).get(onSuccess: (data) {
+      onSuccess!(Medicament.fromMap(data['results']));
+    }, onError: (error) {
+      if (error != null) {
+        onError!(error);
+      }
+    });
+  }
 }

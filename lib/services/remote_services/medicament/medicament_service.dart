@@ -5,4 +5,10 @@ abstract class MedicamentService {
     Function(dynamic data)? onSuccess,
     Function(dynamic date)? onError,
   });
+
+  Future getMedicamentsById({
+    String? idMedicament,
+    Function(dynamic data)? onSuccess,
+    Function(dynamic date)? onError,
+  });
 }

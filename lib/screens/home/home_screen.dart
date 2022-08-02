@@ -9,7 +9,7 @@ import 'package:pharmacy_app/core/app_sizes.dart';
 import 'package:pharmacy_app/router/app_router.dart';
 import 'package:pharmacy_app/screens/home/components/category_item.dart';
 import 'package:pharmacy_app/screens/home/components/custom_action_dialog.dart';
-import 'package:pharmacy_app/screens/home/components/medicament_card.dart';
+import 'package:pharmacy_app/components/medicament_card.dart';
 import 'package:pharmacy_app/screens/home/components/search_custom_button.dart';
 import 'package:pharmacy_app/screens/home/home.dart';
 
@@ -106,7 +106,7 @@ class HomeScreen extends GetView<HomeScreenController> {
                         controller.medicamentsList.isEmpty
                     ? const Expanded(
                         child: Center(
-                          child: CircularProgressIndicator(color: kOrangeColor),
+                          child: CircularProgressIndicator(color: kTextColor),
                         ),
                       )
                     : Expanded(
@@ -166,17 +166,10 @@ class HomeScreen extends GetView<HomeScreenController> {
     return AppBar(
       elevation: 0,
       backgroundColor: kTextColor2,
-      leading: const Padding(
-        padding: EdgeInsets.only(left: kDefaultPadding),
+      leading: Padding(
+        padding: const EdgeInsets.only(left: kDefaultPadding),
         child: Center(
-          child: Text(
-            "OC",
-            style: TextStyle(
-              color: kWhiteColor,
-              fontSize: 26,
-              fontWeight: FontWeight.w900,
-            ),
-          ),
+          child: Image.asset("assets/images/logo.png"),
         ),
       ),
       actions: [

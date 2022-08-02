@@ -9,9 +9,7 @@ void main() {
 }
 
 class App extends StatelessWidget {
-
   const App({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
@@ -23,7 +21,7 @@ class App extends StatelessWidget {
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       getPages: AppPages.pages,
-      initialRoute: AppRoutes.ONBOARDING,
+      initialRoute: AppRoutes.MOUVEMENT_PRODUIT,
     );
   }
 }

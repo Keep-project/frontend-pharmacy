@@ -150,12 +150,9 @@ class MapViewScreenController extends GetxController{
         newCameraPosition!.target.latitude,
         newCameraPosition!.target.longitude);
 
-    var place = {
-      'lat': newCameraPosition!.target.latitude,
-      'lon': newCameraPosition!.target.longitude
-    };
-    //positions.add(LatLng(newCameraPosition!.target.latitude, newCameraPosition!.target.longitude));
-    localisationInformations = placemarks.first;
+      //positions.add(LatLng(newCameraPosition!.target.latitude, newCameraPosition!.target.longitude));
+      localisationInformations = placemarks.first;
+    
     update();
   }
 

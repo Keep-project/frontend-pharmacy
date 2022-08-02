@@ -15,7 +15,7 @@ class MedicamentCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: (){Get.toNamed(AppRoutes.DETAILS);},
+      onTap: (){Get.toNamed(AppRoutes.DETAILS, arguments: medicament.id.toString());},
       child: Container(
         margin:
             const EdgeInsets.only(bottom: kDefaultMargin * 1.5),
@@ -39,20 +39,23 @@ class MedicamentCard extends StatelessWidget {
             children: [
               Stack(
                 children: [
-                  Container(
-                      height: 150,
-                      decoration: BoxDecoration(
-                          color: kGreyColor,
-                          borderRadius: const BorderRadius.only(
-                            topLeft: Radius.circular(7),
-                            topRight: Radius.circular(7),
-                          ),
-                          image: DecorationImage(
-                            fit: BoxFit.cover,
-                            image: NetworkImage(medicament.photo!),
+                  Hero(
+                    tag: medicament.id.toString(),
+                    child: Container(
+                        height: 150,
+                        decoration: BoxDecoration(
+                            color: kGreyColor,
+                            borderRadius: const BorderRadius.only(
+                              topLeft: Radius.circular(7),
+                              topRight: Radius.circular(7),
+                            ),
+                            image: DecorationImage(
+                              fit: BoxFit.cover,
+                              image: NetworkImage(medicament.photo!),
+                            )
                           )
-                        )
-                      ),
+                        ),
+                  ),
                   Positioned(
                     top: 0,
                     right: 0,

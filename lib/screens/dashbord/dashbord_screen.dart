@@ -10,7 +10,7 @@ import 'package:pharmacy_app/core/app_colors.dart';
 import 'package:pharmacy_app/core/app_sizes.dart';
 import 'package:pharmacy_app/screens/dashbord/components/pie_data.dart';
 import 'package:pharmacy_app/screens/dashbord/dashbord_controller.dart';
-import 'package:pharmacy_app/screens/home/components/medicament_card.dart';
+import 'package:pharmacy_app/components/medicament_card.dart';
 
 
 class DashbordScreen extends GetView<DashbordScreenController> {
