@@ -21,7 +21,7 @@ class App extends StatelessWidget {
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       getPages: AppPages.pages,
-      initialRoute: AppRoutes.MOUVEMENT_PRODUIT,
+      initialRoute: AppRoutes.DETAIL_INVENTAIRES,
     );
   }
 }

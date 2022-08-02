@@ -78,6 +78,8 @@ class MouvementMedicamentScreen extends GetView<MouvementMedicamentController> {
                       ],
                     ),
                     body: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const SizedBox(height: kDefaultPadding / 2),
                         Text(
@@ -156,6 +158,8 @@ class MouvementMedicamentScreen extends GetView<MouvementMedicamentController> {
                       ],
                     ),
                     body: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const SizedBox(height: kDefaultPadding / 2),
                         Text(
@@ -202,11 +206,11 @@ class MouvementMedicamentScreen extends GetView<MouvementMedicamentController> {
                     ),
                   ),
                   const SizedBox(height: kDefaultPadding / 2),
-                  CardContainer(
+                  ...List.generate(1, (index) => CardContainer(
                     header: Row(
                       children: [
                         Text(
-                          "Entrepôt 12",
+                          "Entrepôt 12$index",
                           style: TextStyle(
                             color: kDarkColor.withOpacity(0.9),
                             fontSize: 16,
@@ -234,6 +238,8 @@ class MouvementMedicamentScreen extends GetView<MouvementMedicamentController> {
                       ],
                     ),
                     body: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const SizedBox(height: kDefaultPadding / 2),
                         Text(
@@ -278,7 +284,7 @@ class MouvementMedicamentScreen extends GetView<MouvementMedicamentController> {
                         const SizedBox(height: kDefaultPadding / 2),
                       ],
                     ),
-                  ),
+                  ),)
                 ],
               ),
             ),

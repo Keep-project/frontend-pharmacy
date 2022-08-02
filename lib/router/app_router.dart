@@ -19,4 +19,9 @@ class AppRoutes {
   static const String STARTPAGE = "/start";
   static const String STOCK = "/stock";
   static const String MOUVEMENT_PRODUIT = "/mouvement_produit";
+  static const String MOUVEMENT_STOCK = "/mouvement_stock";
+  static const String DETAIL_ENTREPOT = "/detail_entrepot";
+  static const String ENTREPOT = "/entrepot";
+  static const String INVENTAIRES = "/inventaires";
+  static const String DETAIL_INVENTAIRES = "/detail_inventaires";
 }
