@@ -49,7 +49,7 @@ class MedicamentFormScreen extends GetView<MedicamentFormController> {
                   ),
                   const SizedBox(height: kDefaultPadding * 2),
                   Text(
-                    "Bien décrire votre médicament aide les clients à comprendre facilement ce qu'il soigne comme maladie",
+                    "Bien décrire votre médicament aide les clients à comprendre facilement ce qu'il soigne comme maladie.",
                     textAlign: TextAlign.left,
                     style: TextStyle(
                       color: kDarkColor.withOpacity(0.6),
