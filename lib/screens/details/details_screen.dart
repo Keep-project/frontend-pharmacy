@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:pharmacy_app/components/card_container.dart';
+import 'package:pharmacy_app/components/custom_dropdown.dart';
+import 'package:pharmacy_app/components/custom_text_field2.dart';
 import 'package:pharmacy_app/components/title_text.dart';
 import 'package:pharmacy_app/core/app_colors.dart';
 import 'package:pharmacy_app/core/app_sizes.dart';
@@ -380,7 +382,28 @@ class DetailScreen extends GetView<DetailScreenController> {
                                           children: [
                                             CustomButton(
                                               title: "Modifier les prix",
-                                              onTap: () {},
+                                              onTap: () {
+                                                showModalBottomSheet(
+                                                    context: context,
+                                                    isScrollControlled: true,
+                                                    clipBehavior:
+                                                        Clip.antiAlias,
+                                                    shape:
+                                                        const RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .only(
+                                                      topRight:
+                                                          Radius.circular(20),
+                                                      topLeft:
+                                                          Radius.circular(20),
+                                                    )),
+                                                    builder: (context) {
+                                                      return ChangePrice(
+                                                          controller:
+                                                              controller);
+                                                    });
+                                              },
                                             ),
                                           ],
                                         ),
@@ -630,14 +653,56 @@ class DetailScreen extends GetView<DetailScreenController> {
                                           children: [
                                             CustomButton(
                                               title: "Transférer le stock",
-                                              onTap: () {},
+                                              onTap: () {
+                                                showModalBottomSheet(
+                                                    context: context,
+                                                    isScrollControlled: true,
+                                                    clipBehavior:
+                                                        Clip.antiAlias,
+                                                    shape:
+                                                        const RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .only(
+                                                      topRight:
+                                                          Radius.circular(20),
+                                                      topLeft:
+                                                          Radius.circular(20),
+                                                    )),
+                                                    builder: (context) {
+                                                      return TransfertStock(
+                                                          controller:
+                                                              controller);
+                                                    });
+                                              },
                                             ),
                                             const SizedBox(
                                               width: 10,
                                             ),
                                             CustomButton(
                                               title: "Corriger le stock",
-                                              onTap: () {},
+                                              onTap: () {
+                                                showModalBottomSheet(
+                                                    context: context,
+                                                    isScrollControlled: true,
+                                                    clipBehavior:
+                                                        Clip.antiAlias,
+                                                    shape:
+                                                        const RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .only(
+                                                      topRight:
+                                                          Radius.circular(20),
+                                                      topLeft:
+                                                          Radius.circular(20),
+                                                    )),
+                                                    builder: (context) {
+                                                      return CorrigerStock(
+                                                          controller:
+                                                              controller);
+                                                    });
+                                              },
                                             ),
                                           ],
                                         ),
@@ -671,19 +736,26 @@ class DetailScreen extends GetView<DetailScreenController> {
                                             children: [
                                               Expanded(
                                                 child: Column(
-                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
                                                   children: [
-                                                    Text("Total de pièces",
+                                                    Text(
+                                                      "Total de pièces",
                                                       style: TextStyle(
-                                                        color: kDarkColor.withOpacity(0.7),
-                                                        fontWeight: FontWeight.w400,
+                                                        color: kDarkColor
+                                                            .withOpacity(0.7),
+                                                        fontWeight:
+                                                            FontWeight.w400,
                                                         fontSize: 14,
                                                       ),
                                                     ),
-                                                    Text("2",
+                                                    Text(
+                                                      "2",
                                                       style: TextStyle(
-                                                        color: kOrangeColor.withOpacity(0.7),
-                                                        fontWeight: FontWeight.w600,
+                                                        color: kOrangeColor
+                                                            .withOpacity(0.7),
+                                                        fontWeight:
+                                                            FontWeight.w600,
                                                         fontSize: 16,
                                                       ),
                                                     ),
@@ -692,19 +764,26 @@ class DetailScreen extends GetView<DetailScreenController> {
                                               ),
                                               Expanded(
                                                 child: Column(
-                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
                                                   children: [
-                                                    Text("Montant total à la vente",
+                                                    Text(
+                                                      "Montant total à la vente",
                                                       style: TextStyle(
-                                                        color: kDarkColor.withOpacity(0.7),
-                                                        fontWeight: FontWeight.w400,
+                                                        color: kDarkColor
+                                                            .withOpacity(0.7),
+                                                        fontWeight:
+                                                            FontWeight.w400,
                                                         fontSize: 14,
                                                       ),
                                                     ),
-                                                    Text("97000 F",
+                                                    Text(
+                                                      "97000 F",
                                                       style: TextStyle(
-                                                        color: kOrangeColor.withOpacity(0.7),
-                                                        fontWeight: FontWeight.w600,
+                                                        color: kOrangeColor
+                                                            .withOpacity(0.7),
+                                                        fontWeight:
+                                                            FontWeight.w600,
                                                         fontSize: 16,
                                                       ),
                                                     ),
@@ -852,7 +931,8 @@ class DetailScreen extends GetView<DetailScreenController> {
                                             Text(
                                               "Objets réferents: ",
                                               style: TextStyle(
-                                                color: kDarkColor.withOpacity(0.9),
+                                                color:
+                                                    kDarkColor.withOpacity(0.9),
                                                 fontSize: 16,
                                                 fontWeight: FontWeight.w600,
                                               ),
@@ -869,7 +949,6 @@ class DetailScreen extends GetView<DetailScreenController> {
                                         ),
                                         const SizedBox(
                                             height: kDefaultPadding / 2),
-                                       
                                         const SizedBox(height: 16),
                                         Container(
                                           padding: const EdgeInsets.all(16),
@@ -883,19 +962,26 @@ class DetailScreen extends GetView<DetailScreenController> {
                                             children: [
                                               Expanded(
                                                 child: Column(
-                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
                                                   children: [
-                                                    Text("Nbre d'objets référents",
+                                                    Text(
+                                                      "Nbre d'objets référents",
                                                       style: TextStyle(
-                                                        color: kDarkColor.withOpacity(0.7),
-                                                        fontWeight: FontWeight.w400,
+                                                        color: kDarkColor
+                                                            .withOpacity(0.7),
+                                                        fontWeight:
+                                                            FontWeight.w400,
                                                         fontSize: 14,
                                                       ),
                                                     ),
-                                                    Text("2",
+                                                    Text(
+                                                      "2",
                                                       style: TextStyle(
-                                                        color: kOrangeColor.withOpacity(0.7),
-                                                        fontWeight: FontWeight.w600,
+                                                        color: kOrangeColor
+                                                            .withOpacity(0.7),
+                                                        fontWeight:
+                                                            FontWeight.w600,
                                                         fontSize: 16,
                                                       ),
                                                     ),
@@ -904,19 +990,26 @@ class DetailScreen extends GetView<DetailScreenController> {
                                               ),
                                               Expanded(
                                                 child: Column(
-                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
                                                   children: [
-                                                    Text("Quantité totale",
+                                                    Text(
+                                                      "Quantité totale",
                                                       style: TextStyle(
-                                                        color: kDarkColor.withOpacity(0.7),
-                                                        fontWeight: FontWeight.w400,
+                                                        color: kDarkColor
+                                                            .withOpacity(0.7),
+                                                        fontWeight:
+                                                            FontWeight.w400,
                                                         fontSize: 14,
                                                       ),
                                                     ),
-                                                    Text("5",
+                                                    Text(
+                                                      "5",
                                                       style: TextStyle(
-                                                        color: kOrangeColor.withOpacity(0.7),
-                                                        fontWeight: FontWeight.w600,
+                                                        color: kOrangeColor
+                                                            .withOpacity(0.7),
+                                                        fontWeight:
+                                                            FontWeight.w600,
                                                         fontSize: 16,
                                                       ),
                                                     ),
@@ -959,8 +1052,7 @@ class DetailScreen extends GetView<DetailScreenController> {
                                                 color: kOrangeColor,
                                               ),
                                               MyRow(
-                                                title:
-                                                    "Date facturation",
+                                                title: "Date facturation",
                                                 value: "10/02/2001",
                                               ),
                                               MyRow(
@@ -1012,8 +1104,7 @@ class DetailScreen extends GetView<DetailScreenController> {
                                                 color: kOrangeColor,
                                               ),
                                               MyRow(
-                                                title:
-                                                    "Date facturation",
+                                                title: "Date facturation",
                                                 value: "10/02/2001",
                                               ),
                                               MyRow(
@@ -1048,7 +1139,338 @@ class DetailScreen extends GetView<DetailScreenController> {
   }
 }
 
+class TransfertStock extends StatelessWidget {
+  final dynamic controller;
+  const TransfertStock({
+    Key? key,
+    required this.controller,
+  }) : super(key: key);
 
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      //height: 230,
+      height: Get.height * 0.73,
+      width: double.infinity,
+      padding: const EdgeInsets.all(20),
+      decoration: const BoxDecoration(
+        color: Colors.white,
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              const TitleText(
+                title: "Transférer un stock",
+              ),
+              const Spacer(),
+              InkWell(
+                  onTap: () {
+                    Get.back();
+                  },
+                  child: Icon(Icons.close,
+                      color: kDarkColor.withOpacity(0.3), size: 26)),
+            ],
+          ),
+          const Divider(
+            thickness: 1.2,
+          ),
+          const SizedBox(height: kDefaultPadding - 4),
+          Obx(
+            () => CustomDropDown(
+              helpText: "Entrepôt source",
+              controller: controller,
+              liste: controller.entrepots,
+              selectedItem: controller.selectedEntrepotSource.value,
+              onChanged: (data) {
+                controller.onChangeEntrepotSource(data);
+              },
+            ),
+          ),
+          Obx(
+            () => CustomDropDown(
+              helpText: "Entrepôt destination",
+              controller: controller,
+              liste: controller.entrepots,
+              selectedItem: controller.selectedEntrepotDestination.value,
+              onChanged: (data) {
+                controller.onChangeEntrepotDestination(data);
+              },
+            ),
+          ),
+          const SizedBox(height: 10),
+          CustomTextField2(
+            onChanged: (string) {},
+            title: "Nombre de pièces",
+            hintText: "Ex: 200",
+            textInputType: TextInputType.number,
+          ),
+          const SizedBox(height: 10),
+          CustomTextField2(
+            onChanged: (string) {},
+            title: "Libellé du mouvement",
+            hintText: "Transfert du stock du produit 1 dans un autre entrepôt",
+            maxLines: 3,
+          ),
+          const SizedBox(height: kDefaultPadding / 2),
+          Row(
+            children: [
+              TextButton(
+                onPressed: () {
+                  Get.back();
+                },
+                child: Text(
+                  "Annuler",
+                  style: TextStyle(
+                    color: kTextColor2.withOpacity(0.5),
+                  ),
+                ),
+              ),
+              const Spacer(),
+              CustomButton(
+                title: "Enregistrer",
+                onTap: () {},
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class CorrigerStock extends StatelessWidget {
+  final dynamic controller;
+  const CorrigerStock({
+    Key? key,
+    required this.controller,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      //height: 230,
+      height: Get.height * 0.73,
+      width: double.infinity,
+      padding: const EdgeInsets.all(20),
+      decoration: const BoxDecoration(
+        color: Colors.white,
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              const TitleText(
+                title: "Corriger le stock",
+              ),
+              const Spacer(),
+              InkWell(
+                  onTap: () {
+                    Get.back();
+                  },
+                  child: Icon(Icons.close,
+                      color: kDarkColor.withOpacity(0.3), size: 26)),
+            ],
+          ),
+          const Divider(
+            thickness: 1.2,
+          ),
+          const SizedBox(height: kDefaultPadding /2),
+          Obx(
+            () => CustomDropDown(
+              helpText: "Entrepôt",
+              controller: controller,
+              liste: controller.entrepots,
+              selectedItem: controller.selectedEntrepotDestination.value,
+              onChanged: (data) {
+                controller.onChangeEntrepotDestination(data);
+              },
+            ),
+          ),
+          const SizedBox(height: kDefaultPadding / 2),
+          Row(
+            children: [
+              Expanded(
+                child: CustomTextField2(
+                  onChanged: (string) {},
+                  title: "Nombre de pièces",
+                  hintText: "Ex: 200",
+                  textInputType: TextInputType.number,
+                ),
+              ),
+              const SizedBox(
+                width: kDefaultPadding,
+              ),
+              Obx(
+                () => Expanded(
+                  child: CustomDropDown(
+                    helpText: " ",
+                    controller: controller,
+                    liste: controller.actions,
+                    selectedItem: controller.selectedAction.value,
+                    onChanged: (data) {
+                      controller.onChangeAction(data);
+                    },
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 8),
+          CustomTextField2(
+            onChanged: (string) {},
+            title: "Prix unitaire de vente en fcfa",
+            hintText: "Ex: 200",
+            textInputType: TextInputType.number,
+          ),
+          const SizedBox(height: 8),
+          CustomTextField2(
+            onChanged: (string) {},
+            title: "Libellé du mouvement",
+            hintText: "Correction du stock du produit: Paracétamol 200mg",
+            maxLines: 3,
+          ),
+          const SizedBox(height: kDefaultPadding/2),
+          Row(
+            children: [
+              TextButton(
+                onPressed: () {
+                  Get.back();
+                },
+                child: Text(
+                  "Annuler",
+                  style: TextStyle(
+                    color: kTextColor2.withOpacity(0.5),
+                  ),
+                ),
+              ),
+              const Spacer(),
+              CustomButton(
+                title: "Enregistrer",
+                onTap: () {},
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class ChangePrice extends StatelessWidget {
+  final dynamic controller;
+  const ChangePrice({
+    Key? key,
+    required this.controller,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      //height: 230,
+      height: Get.height * 0.64,
+      width: double.infinity,
+      padding: const EdgeInsets.all(20),
+      decoration: const BoxDecoration(
+        color: Colors.white,
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              const TitleText(
+                title: "Modifier les prix",
+              ),
+              const Spacer(),
+              InkWell(
+                  onTap: () {
+                    Get.back();
+                  },
+                  child: Icon(Icons.close,
+                      color: kDarkColor.withOpacity(0.3), size: 26)),
+            ],
+          ),
+          const Divider(
+            thickness: 1.2,
+          ),
+          const SizedBox(height: kDefaultPadding - 4),
+          Row(
+            children: [
+              Obx(
+                () => Expanded(
+                  child: CustomDropDown(
+                    helpText: "Taux TVA",
+                    controller: controller,
+                    liste: controller.tvas,
+                    selectedItem: controller.selectedTva.value,
+                    onChanged: (data) {
+                      controller.onChangeTva(data);
+                    },
+                  ),
+                ),
+              ),
+              const SizedBox(
+                width: kDefaultPadding,
+              ),
+              Obx(
+                () => Expanded(
+                  child: CustomDropDown(
+                    helpText: "Base de prix",
+                    controller: controller,
+                    liste: controller.baseprix,
+                    selectedItem: controller.selectedBasePrix.value,
+                    onChanged: (data) {
+                      controller.onChangeBasePrix(data);
+                    },
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 10),
+          CustomTextField2(
+            onChanged: (string) {},
+            title: "Prix de vente",
+            hintText: "Ex: 200",
+          ),
+          const SizedBox(height: 10),
+          CustomTextField2(
+            onChanged: (string) {},
+            title: "Prix de vente min.",
+            hintText: "Ex: 200",
+          ),
+          const SizedBox(height: kDefaultPadding),
+          Row(
+            children: [
+              TextButton(
+                onPressed: () {
+                  Get.back();
+                },
+                child: Text(
+                  "Annuler",
+                  style: TextStyle(
+                    color: kTextColor2.withOpacity(0.5),
+                  ),
+                ),
+              ),
+              const Spacer(),
+              CustomButton(
+                title: "Enregistrer",
+                onTap: () {},
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
 
 class CustomButton extends StatelessWidget {
   final Function()? onTap;

@@ -21,11 +21,14 @@ class CustomTextField2 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      Text(
-        title!,
-        style: TextStyle(
-          color: kTextColor2.withOpacity(0.8),
-          fontWeight: FontWeight.w400,
+      Opacity(
+        opacity: 0.6,
+        child: Text(
+          title!,
+          style: const TextStyle(
+            fontSize: 16,
+            color: kDarkColor,
+          ),
         ),
       ),
       const SizedBox(height: 5),

@@ -6,6 +6,7 @@ import 'package:pharmacy_app/core/app_snackbar.dart';
 import 'package:pharmacy_app/core/app_state.dart';
 import 'package:pharmacy_app/models/request_data_models/register_model.dart';
 import 'package:pharmacy_app/router/app_router.dart';
+import 'package:pharmacy_app/screens/medicament_form/pages/pages.dart';
 import 'package:pharmacy_app/services/remote_services/authentication/authentication.dart';
 
 class MedicamentFormController extends GetxController{
@@ -16,7 +17,30 @@ final TextEditingController textEditingEmail = TextEditingController();
 final TextEditingController textEditingPassword = TextEditingController();
 LoadingStatus registerStatus = LoadingStatus.initial;
 
-bool obscureText = true;
+
+final PageController pageController = PageController();
+int step = 1;
+
+List<Map<String, dynamic>> categories = [
+    {"id": 1, "libelle": "Enfant"},
+    {"id": 2, "libelle": "Adolescent"},
+    {"id": 3, "libelle": "Adulte"},
+    {"id": 4, "libelle": "Tous"},
+];
+
+List<Map<String, dynamic>> tvas = [
+    {"id": 1, "libelle": "19.25%"},
+    {"id": 2, "libelle": "0%"},
+];
+
+List<Map<String, dynamic>> baseprix = [
+    {"id": 1, "libelle": "HT"},
+    {"id": 2, "libelle": "TTC"},
+];
+
+String selectedCategorie = "Enfant";
+String selectedTva = "19.25%";
+String selectedBasePrix = "HT";
 
   @override
   void dispose() {
@@ -25,6 +49,53 @@ bool obscureText = true;
     textEditingPassword.dispose();
     super.dispose();
   }
+
+  void onChangeCategorie(dynamic data) {
+    selectedCategorie = data;
+    update();
+  }
+
+  void onChangeTva(dynamic data) {
+    selectedTva = data;
+    update();
+  }
+
+  void onChangeBasePrix(dynamic data) {
+    selectedBasePrix = data;
+    update();
+  }
+
+
+  final List<Widget> pages = const <Widget>[
+    PageOne(),
+    PageTwo(),
+    PageThree()
+  ];
+
+  void jumpToStepTwo(BuildContext context) {
+    
+    pageController.nextPage(duration: const Duration(milliseconds: 300), curve: Curves.ease);
+    step = 2;
+    update();
+  }
+
+  void jumpToStepThree(BuildContext context) {
+    
+    pageController.nextPage(duration: const Duration(milliseconds: 300), curve: Curves.ease);
+    step = 3;
+    update();
+  }
+
+  void previousPage() {
+    pageController.previousPage(duration: const Duration(milliseconds: 300), curve: Curves.ease);
+    step -= 1;
+    update();
+  }
+
+
+
+
+
 
   Future register(BuildContext context) async {
     if (textEditingNom.text.trim().toString().length < 4 && textEditingPassword.text.trim().toString().length < 8){

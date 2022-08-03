@@ -89,7 +89,7 @@ class OnboardingScreen extends GetView<OnboardingScreenController> {
                                   controller.currentPageIndex ==
                                           controller.pages.length - 1
                                       ? "Commencer"
-                                      : "suivant",
+                                      : "Suivant",
                                   style: const TextStyle(
                                     color: kWhiteColor,
                                     fontWeight: FontWeight.w600,
