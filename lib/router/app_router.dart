@@ -24,4 +24,6 @@ class AppRoutes {
   static const String ENTREPOT = "/entrepot";
   static const String INVENTAIRES = "/inventaires";
   static const String DETAIL_INVENTAIRES = "/detail_inventaires";
+  static const String FACTURES = "/factures";
+  static const String DETAIL_FACTURES = "/detail_factures";
 }

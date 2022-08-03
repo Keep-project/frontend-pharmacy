@@ -4,9 +4,11 @@ import 'package:get/get.dart';
 import 'package:pharmacy_app/router/app_router.dart';
 import 'package:pharmacy_app/screens/dashbord/dashbord.dart';
 import 'package:pharmacy_app/screens/detail_entrepot/detail_entrepot.dart';
+import 'package:pharmacy_app/screens/detail_facture/detail_facture.dart';
 import 'package:pharmacy_app/screens/detail_inventaire/detail_inventaire.dart';
 import 'package:pharmacy_app/screens/details/details.dart';
 import 'package:pharmacy_app/screens/entrepot/entrepot.dart';
+import 'package:pharmacy_app/screens/factures/factures.dart';
 import 'package:pharmacy_app/screens/home/home.dart';
 import 'package:pharmacy_app/screens/inventaire/inventaire.dart';
 import 'package:pharmacy_app/screens/login/login.dart';
@@ -130,6 +132,16 @@ class AppPages {
       name: AppRoutes.DETAIL_INVENTAIRES,
       page: () => const DetailInventaireScreen(),
       binding: DetailInventaireBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.FACTURES,
+      page: () => const FactureScreen(),
+      binding: FactureBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.DETAIL_FACTURES,
+      page: () => const DetailFactureScreen(),
+      binding: DetailFactureBinding(),
     ),
   ]; 
 }

@@ -1,6 +1,6 @@
 
 
-// ignore_for_file: avoid_print, unused_local_variable
+// ignore_for_file: avoid_print, unused_local_variable, avoid_function_literals_in_foreach_calls
 
 import 'dart:async';
 

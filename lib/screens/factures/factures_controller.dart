@@ -4,7 +4,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class EntrepotController extends GetxController {
+class FactureController extends GetxController {
 
   TextEditingController searchController = TextEditingController();
 
