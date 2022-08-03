@@ -70,7 +70,7 @@ class AppPages {
      GetPage(
       name: AppRoutes.MEDICAMENTSFORM,
       page: () => const MedicamentFormScreen(),
-      binding: MedicamentFormScreenBinding(),
+      binding: MedicamentFormBinding(),
     ),
     GetPage(
       name: AppRoutes.PHARMACIEFORM,

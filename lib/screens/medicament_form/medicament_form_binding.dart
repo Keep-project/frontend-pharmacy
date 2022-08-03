@@ -1,11 +1,10 @@
-
 import 'package:get/get.dart';
-import 'package:pharmacy_app/screens/medicament_form/medicament_form_controller.dart';
+import 'package:pharmacy_app/screens/medicament_form/medicament_form.dart';
 
-class MedicamentFormScreenBinding extends Bindings{
+class  MedicamentFormBinding extends Bindings{
 
   @override
   void dependencies() {
-    Get.lazyPut<MedicamentFormScreenController>(() => MedicamentFormScreenController());
+    Get.lazyPut<MedicamentFormController>(() => MedicamentFormController());
   }
-} 
+}
