@@ -36,7 +36,7 @@ class MedicamentFormScreen extends GetView<MedicamentFormController> {
                       Get.back();
                     },
                     child: const Icon(CupertinoIcons.arrow_left,
-                        size: 36, color: kTextColor2),
+                        size: 26, color: kTextColor2),
                   ),
                   const Spacer(),
                   const Text(
