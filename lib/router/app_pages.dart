@@ -13,6 +13,7 @@ import 'package:pharmacy_app/screens/facture_form/facture_form.dart';
 import 'package:pharmacy_app/screens/factures/factures.dart';
 import 'package:pharmacy_app/screens/home/home.dart';
 import 'package:pharmacy_app/screens/inventaire/inventaire.dart';
+import 'package:pharmacy_app/screens/inventaire_form/inventaire_form.dart';
 import 'package:pharmacy_app/screens/login/login.dart';
 import 'package:pharmacy_app/screens/mapview/mapview.dart';
 import 'package:pharmacy_app/screens/medicament_form/medicament_form.dart';
@@ -154,6 +155,11 @@ class AppPages {
       name: AppRoutes.FACTURES_FORM,
       page: () => const FactureFormScreen(),
       binding: FactureFormBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.INVENTAIRES_FORM,
+      page: () => const InventaireFormScreen(),
+      binding: InventaireFormBinding(),
     ),
   ]; 
 }
