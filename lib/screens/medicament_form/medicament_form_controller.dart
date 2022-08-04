@@ -15,7 +15,7 @@ final RemoteAuthenticationService _authService = RemoteAuthenticationServiceImpl
 final TextEditingController textEditingNom = TextEditingController();
 final TextEditingController textEditingEmail = TextEditingController();
 final TextEditingController textEditingPassword = TextEditingController();
-LoadingStatus registerStatus = LoadingStatus.initial;
+LoadingStatus medicamentStatus = LoadingStatus.initial;
 
 
 final PageController pageController = PageController();
@@ -114,7 +114,7 @@ String selectedBasePrix = "HT";
       CustomSnacbar.showMessage(context, "Veuillez entrez une adresse mail correcte !");
       return;
     }
-    registerStatus = LoadingStatus.searching;
+    medicamentStatus = LoadingStatus.searching;
     update();
     await _authService.register(
       registerReqModel: RegisterRequestModel(
@@ -125,7 +125,7 @@ String selectedBasePrix = "HT";
       onRegisterSuccess: (data){
         CustomSnacbar.showMessage(context, "Compte créer avec succès !\nConnectez vous maintenant.");
         Get.offAndToNamed(AppRoutes.LOGIN);
-        registerStatus = LoadingStatus.completed;
+        medicamentStatus = LoadingStatus.completed;
         update();
       },
       onRegisterError: (error){
@@ -135,7 +135,7 @@ String selectedBasePrix = "HT";
             CustomSnacbar.showMessage(context, "${error.response!.data['message']}");
         }
         print("=================================");
-        registerStatus = LoadingStatus.failed;
+        medicamentStatus = LoadingStatus.failed;
         update();
       },
     );

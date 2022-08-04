@@ -22,8 +22,10 @@ class AppRoutes {
   static const String MOUVEMENT_STOCK = "/mouvement_stock";
   static const String DETAIL_ENTREPOT = "/detail_entrepot";
   static const String ENTREPOT = "/entrepot";
+  static const String ENTREPOT_FORM = "/entrepot_form";
   static const String INVENTAIRES = "/inventaires";
   static const String DETAIL_INVENTAIRES = "/detail_inventaires";
   static const String FACTURES = "/factures";
+  static const String FACTURES_FORM = "/factures_form";
   static const String DETAIL_FACTURES = "/detail_factures";
 }

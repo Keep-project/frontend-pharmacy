@@ -75,7 +75,7 @@ class MedicamentFormScreen extends GetView<MedicamentFormController> {
                         itemBuilder: (context, index) =>
                             controller.pages[index],
                       )),
-                  controller.registerStatus == LoadingStatus.searching
+                  controller.medicamentStatus == LoadingStatus.searching
                       ? Container(
                           height: 45,
                           width: double.infinity,

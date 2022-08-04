@@ -84,7 +84,7 @@ class PageTwo extends GetView<MedicamentFormController> {
                             ),
                           ),
                           const SizedBox(height: 5),
-                          IconButton(
+                          CustomIconButton(
                             title: "10/02/2010",
                             iconData: Icons.calendar_month,
                             onTap: (){},
@@ -110,7 +110,7 @@ class PageTwo extends GetView<MedicamentFormController> {
                             ),
                           ),
                           const SizedBox(height: 5),
-                          IconButton(
+                          CustomIconButton(
                             title: "10/02/2010",
                             iconData: Icons.camera_alt_outlined,
                             onTap: (){},
@@ -125,11 +125,11 @@ class PageTwo extends GetView<MedicamentFormController> {
   }
 }
 
-class IconButton extends StatelessWidget {
+class CustomIconButton extends StatelessWidget {
   final String title;
   final IconData iconData;
   final Function()? onTap;
-  const IconButton({
+  const CustomIconButton({
     Key? key, required this.title, required this.iconData, this.onTap,
   }) : super(key: key);
 
