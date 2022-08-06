@@ -78,32 +78,34 @@ class AppNavigationDrawer extends StatelessWidget {
                       DrawerMenuItem(
                         title: "Accueil",
                         iconData: Icons.home_outlined,
-                        onTap: () {Get.toNamed(AppRoutes.HOME);},
+                        onTap: () {
+                          Get.offAndToNamed(AppRoutes.HOME);
+                        },
                       ),
                       DrawerMenuItem(
                         title: "Dashbord",
                         iconData: Icons.dashboard_outlined,
-                        onTap: () {Get.toNamed(AppRoutes.DASHBORD);},
+                        onTap: () {Get.offAndToNamed(AppRoutes.DASHBORD);},
                       ),
                       DrawerMenuItem(
                         title: "Stocks",
                         iconData: CupertinoIcons.gift_alt_fill,
-                        onTap: () {Get.toNamed(AppRoutes.STOCK);},
+                        onTap: () {Get.offAndToNamed(AppRoutes.STOCK);},
                       ),
                       DrawerMenuItem(
                         title: "Factures",
                         iconData: Icons.dashboard_outlined,
-                        onTap: () {Get.toNamed(AppRoutes.FACTURES);},
+                        onTap: () {Get.offAndToNamed(AppRoutes.FACTURES);},
                       ),
                       DrawerMenuItem(
                         title: "Inventaire",
                         iconData: Icons.dashboard_outlined,
-                        onTap: () {Get.toNamed(AppRoutes.INVENTAIRES);},
+                        onTap: () {Get.offAndToNamed(AppRoutes.INVENTAIRES);},
                       ),
                       DrawerMenuItem(
                         title: "Entrepôt/Magasin",
                         iconData: Icons.warehouse_rounded,
-                        onTap: () {Get.toNamed(AppRoutes.ENTREPOT);},
+                        onTap: () {Get.offAndToNamed(AppRoutes.ENTREPOT);},
                       ),
                     ],
                   ),      
