@@ -79,7 +79,8 @@ class AppNavigationDrawer extends StatelessWidget {
                         title: "Accueil",
                         iconData: Icons.home_outlined,
                         onTap: () {
-                          Get.offAndToNamed(AppRoutes.HOME);
+                          Get.toNamed(AppRoutes.HOME);
+                          Get.back();
                         },
                       ),
                       DrawerMenuItem(

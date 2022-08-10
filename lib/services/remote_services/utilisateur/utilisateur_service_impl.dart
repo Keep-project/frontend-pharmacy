@@ -20,7 +20,7 @@ class UtilisateurServiceImpl implements UtilisateurService {
           token: await _localAuth.getToken(),
         ).get(
           onSuccess: (data){
-            onSuccess!(UserRequestModel.fromMap(data));
+            onSuccess!(UserResponseModel.fromMap(data));
           },
           onError: (error){
             if ( error != null){

@@ -4,18 +4,18 @@
 
 import 'dart:convert';
 
-class MedicamentRequestModel {
+class MedicamentResponseModel {
 
   final int? count;
   final dynamic next;
   final dynamic previous;
   final List<Medicament>? results;
 
-  MedicamentRequestModel({this.count, this.next, this.previous, this.results});
+  MedicamentResponseModel({this.count, this.next, this.previous, this.results});
 
-  factory MedicamentRequestModel.fromJson(String string) => MedicamentRequestModel.fromMap(json.decode(string));
+  factory MedicamentResponseModel.fromJson(String string) => MedicamentResponseModel.fromMap(json.decode(string));
 
-  factory MedicamentRequestModel.fromMap(Map<String, dynamic> json) => MedicamentRequestModel(
+  factory MedicamentResponseModel.fromMap(Map<String, dynamic> json) => MedicamentResponseModel(
     count: json['count'] ?? 0,
     next: json['next'],
     previous: json['previous'],
@@ -48,6 +48,7 @@ class Medicament {
   final int? user;
   final int? voix;
   final int? pharmacie;
+  final int? entrepot;
   final DateTime? created_at;
   final DateTime? updated_at;
 
@@ -66,6 +67,7 @@ class Medicament {
     this.user,
     this.voix,
     this.pharmacie,
+    this.entrepot,
     this.created_at,
     this.updated_at });
 
@@ -86,6 +88,7 @@ class Medicament {
       user: json["user"]?? 0,
       voix: json["voix"]?? 0,
       pharmacie: json["pharmacie"]?? 0,
+      entrepot: json["entrepot"]?? 0,
       created_at: json["created_at"] == null ? null : DateTime.parse(json['created_at']),
       updated_at: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"])
 
@@ -108,6 +111,7 @@ class Medicament {
       'user': user,
       'voix': voix,
       'pharmacie': pharmacie,
+      'entrepot': entrepot,
       'created_at': created_at!.toIso8601String(),
       'updated_at': updated_at!.toIso8601String()                                                                            
     };

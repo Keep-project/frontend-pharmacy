@@ -2,22 +2,22 @@
 
 import 'dart:convert';
 
-class PharmacieRequestModel {
+class PharmacieResponseModel {
   final int? status;
   final bool? success;
   final String? message;
   final List<Pharmacie>? results;
 
-  PharmacieRequestModel({
+  PharmacieResponseModel({
     this.status,
     this.success,
     this.message,
     this.results
   });
 
-  factory PharmacieRequestModel.fromJson(String string) => PharmacieRequestModel.fromMap(json.decode(string));
+  factory PharmacieResponseModel.fromJson(String string) => PharmacieResponseModel.fromMap(json.decode(string));
 
-  factory PharmacieRequestModel.fromMap(Map<String, dynamic> json) => PharmacieRequestModel(
+  factory PharmacieResponseModel.fromMap(Map<String, dynamic> json) => PharmacieResponseModel(
     status: json['status'] ?? 0,
     success: json['success'] ?? false,
     message: json['message'] ?? "",

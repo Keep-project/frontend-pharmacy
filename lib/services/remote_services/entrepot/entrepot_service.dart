@@ -1,25 +1,27 @@
-import 'package:pharmacy_app/models/request_data_models/pharmacie_model.dart';
 
-abstract class PharmacieService {
+
+import 'package:pharmacy_app/models/response_data_models/entrepot_model.dart';
+
+abstract class EntrepotService {
   Future<void> findAll({
     Function(dynamic data)? onSuccess,
     Function(dynamic error)? onError,
   });
   Future<void> findOne({
-    String? idPharmacie,
+    String? idEntrepot,
     Function(dynamic data)? onSuccess,
     Function(dynamic error)? onError,
   });
 
   Future<void> add({
-    PharmacieRequestModel? pharmacieModel,
+    EntrepotResponseModel? entrepotModel,
     Function(dynamic data)? onSuccess,
     Function(dynamic error)? onError,
   });
 
   Future<void> update({
-    String? idPharmacie,
-    PharmacieRequestModel? pharmacieModel,
+    String? idEntrepot,
+    EntrepotResponseModel? entrepotModel,
     Function(dynamic data)? onSuccess,
     Function(dynamic error)? onError,
   });

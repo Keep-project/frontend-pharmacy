@@ -1,15 +1,15 @@
 import 'dart:convert';
 
-class UserRequestModel {
+class UserResponseModel {
   final bool? success;
   final String? message;
   final User? results;
 
-  UserRequestModel({this.success, this.message, this.results});
+  UserResponseModel({this.success, this.message, this.results});
 
-  factory UserRequestModel.fromJson(String string) => UserRequestModel.fromMap(json.decode(string));
+  factory UserResponseModel.fromJson(String string) => UserResponseModel.fromMap(json.decode(string));
 
-  factory UserRequestModel.fromMap(Map<String, dynamic> json) => UserRequestModel(
+  factory UserResponseModel.fromMap(Map<String, dynamic> json) => UserResponseModel(
     success: json['success'] ?? false,
     message: json['message'] ?? '',
     results: json['results'] == null ? null : User.fromMap(json['results']),

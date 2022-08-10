@@ -1,5 +1,6 @@
 import 'package:pharmacy_app/core/api_library.dart';
 import 'package:pharmacy_app/core/constants.dart';
+import 'package:pharmacy_app/models/request_data_models/medicament_model.dart';
 import 'package:pharmacy_app/models/response_data_models/medicament_model.dart';
 import 'package:pharmacy_app/services/local_services/authentication/authentification.dart';
 import 'package:pharmacy_app/services/remote_services/medicament/medicament.dart';
@@ -18,7 +19,7 @@ class MedicamentServiceImpl implements MedicamentService {
       data: {},
       token: await _localAuth.getToken(),
     ).get(onSuccess: (data) {
-      onSuccess!(MedicamentRequestModel.fromMap(data));
+      onSuccess!(MedicamentResponseModel.fromMap(data));
     }, onError: (error) {
       if (error != null) {
         onError!(error);
@@ -37,6 +38,41 @@ class MedicamentServiceImpl implements MedicamentService {
       token: await _localAuth.getToken(),
     ).get(onSuccess: (data) {
       onSuccess!(Medicament.fromMap(data['results']));
+    }, onError: (error) {
+      if (error != null) {
+        onError!(error);
+      }
+    });
+  }
+
+  @override
+  Future<void> add(
+      {MedicamentRequestModel? medicamentModel,
+      Function(dynamic data)? onSuccess,
+      Function(dynamic error)? onError}) async {
+    ApiRequest(
+      url: "${Constants.API_URL}/medicament/",
+      data: medicamentModel!.toMap(),
+    ).post(onSuccess: (data) {
+      onSuccess!(data);
+    }, onError: (error) {
+      if (error != null) {
+        onError!(error);
+      }
+    });
+  }
+
+  @override
+  Future<void> update(
+      {String? idMedicament,
+      MedicamentRequestModel? medicamentModel,
+      Function(dynamic data)? onSuccess,
+      Function(dynamic error)? onError}) async {
+    ApiRequest(
+      url: "${Constants.API_URL}/pharmacie/$idMedicament",
+      data: medicamentModel!.toMap(),
+    ).put(onSuccess: (data) {
+      onSuccess!(data);
     }, onError: (error) {
       if (error != null) {
         onError!(error);
