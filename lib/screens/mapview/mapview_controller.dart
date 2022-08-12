@@ -56,7 +56,7 @@ class MapViewScreenController extends GetxController{
   void onInit() async {
     googlePlace = GooglePlace(apiKey);
     await getPolyPoints();
-    //await getCurrentLocation();
+    await getCurrentLocation();
     super.onInit();
   }
 
@@ -87,10 +87,10 @@ class MapViewScreenController extends GetxController{
 
     location.onLocationChanged.listen((newlocation)  => currentLocation = newlocation);
    
-    // kGooglePlex = CameraPosition(
-    //   target: LatLng(currentLocation!.latitude!, currentLocation!.longitude!), // Initialisation de la position sur Yaoundé
-    //   zoom: 10.4746,
-    // );
+    kGooglePlex = CameraPosition(
+      target: LatLng(currentLocation!.latitude!, currentLocation!.longitude!), // Initialisation de la position sur Yaoundé
+      zoom: 10.4746,
+    );
     update(); 
   }
 
@@ -150,8 +150,10 @@ class MapViewScreenController extends GetxController{
         newCameraPosition!.target.latitude,
         newCameraPosition!.target.longitude);
 
-      //positions.add(LatLng(newCameraPosition!.target.latitude, newCameraPosition!.target.longitude));
+      positions.add(LatLng(newCameraPosition!.target.latitude, newCameraPosition!.target.longitude));
       localisationInformations = placemarks.first;
+
+      print(positions);
     
     update();
   }

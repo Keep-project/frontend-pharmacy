@@ -49,16 +49,16 @@ class MapViewScreen extends GetView<MapViewScreenController> {
                   )
                 },
                 markers: {
-                  // ...List.generate(
-                  //     controller.positions.length,
-                  //     (index) => Marker(
-                  //           markerId: MarkerId("point-id-$index"),
-                  //           infoWindow: const InfoWindow(
-                  //               title: "Localisation de la pharmacie",
-                  //               snippet: "Une pharmacie de garde  24h/24"),
-                  //           icon: controller.mapMarker.value,
-                  //           position: controller.positions[index],
-                  //         )),
+                  ...List.generate(
+                      controller.positions.length,
+                      (index) => Marker(
+                            markerId: MarkerId("point-id-$index"),
+                            infoWindow: const InfoWindow(
+                                title: "Localisation de la pharmacie",
+                                snippet: "Une pharmacie de garde  24h/24"),
+                            icon: controller.mapMarker.value,
+                            position: controller.positions[index],
+                          )),
 
                   // Marker(
                   //   markerId: const MarkerId("point-id-0"),
@@ -215,7 +215,29 @@ class MapViewScreen extends GetView<MapViewScreenController> {
                                 );
                               })),
                     )
-                  : Container(),
+                  : Positioned(
+                    bottom: kDefaultMargin /2,
+                    left: 0,
+                    right: 0,
+                    child: Container(
+                      height: 150,
+                      child: PageView.builder(
+                        itemCount: 10,
+                        itemBuilder: (context, index) =>  Card(
+                          elevation: 10,
+                          clipBehavior: Clip.antiAlias,
+                          margin: const EdgeInsets.symmetric(horizontal: kDefaultMargin),
+                          shadowColor: kTextColor2,
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(kDefaultRadius*1.3)),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: index % 2 == 0 ? kWhiteColor : kTextColor2 ,
+                            ),
+                          ),
+                        ),
+                      ),
+                    )
+                   ),
             ],
           ),
         ),
