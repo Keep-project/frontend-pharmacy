@@ -48,9 +48,10 @@ class StartScreen extends GetView<StartScreenController> {
                               Text(
                                 "Bien spécifier votre besoin rend votre naviagtion fluide et facile",
                                 style: TextStyle(
-                                  color: kTextColor2.withOpacity(.8),
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w500,
+                                  color: kDarkColor.withOpacity(.8),
+                                  fontSize: 17,
+                                  height: 1.3,
+                                  fontWeight: FontWeight.w400,
                                 ),
                               ),
                             ],

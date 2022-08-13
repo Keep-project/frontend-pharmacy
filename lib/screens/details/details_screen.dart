@@ -322,34 +322,40 @@ class DetailScreen extends GetView<DetailScreenController> {
                                           ),
                                           const SizedBox(
                                               height: kDefaultMargin * 3),
-                                          const TitleText(
+                                          TitleText(
                                               title:
-                                                  "Vous trouverez Doliprane 200mg à:"),
+                                                  "Vous trouverez ${controller.medicament!.nom!.toString()} à:"),
                                           const SizedBox(
                                               height: kDefaultMargin * 1.5),
-                                          const PharmacyCard(
-                                            name: "Pharmacie de Medong",
-                                            phone: "Tel: +237 652 310 829",
-                                            stock: 45,
-                                            status: "Ouverte",
-                                          ),
-                                          const PharmacyCard(
-                                            name: "Pharmacie de TKC",
-                                            phone: "Tel: +237 652 310 829",
-                                            stock: 83,
-                                            status: "Fermée",
-                                          ),
-                                          const PharmacyCard(
-                                            name: "Pharmacie de Biyem-Assi",
-                                            phone: "Tel: +237 652 310 829",
-                                            stock: 72,
-                                            status: "Ouverte",
-                                          ),
-                                          const PharmacyCard(
-                                            name: "Pharmacie de Nlongkak",
-                                            phone: "Tel: +237 652 310 829",
-                                            stock: 31,
-                                            status: "Ouverte",
+                                          ...List.generate(
+                                            controller
+                                                .medicament!.pharmacies!.length,
+                                            (index) => PharmacyCard(
+                                              name: controller.medicament!
+                                                  .pharmacies![index].nom!
+                                                  .toString()
+                                                  .capitalize!,
+                                              phone:
+                                                  "Tel: ${controller.medicament!.pharmacies![index].phone!.toString()}",
+                                              stock: controller.medicament!
+                                                  .pharmacies![index].stock!,
+                                              status: (DateTime.now().hour >=
+                                                          controller
+                                                              .medicament!
+                                                              .pharmacies![
+                                                                  index]
+                                                              .ouverture!
+                                                              .hour) &&
+                                                      (DateTime.now().hour <=
+                                                          controller
+                                                              .medicament!
+                                                              .pharmacies![
+                                                                  index]
+                                                              .fermeture!
+                                                              .hour)
+                                                  ? "Ouverte"
+                                                  : 'Fermée',
+                                            ),
                                           ),
                                         ])
                                   : Container(),
@@ -367,13 +373,15 @@ class DetailScreen extends GetView<DetailScreenController> {
                                           value: "19.25%",
                                           onPressed: () {},
                                         ),
-                                        const MyRow(
+                                        MyRow(
                                           title: "Prix de vente",
-                                          value: "1700 F",
+                                          value:
+                                              "${controller.medicament!.prix} F",
                                         ),
-                                        const MyRow(
+                                        MyRow(
                                           title: "Prix de vente min.",
-                                          value: "1700 F",
+                                          value:
+                                              "${controller.medicament!.prix} F",
                                         ),
                                         const SizedBox(height: 8),
                                         Row(
@@ -589,20 +597,20 @@ class DetailScreen extends GetView<DetailScreenController> {
                                             height: kDefaultMargin * 3),
                                         MyRow(
                                           title: "Prix moyen pondéré (PMP)",
-                                          value: "1700 F",
+                                          value: "${controller.medicament!.prix} F",
                                           onPressed: () {},
                                         ),
-                                        const MyRow(
+                                        MyRow(
                                           title: "Limite stock pour alerte",
-                                          value: "20",
+                                          value: "${controller.medicament!.stockAlert}",
                                         ),
-                                        const MyRow(
+                                        MyRow(
                                           title: "Stock désiré optimal",
-                                          value: "120",
+                                          value: "${controller.medicament!.stockOptimal}",
                                         ),
-                                        const MyRow(
+                                        MyRow(
                                           title: "Stock physique",
-                                          value: "45",
+                                          value: "${controller.medicament!.stock}",
                                         ),
                                         const SizedBox(height: 8),
                                         Row(
@@ -749,8 +757,7 @@ class DetailScreen extends GetView<DetailScreenController> {
                                                         fontSize: 14,
                                                       ),
                                                     ),
-                                                    Text(
-                                                      "2",
+                                                    Text(controller.medicament!.stock.toString(),
                                                       style: TextStyle(
                                                         color: kOrangeColor
                                                             .withOpacity(0.7),
@@ -778,7 +785,7 @@ class DetailScreen extends GetView<DetailScreenController> {
                                                       ),
                                                     ),
                                                     Text(
-                                                      "97000 F",
+                                                      "${controller.medicament!.stock! * controller.medicament!.prix!} F",
                                                       style: TextStyle(
                                                         color: kOrangeColor
                                                             .withOpacity(0.7),
@@ -794,111 +801,62 @@ class DetailScreen extends GetView<DetailScreenController> {
                                           ),
                                         ),
                                         const SizedBox(height: 16),
-                                        CardContainer(
-                                          header: Row(
-                                            children: const [
-                                              Text(
-                                                "Entrepôt 01",
-                                                style: TextStyle(
-                                                  color: kDarkColor,
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.w600,
+                                        ...List.generate(controller.medicament!.entrepots!.length, (index) => 
+                                        Padding(
+                                          padding: const EdgeInsets.only(bottom: kDefaultPadding/1.5),
+                                          child: CardContainer(
+                                            header: Row(
+                                              children: [
+                                                Text(controller.medicament!.entrepots![index].nom!,
+                                                  style: const TextStyle(
+                                                    color: kDarkColor,
+                                                    fontSize: 16,
+                                                    fontWeight: FontWeight.w600,
+                                                  ),
                                                 ),
-                                              ),
-                                              Spacer(),
-                                              Text(
-                                                "ET001",
-                                                style: TextStyle(
-                                                  color: kDarkColor,
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.w600,
+                                                const Spacer(),
+                                                Text(
+                                                  "ENT${controller.medicament!.entrepots![index].id!.toString().padLeft(2, '0')}",
+                                                  style: const TextStyle(
+                                                    color: kDarkColor,
+                                                    fontSize: 16,
+                                                    fontWeight: FontWeight.w600,
+                                                  ),
                                                 ),
-                                              ),
-                                            ],
+                                              ],
+                                            ),
+                                            body: Column(
+                                              children: [
+                                                const SizedBox(
+                                                    height: kDefaultPadding / 2),
+                                                MyRow(
+                                                  title: "Nombre de pièce",
+                                                  value: controller.medicament!.stock!.toString().padLeft(2, '0'),
+                                                  color: kOrangeColor,
+                                                ),
+                                                MyRow(
+                                                  title:
+                                                      "Prix moyen pondéré (PMP)",
+                                                  value: "${controller.medicament!.prix!} F",
+                                                ),
+                                                MyRow(
+                                                  title: "Valorisation à l'achat",
+                                                  value: "${controller.medicament!.prix! * controller.medicament!.stock! } F",
+                                                ),
+                                                MyRow(
+                                                  title: "Prix de vente unitaire",
+                                                  value: "${controller.medicament!.prix!} F",
+                                                ),
+                                                MyRow(
+                                                  title: "Valeur à la vente",
+                                                 value: "${controller.medicament!.prix! * controller.medicament!.stock! } F",
+                                                  color: kOrangeColor,
+                                                ),
+                                              ],
+                                            ),
                                           ),
-                                          body: Column(
-                                            children: const [
-                                              SizedBox(
-                                                  height: kDefaultPadding / 2),
-                                              MyRow(
-                                                title: "Nombre de pièce",
-                                                value: "45",
-                                                color: kOrangeColor,
-                                              ),
-                                              MyRow(
-                                                title:
-                                                    "Prix moyen pondéré (PMP)",
-                                                value: "1700 F",
-                                              ),
-                                              MyRow(
-                                                title: "Valorisation à l'achat",
-                                                value: "76500 F",
-                                              ),
-                                              MyRow(
-                                                title: "Prix de vente unitaire",
-                                                value: "1800 F",
-                                              ),
-                                              MyRow(
-                                                title: "Valeur à la vente",
-                                                value: "81000 F",
-                                                color: kOrangeColor,
-                                              ),
-                                            ],
-                                          ),
-                                        ),
+                                        ),),
                                         const SizedBox(height: 16),
-                                        CardContainer(
-                                          header: Row(
-                                            children: const [
-                                              Text(
-                                                "Entrepôt 02",
-                                                style: TextStyle(
-                                                  color: kDarkColor,
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.w600,
-                                                ),
-                                              ),
-                                              Spacer(),
-                                              Text(
-                                                "ET002",
-                                                style: TextStyle(
-                                                  color: kDarkColor,
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.w600,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          body: Column(
-                                            children: const [
-                                              SizedBox(
-                                                  height: kDefaultPadding / 2),
-                                              MyRow(
-                                                title: "Nombre de pièce",
-                                                value: "15",
-                                                color: kOrangeColor,
-                                              ),
-                                              MyRow(
-                                                title:
-                                                    "Prix moyen pondéré (PMP)",
-                                                value: "1000 F",
-                                              ),
-                                              MyRow(
-                                                title: "Valorisation à l'achat",
-                                                value: "15000 F",
-                                              ),
-                                              MyRow(
-                                                title: "Prix de vente unitaire",
-                                                value: "1100 F",
-                                              ),
-                                              MyRow(
-                                                title: "Valeur à la vente",
-                                                value: "16500 F",
-                                                color: kOrangeColor,
-                                              ),
-                                            ],
-                                          ),
-                                        ),
                                       ],
                                     )
                                   : Container(),
@@ -909,21 +867,21 @@ class DetailScreen extends GetView<DetailScreenController> {
                                             height: kDefaultMargin * 3),
                                         MyRow(
                                           title: "Crée par",
-                                          value: "Super Admin",
+                                          value: controller.medicament!.createur!.username.toString().capitalize,
                                           onPressed: () {},
-                                        ),
-                                        const MyRow(
-                                          title: "Date de création",
-                                          value: "10/02/2008",
                                         ),
                                         MyRow(
-                                          title: "Modifié par",
-                                          value: "Super Admin",
+                                          title: "Date de création",
+                                          value: controller.medicament!.createdToString(),
+                                        ),
+                                        MyRow(
+                                          title: "Modifié par ${controller.medicament!.id}",
+                                          value: controller.medicament!.createur!.username.toString().capitalize,
                                           onPressed: () {},
                                         ),
-                                        const MyRow(
+                                        MyRow(
                                           title: "Date dernière modification",
-                                          value: "10/04/2015",
+                                          value: controller.medicament!.updatedToString(),
                                         ),
                                         const SizedBox(height: 20),
                                         Row(
@@ -975,8 +933,7 @@ class DetailScreen extends GetView<DetailScreenController> {
                                                         fontSize: 14,
                                                       ),
                                                     ),
-                                                    Text(
-                                                      "2",
+                                                    Text(controller.factures.length.toString(),
                                                       style: TextStyle(
                                                         color: kOrangeColor
                                                             .withOpacity(0.7),
@@ -1003,8 +960,7 @@ class DetailScreen extends GetView<DetailScreenController> {
                                                         fontSize: 14,
                                                       ),
                                                     ),
-                                                    Text(
-                                                      "5",
+                                                    Text(controller.quantiteTotalFacture.toString(),
                                                       style: TextStyle(
                                                         color: kOrangeColor
                                                             .withOpacity(0.7),
@@ -1020,109 +976,63 @@ class DetailScreen extends GetView<DetailScreenController> {
                                           ),
                                         ),
                                         const SizedBox(height: 16),
-                                        CardContainer(
-                                          header: Row(
-                                            children: const [
-                                              Text(
-                                                "Référence",
-                                                style: TextStyle(
-                                                  color: kDarkColor,
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.w600,
+                                        ...List.generate(controller.factures.length, (index) => Padding(
+                                          padding: const EdgeInsets.only(bottom: kDefaultPadding/1.5),
+                                          child: CardContainer(
+                                            header: Row(
+                                              children: [
+                                                const Text(
+                                                  "Référence",
+                                                  style: TextStyle(
+                                                    color: kDarkColor,
+                                                    fontSize: 16,
+                                                    fontWeight: FontWeight.w600,
+                                                  ),
                                                 ),
-                                              ),
-                                              Spacer(),
-                                              Text(
-                                                "FAC001",
-                                                style: TextStyle(
-                                                  color: kDarkColor,
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.w600,
+                                                const Spacer(),
+                                                Text(
+                                                  "FAC${controller.factures[index].id!.toString().padLeft(2, '0')}",
+                                                  style: const TextStyle(
+                                                    color: kDarkColor,
+                                                    fontSize: 16,
+                                                    fontWeight: FontWeight.w600,
+                                                  ),
                                                 ),
-                                              ),
-                                            ],
+                                              ],
+                                            ),
+                                            body: Column(
+                                              children: [
+                                                const SizedBox(
+                                                    height: kDefaultPadding / 2),
+                                                MyRow(
+                                                  title: "Code utilisateur",
+                                                  value: controller.factures[index].utilisateur!.toString().padLeft(2, '0'),
+                                                  color: kOrangeColor,
+                                                ),
+                                                MyRow(
+                                                  title: "Date facturation",
+                                                  value: controller.factures[index].createdToString(),
+                                                ),
+                                                MyRow(
+                                                  title: "Quantité",
+                                                  value: controller.factures[index].quantiteTotal.toString().padLeft(2, '0'),
+                                                ),
+                                                MyRow(
+                                                  title: "Montant HT",
+                                                  value: "${controller.factures[index].montantTotal!} F",
+                                                ),
+                                                const MyRow(
+                                                  title: "Etat facture",
+                                                  value: "Payée",
+                                                  color: kOrangeColor,
+                                                ),
+                                              ],
+                                            ),
                                           ),
-                                          body: Column(
-                                            children: const [
-                                              SizedBox(
-                                                  height: kDefaultPadding / 2),
-                                              MyRow(
-                                                title: "Code utilisateur",
-                                                value: "45",
-                                                color: kOrangeColor,
-                                              ),
-                                              MyRow(
-                                                title: "Date facturation",
-                                                value: "10/02/2001",
-                                              ),
-                                              MyRow(
-                                                title: "Quantité",
-                                                value: "2",
-                                              ),
-                                              MyRow(
-                                                title: "Montant HT",
-                                                value: "1800 F",
-                                              ),
-                                              MyRow(
-                                                title: "Etat facture",
-                                                value: "Brouillon",
-                                                color: kOrangeColor,
-                                              ),
-                                            ],
-                                          ),
-                                        ),
+                                        ),),
+                                        
                                         const SizedBox(height: 16),
-                                        CardContainer(
-                                          header: Row(
-                                            children: const [
-                                              Text(
-                                                "Référence",
-                                                style: TextStyle(
-                                                  color: kDarkColor,
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.w600,
-                                                ),
-                                              ),
-                                              Spacer(),
-                                              Text(
-                                                "FAC050",
-                                                style: TextStyle(
-                                                  color: kDarkColor,
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.w600,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          body: Column(
-                                            children: const [
-                                              SizedBox(
-                                                  height: kDefaultPadding / 2),
-                                              MyRow(
-                                                title: "Code utilisateur",
-                                                value: "45",
-                                                color: kOrangeColor,
-                                              ),
-                                              MyRow(
-                                                title: "Date facturation",
-                                                value: "10/02/2001",
-                                              ),
-                                              MyRow(
-                                                title: "Quantité",
-                                                value: "3",
-                                              ),
-                                              MyRow(
-                                                title: "Montant HT",
-                                                value: "1800 F",
-                                              ),
-                                              MyRow(
-                                                title: "Etat facture",
-                                                value: "Payée",
-                                                color: kOrangeColor,
-                                              ),
-                                            ],
-                                          ),
-                                        ),
+                                        
                                       ],
                                     )
                                   : Container(),
@@ -1279,7 +1189,7 @@ class CorrigerStock extends StatelessWidget {
           const Divider(
             thickness: 1.2,
           ),
-          const SizedBox(height: kDefaultPadding /2),
+          const SizedBox(height: kDefaultPadding / 2),
           Obx(
             () => CustomDropDown(
               helpText: "Entrepôt",
@@ -1334,7 +1244,7 @@ class CorrigerStock extends StatelessWidget {
             hintText: "Correction du stock du produit: Paracétamol 200mg",
             maxLines: 3,
           ),
-          const SizedBox(height: kDefaultPadding/2),
+          const SizedBox(height: kDefaultPadding / 2),
           Row(
             children: [
               TextButton(

@@ -1,7 +1,10 @@
+
+
 // ignore_for_file: avoid_print
 
 import 'package:get/get.dart';
 import 'package:pharmacy_app/core/app_state.dart';
+import 'package:pharmacy_app/models/response_data_models/facture_model.dart';
 import 'package:pharmacy_app/services/remote_services/medicament/medicament.dart';
 
 import '../../models/response_data_models/medicament_model.dart';
@@ -12,6 +15,9 @@ class DetailScreenController extends GetxController {
   LoadingStatus medicamentStatus = LoadingStatus.initial;
 
   Medicament? medicament;
+  List<Facture> factures = <Facture>[];
+  int montantFactures = 0;
+  int quantiteTotalFacture = 0;
 
   RxInt selectedIndex = 0.obs;
 
@@ -57,6 +63,15 @@ class DetailScreenController extends GetxController {
         idMedicament: Get.arguments,
         onSuccess: (data) {
           medicament = data;
+          factures = data!.references!;
+          factures.forEach((element){ 
+            montantFactures += element.montantTotal!; 
+            element.produits!.forEach((item) {
+              if (item.medicament! == medicament!.id!) {
+                quantiteTotalFacture += item.quantite!;
+              }
+            });
+          });
           medicamentStatus = LoadingStatus.completed;
           update();
         },

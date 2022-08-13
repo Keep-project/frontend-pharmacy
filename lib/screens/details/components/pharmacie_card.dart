@@ -39,10 +39,11 @@ class PharmacyCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  const Spacer(),
                   Text(name,
                   style: const TextStyle(
                     color: kDarkColor,
-                    fontSize: 18,
+                    fontSize: 16,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
@@ -58,7 +59,7 @@ class PharmacyCard extends StatelessWidget {
                       "Stock: $stock",
                       style: const TextStyle(
                         color: kDarkColor,
-                        fontSize: 16,
+                        fontSize: 14,
                         fontWeight: FontWeight.w600,
                       ),
                     ),

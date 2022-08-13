@@ -36,14 +36,14 @@ class Facture {
   final int? utilisateur;
   final int? montantTotal;
   final int? quantiteTotal;
-  final double? reduction;
+  final int? reduction;
   final String? note;
   final DateTime? created_at;
   final DateTime? updated_at;
   final List<LigneProduit>? produits;
 
-  Facture(
-      {this.id,
+  Facture({
+      this.id,
       this.utilisateur,
       this.montantTotal,
       this.quantiteTotal,
@@ -51,7 +51,8 @@ class Facture {
       this.note,
       this.created_at,
       this.updated_at,
-      this.produits});
+      this.produits
+    });
 
   factory Facture.fromJson(String string) =>
       Facture.fromMap(json.decode(string));
@@ -87,6 +88,10 @@ class Facture {
       };
 
   String toJson() => json.encode(toMap());
+
+  String createdToString() => "${created_at!.year.toString().padLeft(4, '0')}/${created_at!.month.toString().padLeft(2, '0')}/${created_at!.day.toString().padLeft(2, '0')}";
+  String updatedToString() => "${updated_at!.year.toString().padLeft(4, '0')}/${updated_at!.month.toString().padLeft(2, '0')}/${updated_at!.day.toString().padLeft(2, '0')}";
+
 }
 
 class LigneProduit {
