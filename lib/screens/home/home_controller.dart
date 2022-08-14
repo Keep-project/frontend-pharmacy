@@ -23,6 +23,12 @@ class HomeScreenController extends GetxController{
   var next, previous;
   bool  is_searching  = false;
 
+  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+
+  void openDrawer() {
+    scaffoldKey.currentState!.openDrawer();
+  }
+
   @override
   void onInit() async {
     await medicamentList();

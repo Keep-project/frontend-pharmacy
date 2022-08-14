@@ -89,7 +89,8 @@ class Medicament {
     this.historiques,
     this.entrepot,
     this.created_at,
-    this.updated_at });
+    this.updated_at
+  });
 
     factory Medicament.fromJson(String string) => Medicament.fromMap(json.decode(string));
 
@@ -99,7 +100,7 @@ class Medicament {
       prix: json["prix"] ?? 0,
       masse: json["masse"]?? "",
       marque: json["marque"] ?? "",
-      date_exp:json["date_exp"] == null ? null : DateTime.parse(json["date_exp"]),
+      date_exp: json["date_exp"] == null ? null : DateTime.parse(json["date_exp"]),
       photo: json["get_image_url"] ?? "",
       stock: json["qte_stock"] ?? 0,
       stockAlert: json["stockAlert"] ?? 0,
@@ -110,7 +111,7 @@ class Medicament {
       user: json["user"]?? 0,
       voix: json["voix"]?? 0,
       createur: json["proprietaire"] == null ? null : User.fromMap(json['proprietaire']),
-      pharmacie: json["pharmacie"]?? 0,
+      pharmacie: json["pharmacie"] ?? 0,
       pharmacies: json["pharmacies"] == null ? [] : List<Pharmacie>.from(json["pharmacies"].map((e) => Pharmacie.fromMap(e))),
       entrepots: json["entrepots"] == null ? [] : List<Entrepot>.from(json["entrepots"].map((e) => Entrepot.fromMap(e))),
       references: json["references"] == null ? [] : List<Facture>.from(json["references"].map((e) => Facture.fromMap(e))),

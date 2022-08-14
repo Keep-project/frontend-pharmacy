@@ -42,7 +42,7 @@ class User {
   final String? avatar;
   final String? email;
   final DateTime? dateJoined;
-  final List<String>? userPermissions;
+  final List<int>? userPermissions;
 
 
 
@@ -54,7 +54,7 @@ class User {
     avatar: json['get_avatar_url'] ?? "",
     email: json['email'] ?? "",
     dateJoined: json['date_joined'] == null ? null: DateTime.parse(json['date_joined']),
-    userPermissions: json['user_permissions'] == null ? [] : List<String>.from(json['user_permissions'].map((e) => e)),
+    userPermissions: json['user_permissions'] == null ? [] : List<int>.from(json['user_permissions'].map((e) => e)),
   );
 
   Map<String, dynamic> toMap() => {

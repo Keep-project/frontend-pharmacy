@@ -434,159 +434,88 @@ class DetailScreen extends GetView<DetailScreenController> {
                                         ),
                                         const SizedBox(
                                             height: kDefaultPadding - 4),
-                                        CardContainer(
-                                          header: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    "Pratiqué à partir du",
-                                                    style: TextStyle(
-                                                      fontSize: 14,
-                                                      color: kDarkColor
-                                                          .withOpacity(0.7),
-                                                      fontWeight:
-                                                          FontWeight.w600,
+                                        ...List.generate(controller.medicament!.historiques!.length, (index) => 
+                                          Padding(
+                                          padding: const EdgeInsets.only(bottom: kDefaultPadding/1.5),
+                                          child: CardContainer(
+                                            header: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceBetween,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      "Pratiqué à partir du",
+                                                      style: TextStyle(
+                                                        fontSize: 14,
+                                                        color: kDarkColor
+                                                            .withOpacity(0.7),
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                      ),
                                                     ),
-                                                  ),
-                                                  Text(
-                                                    "Modifié par: Super Admin",
-                                                    style: TextStyle(
-                                                      fontSize: 14,
-                                                      color: Colors.grey
-                                                          .withOpacity(0.7),
+                                                    Text(
+                                                      "Modifié par: ${controller.medicament!.createur!.username.toString().capitalize}",
+                                                      style: TextStyle(
+                                                        fontSize: 14,
+                                                        color: Colors.grey
+                                                            .withOpacity(0.7),
+                                                      ),
                                                     ),
-                                                  ),
-                                                ],
-                                              ),
-                                              Text(
-                                                "01/01/2022",
-                                                style: TextStyle(
-                                                  fontSize: 14,
-                                                  color: kDarkColor
-                                                      .withOpacity(0.7),
-                                                  fontWeight: FontWeight.w400,
+                                                  ],
                                                 ),
-                                              ),
-                                            ],
-                                          ),
-                                          body: Column(
-                                            children: [
-                                              const SizedBox(
-                                                  height: kDefaultPadding / 2),
-                                              const MyRow(
-                                                title: "Base de prix",
-                                                value: "HT",
-                                              ),
-                                              const MyRow(
-                                                title:
-                                                    "Taux de taxe par défaut",
-                                                value: "19.25%",
-                                              ),
-                                              const MyRow(
-                                                title: "Montant HT",
-                                                value: "1700 F",
-                                              ),
-                                              const MyRow(
-                                                title: "Montant TTC",
-                                                value: "2025 F",
-                                              ),
-                                              const MyRow(
-                                                title: "Prix de vente HT",
-                                                value: "1700 F",
-                                              ),
-                                              const MyRow(
-                                                title: "Prix de vente TTC",
-                                                value: "2025 F",
-                                                color: kOrangeColor,
-                                              ),
-                                              Container(),
-                                            ],
+                                                Text(controller.medicament!.historiques![index].createdToString(),
+                                                  style: TextStyle(
+                                                    fontSize: 14,
+                                                    color: kDarkColor
+                                                        .withOpacity(0.7),
+                                                    fontWeight: FontWeight.w400,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            body: Column(
+                                              children: [
+                                                const SizedBox(
+                                                    height: kDefaultPadding / 2),
+                                                MyRow(
+                                                  title: "Base de prix",
+                                                  value: controller.medicament!.historiques![index].basePrix,
+                                                ),
+                                                MyRow(
+                                                  title:
+                                                      "Taux de taxe par défaut",
+                                                  value: "${controller.medicament!.historiques![index].tva}%",
+                                                ),
+                                                MyRow(
+                                                  title: "Montant HT",
+                                                  value: "${controller.medicament!.historiques![index].prixVente} F",
+                                                ),
+                                                MyRow(
+                                                  title: "Montant TTC",
+                                                  value: "${controller.medicament!.historiques![index].prixVente! + (controller.medicament!.historiques![index].prixVente! * controller.medicament!.historiques![index].tva!)/100 } F",
+                                                ),
+                                                MyRow(
+                                                  title: "Prix de vente HT",
+                                                  value: "${controller.medicament!.historiques![index].prixVente} F",
+                                                ),
+                                                MyRow(
+                                                  title: "Prix de vente TTC",
+                                                  value: "${controller.medicament!.historiques![index].prixVente! + (controller.medicament!.historiques![index].prixVente! * controller.medicament!.historiques![index].tva!)/100 } F",
+                                                  color: kOrangeColor,
+                                                ),
+                                                Container(),
+                                              ],
+                                            ),
                                           ),
                                         ),
-                                        const SizedBox(height: kDefaultPadding),
-                                        CardContainer(
-                                          header: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    "Pratiqué à partir du",
-                                                    style: TextStyle(
-                                                      fontSize: 14,
-                                                      color: kDarkColor
-                                                          .withOpacity(0.7),
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                    ),
-                                                  ),
-                                                  Text(
-                                                    "Modifié par: Super Admin",
-                                                    style: TextStyle(
-                                                      fontSize: 13,
-                                                      color: Colors.grey
-                                                          .withOpacity(0.7),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                              Text(
-                                                "11/05/2022",
-                                                style: TextStyle(
-                                                  fontSize: 14,
-                                                  color: kDarkColor
-                                                      .withOpacity(0.7),
-                                                  fontWeight: FontWeight.w400,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          body: Column(
-                                            children: [
-                                              const SizedBox(
-                                                  height: kDefaultPadding / 2),
-                                              const MyRow(
-                                                title: "Base de prix",
-                                                value: "HT",
-                                              ),
-                                              const MyRow(
-                                                title:
-                                                    "Taux de taxe par défaut",
-                                                value: "0%",
-                                              ),
-                                              const MyRow(
-                                                title: "Montant HT",
-                                                value: "1700 F",
-                                              ),
-                                              const MyRow(
-                                                title: "Montant TTC",
-                                                value: "2025 F",
-                                              ),
-                                              const MyRow(
-                                                title: "Prix de vente HT",
-                                                value: "1700 F",
-                                              ),
-                                              const MyRow(
-                                                title: "Prix de vente TTC",
-                                                value: "2025 F",
-                                                color: kOrangeColor,
-                                              ),
-                                              Container(),
-                                            ],
-                                          ),
                                         ),
+                                        const SizedBox(height: kDefaultPadding/2),
+                                        
                                       ],
                                     )
                                   : Container(),
@@ -875,7 +804,7 @@ class DetailScreen extends GetView<DetailScreenController> {
                                           value: controller.medicament!.createdToString(),
                                         ),
                                         MyRow(
-                                          title: "Modifié par ${controller.medicament!.id}",
+                                          title: "Modifié par",
                                           value: controller.medicament!.createur!.username.toString().capitalize,
                                           onPressed: () {},
                                         ),

@@ -24,7 +24,8 @@ class HomeScreen extends GetView<HomeScreenController> {
     return SafeArea(
       child: GetBuilder<HomeScreenController>(builder: (controller) {
         return Scaffold(
-          appBar: buildAppBar(),
+          key: controller.scaffoldKey,
+          appBar: buildAppBar(controller),
           floatingActionButton: FloatingActionButton(
               onPressed: () {
                 showDialog(
@@ -164,7 +165,7 @@ class HomeScreen extends GetView<HomeScreenController> {
     );
   }
 
-  AppBar buildAppBar() {
+  AppBar buildAppBar(HomeScreenController controller) {
     return AppBar(
       elevation: 0,
       backgroundColor: kTextColor2,
@@ -177,7 +178,8 @@ class HomeScreen extends GetView<HomeScreenController> {
       actions: [
         GestureDetector(
           onTap: () {
-            Get.toNamed(AppRoutes.DASHBORD);
+            controller.openDrawer();
+            // Get.toNamed(AppRoutes.DASHBORD);
           },
           child: Container(
             height: 45,
@@ -188,7 +190,7 @@ class HomeScreen extends GetView<HomeScreenController> {
               shape: BoxShape.circle,
             ),
             child: const Center(
-                child: Icon(CupertinoIcons.person_fill,
+                child: Icon(Icons.menu,
                     size: 30, color: kWhiteColor)),
           ),
         ),
