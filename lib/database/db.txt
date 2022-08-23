@@ -1,0 +1,109 @@
+
+
+   Future<Database> get database async {
+    if (_database != null) return _database!;
+    // lazily instantiate the db the first time it is accessed
+    _database = await _initDatabase(_databaseName);
+    return _database!;
+  }
+
+  Future<Database> _initDatabase(String filePath) async {
+    // Initialisation de la base de données
+    final dbPath = await getDatabasesPath();
+    final path = p.join(dbPath, filePath);
+
+    return await openDatabase(path,
+        version: _databaseVersion,
+        onCreate: _onCreateDB);
+  }
+
+  Future _onCreateDB(Database db, int version) async {
+    // Creation de toutes les tables de notre base de données
+    // SQL code to create User table
+    await db.execute('''  
+        CREATE TABLE user (
+          id INTEGER PRIMARY KEY,
+          username TEXT NOT NULL UNIQUE,
+         )''');
+    // SQL code to create Blog table
+    await db.execute('''  
+        CREATE TABLE blog (
+          id INTEGER PRIMARY KEY,
+          user_id INTEGER NOT NULL,    
+          title TEXT NOT NULL,
+          body TEXT NOT NULL,     
+          FOREIGN KEY (user_id) REFERENCES user (id)                  
+           ON DELETE NO ACTION ON UPDATE NO ACTION
+         )''');
+  }
+// Inserting and updating a user
+  Future<User> upsertUser(User user) async {
+    Database db = await instance.database;
+    var count = Sqflite.firstIntValue(await db.rawQuery(
+      "SELECT COUNT(*) FROM user WHERE username = ?", [user.username]));
+    if (count == 0) {
+      user.id = await db.insert("user", user.toMap());
+    } else {
+      await db.update("user", user.toMap(), where: "id = ?", whereArgs: [user.id]);
+    }
+    return user;
+  }
+  // Inserting and updating a blog
+  Future<Blog> upsertBlog(Blog blog) async {
+    Database db = await instance.database;
+    var count = Sqflite.firstIntValue(await db.rawQuery(
+      "SELECT COUNT(*) FROM blog WHERE id = ?", [blog.id]));
+    if (count == 0) {
+      await db.insert("blog", blog.toMap(), 
+            conflictAlgorithm: ConflictAlgorithm.replace);
+    } else {
+      await db.update("blog", blog.toMap(), where: "id = ?", whereArgs: [blog.id]);
+    }
+    return blog;
+  }
+  // fetch a single user
+  Future<User> fetchUser(int id) async {
+    Database db = await instance.database;
+    List<Map> results = await db.query("user", where: "id = ?", whereArgs: [id]);
+
+    User user = User.fromMap(results[0]);
+    return user;
+  }
+  // fetch a single blog
+  Future<Blog> fetchBlog(int id) async {
+    Database db = await instance.database;
+    List<Map> results = await db.query("blog", where: "id = ?", whereArgs: [id]);
+
+    Blog blog = User.fromMap(results[0]);
+    return blog;
+  }
+  // fetch list of all the blogs
+  Future<List<Blog>> fetchBlogs() async {
+    Database db = await instance.database;
+    List<Map<String, dynamic>> results = await db.query("blog");
+
+    List<Blog> blogs = [];
+    results.forEach((result) {
+      Blog blog = Blog.fromMap(result);
+      blogs.add(blog);
+    });
+    return blogs;
+  }
+  // fetch blogs of a particular user
+  Future<List<Blog>> fetchUserBlogs(int user_id) async {
+    Database db = await instance.database;
+    List<Map<String, dynamic>> results = await db.query(
+      "blog", where: "user_id = ?", whereArgs: [user_id]);
+
+    List<Blog> blogs = [];
+    results.forEach((result) {
+      Blog blog = Blog.fromMap(result);
+      blogs.add(blog);
+    });
+    return blogs;
+  }
+  // delete a blog
+  Future<int> deleteBlog(int id) async {
+    Database db = await instance.database;
+    return await db.delete("blog", where: "id = ?", whereArgs: [id]);
+  }

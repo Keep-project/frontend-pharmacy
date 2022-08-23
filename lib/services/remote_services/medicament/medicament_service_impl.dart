@@ -15,7 +15,7 @@ class MedicamentServiceImpl implements MedicamentService {
       Function(dynamic data)? onSuccess,
       Function(dynamic date)? onError}) async {
     ApiRequest(
-      url: url ?? "${Constants.API_URL}/medicament",
+      url: url ?? "${Constants.API_URL}/medicament/",
       data: {},
       token: await _localAuth.getToken(),
     ).get(onSuccess: (data) {

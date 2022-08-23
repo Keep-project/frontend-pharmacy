@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print, prefer_typing_uninitialized_variables
+// ignore_for_file: avoid_print, prefer_typing_uninitialized_variables,
 
 import 'package:flutter/cupertino.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pharmacy_app/core/app_colors.dart';
 import 'package:pharmacy_app/core/app_sizes.dart';
+import 'package:pharmacy_app/core/helpers.dart';
 import 'package:pharmacy_app/screens/mapview/mapview.dart';
 
 class MapViewScreen extends GetView<MapViewScreenController> {
@@ -221,6 +222,7 @@ class MapViewScreen extends GetView<MapViewScreenController> {
                     right: 0,
                     child: Container(
                       height: 150,
+                      decoration: const BoxDecoration(),
                       child: PageView.builder(
                         itemCount: 10,
                         itemBuilder: (context, index) =>  Card(
@@ -232,6 +234,19 @@ class MapViewScreen extends GetView<MapViewScreenController> {
                           child: Container(
                             decoration: BoxDecoration(
                               color: index % 2 == 0 ? kWhiteColor : kTextColor2 ,
+                            ),
+                            child: Center(
+                              child: TextButton(
+                                onPressed: () async {
+                                  bool result = await CheckInternetConnection.isConnected();
+                                  if(result) {
+                                    print('You have internet connection!');
+                                  } else {
+                                    print('No internet connection :( Reason: $result');
+                                  }
+                                },
+                                child: const Text("Check internet connection")
+                              ),
                             ),
                           ),
                         ),
