@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pharmacy_app/core/app_colors.dart';
 import 'package:pharmacy_app/core/app_sizes.dart';
-import 'package:pharmacy_app/core/helpers.dart';
 import 'package:pharmacy_app/screens/mapview/mapview.dart';
 
 class MapViewScreen extends GetView<MapViewScreenController> {
@@ -42,7 +41,7 @@ class MapViewScreen extends GetView<MapViewScreenController> {
                   await controller.onCameraIdle();
                 },
                 polylines: {
-                 Polyline(
+                  Polyline(
                     polylineId: const PolylineId("route"),
                     points: controller.polylineCoordinates,
                     color: Colors.blue,
@@ -60,31 +59,35 @@ class MapViewScreen extends GetView<MapViewScreenController> {
                             icon: controller.mapMarker.value,
                             position: controller.positions[index],
                           )),
-
-                  // Marker(
-                  //   markerId: const MarkerId("point-id-0"),
-                  //     infoWindow: const InfoWindow(
-                  //       title: "Current location",
-                  //       snippet: "Ma position actuelle"),
-                  //       icon: controller.mapMarker.value,
-                  //       position: LatLng(controller.currentLocation!.latitude!, controller.currentLocation!.longitude!),
-                  // ),
-
+                  controller.currentLocation != null
+                      ? Marker(
+                          markerId: const MarkerId("point-id-0"),
+                          infoWindow: const InfoWindow(
+                              title: "Current location",
+                              snippet: "Ma position actuelle"),
+                          icon: controller.mapMarker.value,
+                          position: LatLng(
+                              controller.currentLocation!.latitude!,
+                              controller.currentLocation!.longitude!),
+                        )
+                      : const Marker(
+                          markerId: MarkerId("point-id-2"),
+                        ),
                   Marker(
                     markerId: const MarkerId("point-id-1"),
-                      infoWindow: const InfoWindow(
-                        title: "Localisation de la pharmacie",
+                    infoWindow: const InfoWindow(
+                        title: "Localisation de la pharmacie source",
                         snippet: "Une pharmacie de garde  24h/24"),
-                        icon: controller.mapMarker.value,
-                        position: controller.source,
+                    icon: controller.mapMarker.value,
+                    position: controller.source,
                   ),
                   Marker(
                     markerId: const MarkerId("point-id-2"),
-                      infoWindow: const InfoWindow(
-                        title: "Localisation de la pharmacie",
+                    infoWindow: const InfoWindow(
+                        title: "Localisation de la pharmacie destination",
                         snippet: "Une pharmacie de garde  24h/24"),
-                        icon: controller.mapMarker.value,
-                        position: controller.destination,
+                    icon: controller.mapMarker.value,
+                    position: controller.destination,
                   ),
                 },
               ),
@@ -217,42 +220,94 @@ class MapViewScreen extends GetView<MapViewScreenController> {
                               })),
                     )
                   : Positioned(
-                    bottom: kDefaultMargin /2,
-                    left: 0,
-                    right: 0,
-                    child: Container(
-                      height: 150,
-                      decoration: const BoxDecoration(),
-                      child: PageView.builder(
-                        itemCount: 10,
-                        itemBuilder: (context, index) =>  Card(
-                          elevation: 10,
-                          clipBehavior: Clip.antiAlias,
-                          margin: const EdgeInsets.symmetric(horizontal: kDefaultMargin),
-                          shadowColor: kTextColor2,
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(kDefaultRadius*1.3)),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: index % 2 == 0 ? kWhiteColor : kTextColor2 ,
-                            ),
-                            child: Center(
-                              child: TextButton(
-                                onPressed: () async {
-                                  bool result = await CheckInternetConnection.isConnected();
-                                  if(result) {
-                                    print('You have internet connection!');
-                                  } else {
-                                    print('No internet connection :( Reason: $result');
-                                  }
-                                },
-                                child: const Text("Check internet connection")
+                      bottom: kDefaultMargin / 2,
+                      left: 0,
+                      right: 0,
+                      child: Container(
+                        height: 140,
+                        clipBehavior: Clip.antiAlias,
+                        decoration: const BoxDecoration(
+                        ),
+                        child: PageView.builder(
+                          itemCount: controller.pharmaciesList.length,
+                          onPageChanged: (value) async {
+                            controller.onSlidePharmacie(value);
+                          },
+                          itemBuilder: (context, index) => Card(
+                            elevation: 10,
+                            clipBehavior: Clip.antiAlias,
+                            margin: const EdgeInsets.symmetric(
+                                horizontal: kDefaultMargin),
+                            shadowColor: kTextColor2,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(
+                                    kDefaultRadius * 1.3)),
+                            child: Container(
+                              decoration: const BoxDecoration(),
+                              child: Column(
+                                children: [
+                                  Container(
+                                    height: 50,
+                                    padding: const EdgeInsets.symmetric( horizontal: kDefaultPadding),
+                                    decoration: const BoxDecoration(
+                                      color: kTextColor
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        Text(controller.pharmaciesList[index].nom!.toString().capitalize!,
+                                          style: const TextStyle(
+                                            color: kWhiteColor,
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.w600,
+                                            height: 1.3,
+                                          ),
+                                        ),
+                                        const Spacer(),
+                                        const Icon(CupertinoIcons.phone, size: 26, color: kWhiteColor)
+                                      ]
+                                    ),
+                                  ),
+                                  const Spacer(),
+                                  Row(
+                                    children: [
+                                      const SizedBox(width: kDefaultPadding),
+                                      const Icon(CupertinoIcons.gift_fill, size: 46, color: kTextColor),
+                                      const SizedBox(width: kDefaultPadding/2),
+                                      Text("Tel: ${controller.pharmaciesList[index].phone!.toString()}",
+                                        style: const TextStyle(
+                                            color: kDarkColor,
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.w600,
+                                            height: 1.3,
+                                            wordSpacing: 1.2,
+                                            fontStyle: FontStyle.italic,
+                                          ),
+                                      ),
+                                     
+                                    ]
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      Text((DateTime.now().hour >= controller.pharmaciesList[index].ouverture!.hour) && (DateTime.now().hour <= controller.pharmaciesList[index].fermeture!.hour) ? "Ouverte" : "Fermée",
+                                        style: const TextStyle(
+                                            color: kOrangeColor,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w600,
+                                            height: 1.3,
+                                          ),
+                                      ),
+                                       const SizedBox(width: kDefaultPadding),
+                                    ]
+                                  ),
+                                  const Spacer(),
+                                ],
                               ),
+                              
                             ),
                           ),
                         ),
-                      ),
-                    )
-                   ),
+                      )),
             ],
           ),
         ),

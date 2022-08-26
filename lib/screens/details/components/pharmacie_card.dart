@@ -11,8 +11,11 @@ class PharmacyCard extends StatelessWidget {
   final String phone;
   final int stock;
   final String status;
+  final double? height;
+  final double? bottom;
   const PharmacyCard({
     Key? key, required this.name, required this.phone, required this.stock, required this.status,
+    this.height, this.bottom
   }) : super(key: key);
 
   @override
@@ -22,12 +25,12 @@ class PharmacyCard extends StatelessWidget {
       elevation: 2,
       shadowColor: kTextColor.withOpacity(.4),
       clipBehavior: Clip.antiAlias,
-      margin: const EdgeInsets.only(bottom: kDefaultMargin),
+      margin: EdgeInsets.only(bottom: bottom ?? kDefaultMargin),
       shape: RoundedRectangleBorder(
           borderRadius:
               BorderRadius.circular(kDefaultRadius)),
       child: Container(
-        height: 90,
+        height: height ?? 90,
         width: double.infinity,
         padding: const EdgeInsets.all(kDefaultPadding / 2),
         child: Row(
@@ -55,14 +58,14 @@ class PharmacyCard extends StatelessWidget {
                 const Spacer(),
                 Row(
                   children: [
-                    Text(
+                    stock != 0 ? Text(
                       "Stock: $stock",
                       style: const TextStyle(
                         color: kDarkColor,
                         fontSize: 14,
                         fontWeight: FontWeight.w600,
                       ),
-                    ),
+                    ): Container(),
                     const Spacer(),
                       Text(status,
                       style: const TextStyle(

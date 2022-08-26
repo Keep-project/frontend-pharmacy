@@ -36,7 +36,6 @@ class PharmacieServiceImpl implements PharmacieService {
       Function(dynamic date)? onError}) async {
     ApiRequest(
       url: "${Constants.API_URL}/pharmacie/",
-      data: {},
       token: await _localAuth.getToken(),
     ).get(onSuccess: (data) {
       onSuccess!(PharmacieResponseModel.fromMap(data));

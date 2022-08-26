@@ -79,4 +79,23 @@ class MedicamentServiceImpl implements MedicamentService {
       }
     });
   }
+
+  @override
+  Future filterList({
+      data,
+      String? url,
+      Function(dynamic data)? onSuccess,
+      Function(dynamic date)? onError}) async {
+      ApiRequest(
+        url: url ?? "${Constants.API_URL}/medicament/filter/",
+        data: data,
+        token: await _localAuth.getToken(),
+      ).post(onSuccess: (data) {
+        onSuccess!(MedicamentResponseModel.fromMap(data));
+      }, onError: (error) {
+        if (error != null) {
+          onError!(error);
+        }
+      });
+  }
 }

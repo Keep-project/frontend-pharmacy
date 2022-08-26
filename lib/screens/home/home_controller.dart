@@ -22,6 +22,7 @@ class HomeScreenController extends GetxController{
   int _count = 0;
   var next, previous;
   bool  is_searching  = false;
+  String searchCategory = "Tous";
 
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -32,6 +33,11 @@ class HomeScreenController extends GetxController{
   @override
   void onInit() async {
     await medicamentList();
+    await listerner();
+    super.onInit();
+  }
+
+  Future listerner() async {
     scrollController.addListener(() async {
       if (scrollController.position.maxScrollExtent == scrollController.offset) {
         if ( next != null && !is_searching ) {
@@ -39,12 +45,19 @@ class HomeScreenController extends GetxController{
           infinityStatus = LoadingStatus.searching;
           update();
           Future.delayed(const Duration(seconds: 1), () async {
-            await medicamentList();
+            switch (selectedCategorieIndex.value) {
+              case 0:
+                await medicamentList();
+                break;
+              default:
+                await filterList();
+                break;
+            }
+            
           });
         }
       }
     });
-    super.onInit();
   }
   
   @override
@@ -76,18 +89,18 @@ class HomeScreenController extends GetxController{
 
   List<Map<String, dynamic>> voix = [
     {
-      'id': 1,
+      'id': 0,
       'libelle': 'Orale',
+      'selected': false,
+    },
+    {
+      'id': 1,
+      'libelle': 'Injection',
       'selected': false,
     },
     {
       'id': 2,
       'libelle': 'Anale',
-      'selected': false,
-    },
-    {
-      'id': 3,
-      'libelle': 'Injection',
       'selected': false,
     },
     
@@ -118,9 +131,60 @@ class HomeScreenController extends GetxController{
     );
   }
 
-  void changeSelectedCategory(int index) {
-    selectedCategorieIndex.value = index;
+  Future filterList() async {
+    infinityStatus = LoadingStatus.searching;
     update();
+    List<int> selectedVoix = [];
+    for (Map<String, dynamic> v in voix ) {
+      if (v['selected']){
+        selectedVoix.add(v['id']);
+      }
+    }
+    await _medicamentService.filterList(
+        url: next,
+        data: {
+            "query": [
+              {"categorie": categories[selectedCategorieIndex.value]['libelle'] },
+              {"voix": selectedVoix },
+              {"search": searchController.text.trim() }
+            ]
+          },
+        onSuccess: (data) {
+          _count = data.count!;
+          next = data.next;
+          previous = data.previous;
+          medicamentsList.addAll(data.results!);
+          infinityStatus = LoadingStatus.completed;
+          is_searching = false;
+          update();
+        },
+        onError: (error) {
+          print("=============== Home error ================");
+          print(error.response);
+          print("==========================================");
+          infinityStatus = LoadingStatus.failed;
+          update();
+        }
+    );
+  }
+
+
+  Future changeSelectedCategory(int index) async {
+
+    if (selectedCategorieIndex.value != index) {
+      selectedCategorieIndex.value = index;
+      next = null;
+      medicamentsList = [];
+      switch (selectedCategorieIndex.value) {
+        case 0:
+          await medicamentList();
+          break;
+        default:
+          await filterList();
+          break;
+      }
+      update();
+    }
   }
 
   void changeVoix(int index) {
@@ -129,14 +193,12 @@ class HomeScreenController extends GetxController{
   }
 
 
-  Future filterMedicamentsList() async {
-
-    print("filter médicaments");
-
-    if (searchController.text.isNotEmpty) {
-      print("Vous avez fait la recherche pour : ");
-      print(searchController.text.trim());
+  Future filterMedicamentsList({String? key}) async {
+    next = null;
+    medicamentsList = [];
+    if (searchController.text.isNotEmpty || key == "filter") {
+      await filterList();
     }
-    
+    update();
   }
 }

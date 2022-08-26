@@ -39,7 +39,7 @@ class ApiRequest {
   }) async {
     _dio()
         .get(
-      url!,
+      url!
     )
         .then((res) {
       if (onSuccess != null) onSuccess(res.data);

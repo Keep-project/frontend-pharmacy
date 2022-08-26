@@ -1,12 +1,13 @@
 // ignore_for_file: avoid_print
 
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pharmacy_app/components/title_text.dart';
 import 'package:pharmacy_app/core/app_colors.dart';
 import 'package:pharmacy_app/core/app_drawer.dart';
 import 'package:pharmacy_app/core/app_sizes.dart';
+import 'package:pharmacy_app/core/app_state.dart';
 import 'package:pharmacy_app/router/app_router.dart';
 import 'package:pharmacy_app/screens/home/components/category_item.dart';
 import 'package:pharmacy_app/screens/home/components/custom_action_dialog.dart';
@@ -14,13 +15,20 @@ import 'package:pharmacy_app/components/medicament_card.dart';
 import 'package:pharmacy_app/screens/home/components/search_custom_button.dart';
 import 'package:pharmacy_app/screens/home/home.dart';
 
-import '../../core/app_state.dart';
 
 class HomeScreen extends GetView<HomeScreenController> {
   const HomeScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+     var currentFocus;
+      void unfocus() {
+        currentFocus = FocusScope.of(context);
+        if (!currentFocus.hasPrimaryFocus) {
+          currentFocus.unfocus();
+        }
+      }
+
     return SafeArea(
       child: GetBuilder<HomeScreenController>(builder: (controller) {
         return Scaffold(
@@ -54,7 +62,7 @@ class HomeScreen extends GetView<HomeScreenController> {
                     ),
                   ),
                   TextSpan(
-                    text: "PharmaCam",
+                    text: "Poket Pharma",
                     style: TextStyle(
                       color: kPrimaryColor,
                       fontSize: 20,
@@ -63,7 +71,15 @@ class HomeScreen extends GetView<HomeScreenController> {
                   )
                 ])),
                 const SizedBox(height: kDefaultPadding - 4),
-                SearchBarAndButton(context: context, controller: controller, onTap: () async {controller.filterMedicamentsList();}),
+                SearchBarAndButton(
+                  context: context,
+                  controller: controller,
+                  onTap: () async {
+                    unfocus();
+                    if ( controller.searchController.text.isEmpty ) { return; }
+                    controller.filterMedicamentsList();
+                  }
+                ),
                 const SizedBox(height: kDefaultMargin * 2.2),
                 const TitleText(title: "Catégories"),
                 const SizedBox(height: kDefaultMargin * 1.6),
@@ -77,7 +93,7 @@ class HomeScreen extends GetView<HomeScreenController> {
                           title: controller.categories[index]['libelle'],
                           index: index,
                           controller: controller,
-                          onTap: () { controller.changeSelectedCategory(index); }),
+                          onTap: () async {await controller.changeSelectedCategory(index); }),
                     ),
                   ]),
                 ),
@@ -104,7 +120,7 @@ class HomeScreen extends GetView<HomeScreenController> {
                     ),
                   ],
                 ),
-                const SizedBox(height: kDefaultMargin * 1.5),
+                const SizedBox(height: kDefaultMargin * 1.3),
                 controller.infinityStatus == LoadingStatus.searching &&
                         controller.medicamentsList.isEmpty
                     ? const Expanded(
@@ -128,7 +144,6 @@ class HomeScreen extends GetView<HomeScreenController> {
                                   ? Container(
                                       padding: const EdgeInsets.all(0),
                                       height: 220,
-                                      //width: Get.width / 2 - 32,
                                       child: const Center(
                                         child: CircularProgressIndicator(
                                             color: kOrangeColor),
@@ -141,21 +156,22 @@ class HomeScreen extends GetView<HomeScreenController> {
                       ),
                 controller.medicamentsList.isEmpty &&
                         controller.infinityStatus == LoadingStatus.completed
-                    ? Container(
-                        padding: const EdgeInsets.all(0),
-                        width: double.infinity,
-                        child: Center(
+                    ? Expanded(
+                      flex: 3,
+                      child: Container(
+                        decoration: const BoxDecoration(),
+                          width: double.infinity,
                           child: Text(
                             "Ooops !!!\nAucun médicament trouvé",
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               color: kGreyColor.withOpacity(0.7),
-                              fontSize: 20,
+                              fontSize: 18,
                               fontWeight: FontWeight.w400,
                             ),
                           ),
                         ),
-                      )
+                    )
                     : Container(),
               ],
             ),

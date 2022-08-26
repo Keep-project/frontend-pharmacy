@@ -12,8 +12,15 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_place/google_place.dart';
 import 'package:location/location.dart' as l;
 import 'package:pharmacy_app/core/api_key.dart';
+import 'package:pharmacy_app/core/app_state.dart';
+import 'package:pharmacy_app/models/response_data_models/pharmacie_model.dart';
+import 'package:pharmacy_app/services/remote_services/pharmacie/pharmacie.dart';
 
 class MapViewScreenController extends GetxController{
+
+  LoadingStatus pharmayStatus = LoadingStatus.initial;
+  final PharmacieService _pharmacieService = PharmacieServiceImpl();
+  List<Pharmacie> pharmaciesList = <Pharmacie>[];
 
   TextEditingController textEditingControllerLocalisation = TextEditingController();
 
@@ -22,10 +29,10 @@ class MapViewScreenController extends GetxController{
       BitmapDescriptor.defaultMarkerWithHue(0.0).obs;
   
   List<LatLng> positions = <LatLng>[
-    const LatLng(3.866667, 11.516667),
+    // const LatLng(3.866667, 11.516667),
   ];
 
-  final CameraPosition _kLake = const CameraPosition(
+  CameraPosition _kLake = const CameraPosition(
       bearing: 192.8334901395799,
       target: LatLng(3.866667, 11.516667),
       tilt: 14.440717697143555,
@@ -51,13 +58,60 @@ class MapViewScreenController extends GetxController{
 
   Placemark? localisationInformations;
   String searchText = "";
-  
+
   @override
   void onInit() async {
     googlePlace = GooglePlace(apiKey);
     await getPolyPoints();
     await getCurrentLocation();
+    await getPharmacies();
     super.onInit();
+  }
+
+  Future<void> onSlidePharmacie(int value) async {
+    _kLake = CameraPosition(
+      bearing: 192.8334901395799,
+      target: LatLng(pharmaciesList[value].latitude!,
+          pharmaciesList[value].longitude!),
+      tilt: 59.440717697143555,
+      zoom: 14.151926040649414,
+    );
+    // positionAnnonce = kLake.target;
+    // if (lastIndex < value) {
+    //   lastIndex = value;
+    //   currentAnnonceIndex.value += 1;
+    // } else {
+    //   lastIndex = value;
+    //   currentAnnonceIndex.value -= 1;
+    // }
+    update();
+    final GoogleMapController controller = await mapController.future;
+    controller.animateCamera(CameraUpdate.newCameraPosition(_kLake));
+    update();
+  }
+
+
+  Future getPharmacies() async {
+    pharmayStatus = LoadingStatus.searching;
+    update();
+
+    await _pharmacieService.findAll(
+      onSuccess: (data) {
+        pharmaciesList.addAll(data.results);
+        for (var i = 0; i < pharmaciesList.length; i++) {
+          positions.add(LatLng(pharmaciesList[i].latitude!, pharmaciesList[i].longitude!));
+        }
+        pharmayStatus = LoadingStatus.completed;
+        update();
+      },
+      onError: (error) {
+        print("============================");
+        print(error);
+        print("============================");
+        pharmayStatus = LoadingStatus.failed;
+        update();
+      }
+    );
   }
 
   CameraPosition kGooglePlex = const CameraPosition(
@@ -93,8 +147,6 @@ class MapViewScreenController extends GetxController{
     );
     update(); 
   }
-
-
 
   // Auto completion
   void autoCompleteSearch(String string) async {
@@ -145,15 +197,14 @@ class MapViewScreenController extends GetxController{
   }
 
   Future onCameraIdle() async {
+    update();
     //when map drag stops
     List<Placemark> placemarks = await placemarkFromCoordinates(
         newCameraPosition!.target.latitude,
-        newCameraPosition!.target.longitude);
-
-      positions.add(LatLng(newCameraPosition!.target.latitude, newCameraPosition!.target.longitude));
-      localisationInformations = placemarks.first;
-
-      print(positions);
+        newCameraPosition!.target.longitude
+    );
+    positions.add(LatLng(newCameraPosition!.target.latitude, newCameraPosition!.target.longitude));
+    localisationInformations = placemarks.first;
     
     update();
   }

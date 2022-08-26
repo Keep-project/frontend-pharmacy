@@ -24,8 +24,6 @@ List<Map<String, dynamic>> entrepots = [
 
 String selectedEntrepot = "Magasin 1";
 
-
-
   void onChangeEntrepot(dynamic data) {
     selectedEntrepot = data;
     update();

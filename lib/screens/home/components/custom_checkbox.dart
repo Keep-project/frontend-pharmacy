@@ -15,8 +15,10 @@ class CheckBoxComponent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     RxBool check = false.obs;
-    return Obx(
-      () => Container(
+    check.value = controller.voix[index!]['selected'];
+    return 
+    Obx(() => 
+      Container(
         width: Get.width / 3.2,
         height: 40,
         decoration: const BoxDecoration(),

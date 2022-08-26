@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:google_place/google_place.dart';
 import 'package:pharmacy_app/components/card_container.dart';
 import 'package:pharmacy_app/components/custom_text_field2.dart';
 import 'package:pharmacy_app/components/title_text.dart';

@@ -57,8 +57,9 @@ class FilterDialog extends StatelessWidget {
                   ...List.generate(
                       controller.categories.length,
                       (index) => CustomButton(
-                          onTap: () {
-                            controller.changeSelectedCategory(index);
+                          onTap: () async {
+                             Get.back(); 
+                            await controller.changeSelectedCategory(index);
                           },
                           libelle: controller.categories[index]['libelle'],
                           color:
@@ -84,7 +85,7 @@ class FilterDialog extends StatelessWidget {
               ),
             ),
             const SizedBox(height: kDefaultPadding / 6),
-            Wrap(
+              Wrap(
               runSpacing: 0,
               spacing: 0,
               children: [
@@ -97,7 +98,7 @@ class FilterDialog extends StatelessWidget {
             const SizedBox(height: kDefaultMargin),
             GestureDetector(
               onTap: () async {
-                await controller.filterMedicamentsList();
+                await controller.filterMedicamentsList(key: "filter");
                 Get.back();
               },
               child: Container(

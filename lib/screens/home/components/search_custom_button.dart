@@ -19,6 +19,13 @@ class SearchBarAndButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var currentFocus;
+      void unfocus() {
+        currentFocus = FocusScope.of(context);
+        if (!currentFocus.hasPrimaryFocus) {
+          currentFocus.unfocus();
+        }
+      }
     return Row(
       children: [
         Expanded(
@@ -27,6 +34,7 @@ class SearchBarAndButton extends StatelessWidget {
         const SizedBox(width: 5),
         InkWell(
           onTap: () {
+            unfocus();
             showDialog(
                 context: context,
                 builder: (context) => FilterDialog(controller: controller));
