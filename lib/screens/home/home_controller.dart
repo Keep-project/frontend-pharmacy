@@ -45,15 +45,12 @@ class HomeScreenController extends GetxController{
           infinityStatus = LoadingStatus.searching;
           update();
           Future.delayed(const Duration(seconds: 1), () async {
-            switch (selectedCategorieIndex.value) {
-              case 0:
-                await medicamentList();
-                break;
-              default:
-                await filterList();
-                break;
+            if (selectedCategorieIndex.value == 0 && searchCategory == "Tous") {
+              await medicamentList();
             }
-            
+            else {
+              await filterList();
+            }
           });
         }
       }
@@ -177,6 +174,7 @@ class HomeScreenController extends GetxController{
       medicamentsList = [];
       switch (selectedCategorieIndex.value) {
         case 0:
+          searchCategory = "Tous";
           await medicamentList();
           break;
         default:
@@ -196,6 +194,7 @@ class HomeScreenController extends GetxController{
   Future filterMedicamentsList({String? key}) async {
     next = null;
     medicamentsList = [];
+    searchCategory = key!;
     if (searchController.text.isNotEmpty || key == "filter") {
       await filterList();
     }

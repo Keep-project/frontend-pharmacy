@@ -21,7 +21,7 @@ class HomeScreen extends GetView<HomeScreenController> {
 
   @override
   Widget build(BuildContext context) {
-     var currentFocus;
+      var currentFocus;
       void unfocus() {
         currentFocus = FocusScope.of(context);
         if (!currentFocus.hasPrimaryFocus) {
