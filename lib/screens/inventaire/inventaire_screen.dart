@@ -5,8 +5,8 @@ import 'package:get/get.dart';
 import 'package:pharmacy_app/components/card_container.dart';
 import 'package:pharmacy_app/components/title_text.dart';
 import 'package:pharmacy_app/core/app_colors.dart';
+import 'package:pharmacy_app/core/app_drawer.dart';
 import 'package:pharmacy_app/core/app_sizes.dart';
-import 'package:pharmacy_app/router/app_router.dart';
 import 'package:pharmacy_app/screens/details/details_screen.dart';
 import 'package:pharmacy_app/screens/home/components/search_custom_button.dart';
 import 'package:pharmacy_app/screens/inventaire/inventaire.dart';
@@ -19,7 +19,9 @@ class InventaireScreen extends GetView<InventaireController> {
     return GetBuilder<InventaireController>(
       builder: (controller) => SafeArea(
         child: Scaffold(
-          appBar: buildAppBar(),
+          key: controller.scaffoldKey,
+          appBar: buildAppBar(controller, context,),
+          drawer: const AppNavigationDrawer(),
           body: Container(
             padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
             child: Column(
@@ -136,7 +138,14 @@ class InventaireScreen extends GetView<InventaireController> {
     );
   }
 
-  AppBar buildAppBar() {
+  AppBar buildAppBar(InventaireController controller, BuildContext context) {
+    var currentFocus;
+    void unfocus() {
+      currentFocus = FocusScope.of(context);
+      if (!currentFocus.hasPrimaryFocus) {
+        currentFocus.unfocus();
+      }
+    }
     return AppBar(
       elevation: 0,
       backgroundColor: kTextColor2,
@@ -160,9 +169,10 @@ class InventaireScreen extends GetView<InventaireController> {
         ),
       ),
       actions: [
-        InkWell(
+        GestureDetector(
           onTap: () {
-            Get.toNamed(AppRoutes.DASHBORD);
+            unfocus();
+            controller.openDrawer();
           },
           child: Container(
             height: 45,
@@ -173,7 +183,7 @@ class InventaireScreen extends GetView<InventaireController> {
               shape: BoxShape.circle,
             ),
             child: const Center(
-                child: Icon(CupertinoIcons.person_fill,
+                child: Icon(Icons.menu,
                     size: 30, color: kWhiteColor)),
           ),
         ),

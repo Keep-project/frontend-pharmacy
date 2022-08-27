@@ -64,7 +64,6 @@ class MedicamentscreenController extends GetxController{
     super.dispose();
   }
 
-
   List<Map<String, dynamic>> categories = [
     {
       'id': 1,
@@ -102,7 +101,6 @@ class MedicamentscreenController extends GetxController{
     },
     
   ];
-
 
   Future medicamentList() async {
     infinityStatus = LoadingStatus.searching;
@@ -165,7 +163,6 @@ class MedicamentscreenController extends GetxController{
     );
   }
 
-
   Future changeSelectedCategory(int index) async {
 
     if (selectedCategorieIndex.value != index) {
@@ -206,4 +203,6 @@ class MedicamentscreenController extends GetxController{
       await filterMedicamentsList(key: 'filter');
     }
   }
+
+
 }

@@ -24,7 +24,7 @@ class MedicamentScreen extends GetView<MedicamentscreenController> {
         currentFocus.unfocus();
       }
     }
-
+    
     return SafeArea(
       child: Scaffold(
         key: controller.scaffoldKey,

@@ -3,22 +3,69 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pharmacy_app/core/app_state.dart';
+import 'package:pharmacy_app/models/response_data_models/medicament_model.dart';
+import 'package:pharmacy_app/services/remote_services/medicament/medicament.dart';
 
 class InventaireController extends GetxController {
 
+  final ScrollController scrollController = ScrollController();
   TextEditingController searchController = TextEditingController();
 
-  // Catégorie  selectionnée par defaut
+  LoadingStatus infinityStatus = LoadingStatus.initial;
+
+  final MedicamentService _medicamentService = MedicamentServiceImpl();
+
+  List<Medicament> medicamentsList = <Medicament>[];
   RxInt selectedCategorieIndex = 0.obs;
+  
+
+  int _count = 0;
+  var next, previous;
+  bool  is_searching  = false;
+  String searchCategory = "Tous";
+
+  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+
+  void openDrawer() {
+    scaffoldKey.currentState!.openDrawer();
+  }
 
   @override
+  void onInit() async {
+    await medicamentList();
+    await listerner();
+    super.onInit();
+  }
+
+  Future listerner() async {
+    scrollController.addListener(() async {
+      if (scrollController.position.maxScrollExtent == scrollController.offset) {
+        if ( next != null && !is_searching ) {
+          is_searching = true;
+          infinityStatus = LoadingStatus.searching;
+          update();
+          Future.delayed(const Duration(seconds: 1), () async {
+            if (selectedCategorieIndex.value == 0 && searchCategory == "Tous") {
+              await medicamentList();
+            }
+            else {
+              await filterList();
+            }
+          });
+        }
+      }
+    });
+  }
+  
+  @override
   void dispose() {
+    scrollController.dispose();
     searchController.dispose();
     super.dispose();
   }
 
-  // Liste des catégories de médicaments
-   List<Map<String, dynamic>> categories = [
+  List<Map<String, dynamic>> categories = [
     {
       'id': 1,
       'libelle': 'Tous'
@@ -37,12 +84,15 @@ class InventaireController extends GetxController {
     },
   ];
 
-
-  // Liste des voix de prise du médicament
   List<Map<String, dynamic>> voix = [
     {
-      'id': 1,
+      'id': 0,
       'libelle': 'Orale',
+      'selected': false,
+    },
+    {
+      'id': 1,
+      'libelle': 'Injection',
       'selected': false,
     },
     {
@@ -50,17 +100,87 @@ class InventaireController extends GetxController {
       'libelle': 'Anale',
       'selected': false,
     },
-    {
-      'id': 3,
-      'libelle': 'Injection',
-      'selected': false,
-    },
     
   ];
 
-  void changeSelectedCategory(int index) {
-    selectedCategorieIndex.value = index;
+  Future medicamentList() async {
+    infinityStatus = LoadingStatus.searching;
     update();
+    await _medicamentService.medicamentsList(
+        url: next,
+        onSuccess: (data) {
+          _count = data.count!;
+          next = data.next;
+          previous = data.previous;
+          medicamentsList.addAll(data.results!);
+          infinityStatus = LoadingStatus.completed;
+          is_searching = false;
+          update();
+        },
+        onError: (error) {
+          print("=============== Médicament / error ================");
+          print(error);
+          print("==========================================");
+          infinityStatus = LoadingStatus.failed;
+          update();
+        }
+    );
+  }
+
+  Future filterList() async {
+    infinityStatus = LoadingStatus.searching;
+    update();
+    List<int> selectedVoix = [];
+    for (Map<String, dynamic> v in voix ) {
+      if (v['selected']){
+        selectedVoix.add(v['id']);
+      }
+    }
+    await _medicamentService.filterList(
+        url: next,
+        data: {
+            "query": [
+              {"categorie": categories[selectedCategorieIndex.value]['libelle'] },
+              {"voix": selectedVoix },
+              {"search": searchController.text.trim() }
+            ]
+          },
+        onSuccess: (data) {
+          _count = data.count!;
+          next = data.next;
+          previous = data.previous;
+          medicamentsList.addAll(data.results!);
+          infinityStatus = LoadingStatus.completed;
+          is_searching = false;
+          update();
+        },
+        onError: (error) {
+          print("=============== Médicament / error ================");
+          print(error.response);
+          print("==========================================");
+          infinityStatus = LoadingStatus.failed;
+          update();
+        }
+    );
+  }
+
+  Future changeSelectedCategory(int index) async {
+
+    if (selectedCategorieIndex.value != index) {
+      selectedCategorieIndex.value = index;
+      next = null;
+      medicamentsList = [];
+      switch (selectedCategorieIndex.value) {
+        case 0:
+          searchCategory = "Tous";
+          await medicamentList();
+          break;
+        default:
+          await filterList();
+          break;
+      }
+      update();
+    }
   }
 
   void changeVoix(int index) {
@@ -68,11 +188,21 @@ class InventaireController extends GetxController {
     update();
   }
 
-  
-  // Méthode permettant de filtrer les médicaments
-  Future filterMedicamentsList() async {
-    print("Vous avez fait la recherche pour :");
-    print(searchController.text.trim());
+
+  Future filterMedicamentsList({String? key}) async {
+    next = null;
+    medicamentsList = [];
+    searchCategory = key!;
+    if (searchController.text.isNotEmpty || key == "filter") {
+      await filterList();
+    }
+    update();
+  }
+
+  Future searchData(String data) async {
+    if (data.trim().length > 2) {
+      await filterMedicamentsList(key: 'filter');
+    }
   }
 
 }

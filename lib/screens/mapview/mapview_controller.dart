@@ -28,9 +28,7 @@ class MapViewScreenController extends GetxController{
   Rx<BitmapDescriptor> mapMarker =
       BitmapDescriptor.defaultMarkerWithHue(0.0).obs;
   
-  List<LatLng> positions = <LatLng>[
-    // const LatLng(3.866667, 11.516667),
-  ];
+  List<LatLng> positions = <LatLng>[];
 
   CameraPosition _kLake = const CameraPosition(
       bearing: 192.8334901395799,
@@ -74,17 +72,8 @@ class MapViewScreenController extends GetxController{
       target: LatLng(pharmaciesList[value].latitude!,
           pharmaciesList[value].longitude!),
       tilt: 59.440717697143555,
-      zoom: 14.151926040649414,
+      zoom: 10.151926040649414,
     );
-    // positionAnnonce = kLake.target;
-    // if (lastIndex < value) {
-    //   lastIndex = value;
-    //   currentAnnonceIndex.value += 1;
-    // } else {
-    //   lastIndex = value;
-    //   currentAnnonceIndex.value -= 1;
-    // }
-    update();
     final GoogleMapController controller = await mapController.future;
     controller.animateCamera(CameraUpdate.newCameraPosition(_kLake));
     update();
@@ -97,10 +86,8 @@ class MapViewScreenController extends GetxController{
 
     await _pharmacieService.findAll(
       onSuccess: (data) {
-        pharmaciesList.addAll(data.results);
-        for (var i = 0; i < pharmaciesList.length; i++) {
-          positions.add(LatLng(pharmaciesList[i].latitude!, pharmaciesList[i].longitude!));
-        }
+        pharmaciesList.addAll(data.results!);
+        for(Pharmacie p in data.results!){positions.add(LatLng(p.latitude!, p.longitude!));}
         pharmayStatus = LoadingStatus.completed;
         update();
       },
@@ -195,19 +182,19 @@ class MapViewScreenController extends GetxController{
     control.animateCamera(CameraUpdate.newCameraPosition(kLake));
     update();
   }
-
-  Future onCameraIdle() async {
-    update();
-    //when map drag stops
-    List<Placemark> placemarks = await placemarkFromCoordinates(
-        newCameraPosition!.target.latitude,
-        newCameraPosition!.target.longitude
-    );
-    positions.add(LatLng(newCameraPosition!.target.latitude, newCameraPosition!.target.longitude));
-    localisationInformations = placemarks.first;
+  
+  // Future onCameraIdle() async {
+  //   update();
+  //   //when map drag stops
+  //   List<Placemark> placemarks = await placemarkFromCoordinates(
+  //       newCameraPosition!.target.latitude,
+  //       newCameraPosition!.target.longitude
+  //   );
+  //   positions.add(LatLng(newCameraPosition!.target.latitude, newCameraPosition!.target.longitude));
+  //   localisationInformations = placemarks.first;
     
-    update();
-  }
+  //   update();
+  // }
 
   // Clear Location
   Future<void> clearLocation() async {

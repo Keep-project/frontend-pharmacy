@@ -38,41 +38,49 @@ class MapViewScreen extends GetView<MapViewScreenController> {
                   controller.update();
                 },
                 onCameraIdle: () async {
-                  await controller.onCameraIdle();
+                  //await controller.onCameraIdle();
                 },
                 polylines: {
                   Polyline(
                     polylineId: const PolylineId("route"),
                     points: controller.polylineCoordinates,
-                    color: Colors.blue,
+                    color: kTextColor,
                     width: 6,
                   )
                 },
                 markers: {
                   ...List.generate(
-                      controller.positions.length,
-                      (index) => Marker(
-                            markerId: MarkerId("point-id-$index"),
-                            infoWindow: const InfoWindow(
-                                title: "Localisation de la pharmacie",
-                                snippet: "Une pharmacie de garde  24h/24"),
-                            icon: controller.mapMarker.value,
-                            position: controller.positions[index],
-                          )),
-                  controller.currentLocation != null
-                      ? Marker(
-                          markerId: const MarkerId("point-id-0"),
-                          infoWindow: const InfoWindow(
-                              title: "Current location",
-                              snippet: "Ma position actuelle"),
-                          icon: controller.mapMarker.value,
-                          position: LatLng(
-                              controller.currentLocation!.latitude!,
-                              controller.currentLocation!.longitude!),
-                        )
-                      : const Marker(
-                          markerId: MarkerId("point-id-2"),
-                        ),
+                    controller.positions.length,
+                    (index) => Marker(
+                      markerId: MarkerId(
+                          "point-id-${controller.pharmaciesList[index].id}"),
+                      infoWindow: InfoWindow(
+                          onTap: () async {
+                            await controller.onSlidePharmacie(index);
+                          },
+                          title: controller.pharmaciesList[index].nom
+                              .toString()
+                              .capitalizeFirst,
+                          snippet:
+                              "Tel: ${controller.pharmaciesList[index].phone}"),
+                      icon: controller.mapMarker.value,
+                      position: controller.positions[index],
+                    ),
+                  ),
+                  // controller.currentLocation != null
+                  //     ? Marker(
+                  //         markerId: const MarkerId("point-id-0"),
+                  //         infoWindow: const InfoWindow(
+                  //             title: "Current location",
+                  //             snippet: "Ma position actuelle"),
+                  //         icon: controller.mapMarker.value,
+                  //         position: LatLng(
+                  //             controller.currentLocation!.latitude!,
+                  //             controller.currentLocation!.longitude!),
+                  //       )
+                  //     : const Marker(
+                  //         markerId: MarkerId("point-id-2"),
+                  //       ),
                   Marker(
                     markerId: const MarkerId("point-id-1"),
                     infoWindow: const InfoWindow(
@@ -226,8 +234,7 @@ class MapViewScreen extends GetView<MapViewScreenController> {
                       child: Container(
                         height: 140,
                         clipBehavior: Clip.antiAlias,
-                        decoration: const BoxDecoration(
-                        ),
+                        decoration: const BoxDecoration(),
                         child: PageView.builder(
                           itemCount: controller.pharmaciesList.length,
                           onPageChanged: (value) async {
@@ -248,33 +255,39 @@ class MapViewScreen extends GetView<MapViewScreenController> {
                                 children: [
                                   Container(
                                     height: 50,
-                                    padding: const EdgeInsets.symmetric( horizontal: kDefaultPadding),
-                                    decoration: const BoxDecoration(
-                                      color: kTextColor
-                                    ),
-                                    child: Row(
-                                      children: [
-                                        Text(controller.pharmaciesList[index].nom!.toString().capitalize!,
-                                          style: const TextStyle(
-                                            color: kWhiteColor,
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.w600,
-                                            height: 1.3,
-                                          ),
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: kDefaultPadding),
+                                    decoration:
+                                        const BoxDecoration(color: kTextColor),
+                                    child: Row(children: [
+                                      Text(
+                                        controller.pharmaciesList[index].nom!
+                                            .toString()
+                                            .capitalize!,
+                                        style: const TextStyle(
+                                          color: kWhiteColor,
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w600,
+                                          height: 1.3,
                                         ),
-                                        const Spacer(),
-                                        const Icon(CupertinoIcons.phone, size: 26, color: kWhiteColor)
-                                      ]
-                                    ),
+                                      ),
+                                      const Spacer(),
+                                      const Icon(CupertinoIcons.phone,
+                                          size: 26, color: kWhiteColor)
+                                    ]),
                                   ),
                                   const Spacer(),
-                                  Row(
-                                    children: [
-                                      const SizedBox(width: kDefaultPadding),
-                                      const Icon(CupertinoIcons.gift_fill, size: 46, color: kTextColor),
-                                      const SizedBox(width: kDefaultPadding/2),
-                                      Text("Tel: ${controller.pharmaciesList[index].phone!.toString()}",
-                                        style: const TextStyle(
+                                  Row(children: [
+                                    const SizedBox(width: kDefaultPadding),
+                                    const Icon(CupertinoIcons.gift_fill,
+                                        size: 46, color: kTextColor),
+                                    const SizedBox(width: kDefaultPadding / 2),
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          "Tel: ${controller.pharmaciesList[index].phone!.toString()}",
+                                          style: const TextStyle(
                                             color: kDarkColor,
                                             fontSize: 18,
                                             fontWeight: FontWeight.w600,
@@ -282,28 +295,59 @@ class MapViewScreen extends GetView<MapViewScreenController> {
                                             wordSpacing: 1.2,
                                             fontStyle: FontStyle.italic,
                                           ),
-                                      ),
-                                     
-                                    ]
-                                  ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: [
-                                      Text((DateTime.now().hour >= controller.pharmaciesList[index].ouverture!.hour) && (DateTime.now().hour <= controller.pharmaciesList[index].fermeture!.hour) ? "Ouverte" : "Fermée",
-                                        style: const TextStyle(
-                                            color: kOrangeColor,
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w600,
+                                        ),
+                                        Text(
+                                          "Ouverte de ${controller.pharmaciesList[index].ouverture!.hour.toString().padLeft(2, '0')}:${controller.pharmaciesList[index].ouverture!.minute.toString().padLeft(2, '0')} à ${controller.pharmaciesList[index].fermeture!.hour.toString().padLeft(2, '0')}:${controller.pharmaciesList[index].fermeture!.minute.toString().padLeft(2, '0')}",
+                                          textAlign: TextAlign.left,
+                                          style: TextStyle(
+                                            color: kDarkColor.withOpacity(0.6),
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w400,
                                             height: 1.3,
+                                            wordSpacing: 1.2,
+                                            fontStyle: FontStyle.italic,
                                           ),
+                                        ),
+                                      ],
+                                    ),
+                                  ]),
+                                  Row(children: [
+                                    const SizedBox(
+                                        width: kDefaultPadding * 1.5),
+                                    Text(
+                                      "${index + 1}/${controller.pharmaciesList.length}",
+                                      style: TextStyle(
+                                        color: kDarkColor.withOpacity(0.6),
+                                        fontSize: 16,
+                                        height: 1.3,
                                       ),
-                                       const SizedBox(width: kDefaultPadding),
-                                    ]
-                                  ),
+                                    ),
+                                    const Spacer(),
+                                    Text(
+                                      (DateTime.now().hour >=
+                                                  controller
+                                                      .pharmaciesList[index]
+                                                      .ouverture!
+                                                      .hour) &&
+                                              (DateTime.now().hour <=
+                                                  controller
+                                                      .pharmaciesList[index]
+                                                      .fermeture!
+                                                      .hour)
+                                          ? "Ouverte"
+                                          : "Fermée",
+                                      style: const TextStyle(
+                                        color: kOrangeColor,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w600,
+                                        height: 1.3,
+                                      ),
+                                    ),
+                                    const SizedBox(width: kDefaultPadding),
+                                  ]),
                                   const Spacer(),
                                 ],
                               ),
-                              
                             ),
                           ),
                         ),
