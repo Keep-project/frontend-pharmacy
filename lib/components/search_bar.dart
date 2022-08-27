@@ -9,10 +9,12 @@ import 'package:pharmacy_app/core/app_sizes.dart';
 class SearchBar extends StatelessWidget {
   final TextEditingController controller;
   final Function()? onTap;
+  final Function(String text)? onChanged;
   const SearchBar({
     Key? key,
     required this.controller,
     required this.onTap,
+    this.onChanged
   }) : super(key: key);
 
   @override
@@ -24,7 +26,7 @@ class SearchBar extends StatelessWidget {
       ),
       child: TextField(
         controller: controller,
-        onChanged: (String string) {},
+        onChanged: (data) async { await onChanged!(data); },
         style: const TextStyle(
           color: Colors.black,
           fontSize: 16,

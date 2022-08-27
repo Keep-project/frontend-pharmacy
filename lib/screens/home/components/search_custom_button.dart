@@ -10,11 +10,13 @@ class SearchBarAndButton extends StatelessWidget {
   final BuildContext context;
   final dynamic controller;
   final Function()? onTap;
+  final Function(String data)? onChanged;
   const SearchBarAndButton({
     Key? key,
     required this.context,
     required this.controller,
     required this.onTap,
+    this.onChanged,
   }) : super(key: key);
 
   @override
@@ -29,7 +31,7 @@ class SearchBarAndButton extends StatelessWidget {
     return Row(
       children: [
         Expanded(
-          child: SearchBar(controller: controller.searchController, onTap: onTap),
+          child: SearchBar(controller: controller.searchController, onTap: onTap, onChanged: onChanged),
         ),
         const SizedBox(width: 5),
         InkWell(

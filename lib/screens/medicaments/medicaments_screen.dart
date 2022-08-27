@@ -41,6 +41,7 @@ class MedicamentScreen extends GetView<MedicamentscreenController> {
                   SearchBarAndButton(
                       context: context,
                       controller: controller,
+                      onChanged: (data)async{ await controller.searchData(data); },
                       onTap: () async {
                         unfocus();
                         if (controller.searchController.text.isEmpty) {
@@ -49,8 +50,8 @@ class MedicamentScreen extends GetView<MedicamentscreenController> {
                         controller.filterMedicamentsList();
                       }),
                   const SizedBox(height: kDefaultMargin * 2.2),
-                  const TitleText(
-                    title: "Liste des médicaments",
+                  TitleText(
+                    title: "Liste des médicaments (${controller.medicamentsList.length})",
                   ),
                   const SizedBox(height: kDefaultMargin * 2.2),
                   controller.infinityStatus == LoadingStatus.searching &&
@@ -58,7 +59,7 @@ class MedicamentScreen extends GetView<MedicamentscreenController> {
                       ? const Expanded(
                           child: Center(
                             child:
-                                CircularProgressIndicator(color: kOrangeColor),
+                                CircularProgressIndicator(color: kTextColor),
                           ),
                         )
                       : Expanded(

@@ -200,4 +200,10 @@ class HomeScreenController extends GetxController{
     }
     update();
   }
+
+  Future searchData(String data) async {
+    if (data.trim().length > 2) {
+      await filterMedicamentsList(key: 'filter');
+    }
+  }
 }

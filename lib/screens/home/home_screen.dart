@@ -74,10 +74,11 @@ class HomeScreen extends GetView<HomeScreenController> {
                 SearchBarAndButton(
                   context: context,
                   controller: controller,
+                  onChanged: (data)async{ await controller.searchData(data); },
                   onTap: () async {
                     unfocus();
                     if ( controller.searchController.text.isEmpty ) { return; }
-                    controller.filterMedicamentsList();
+                    await controller.filterMedicamentsList();
                   }
                 ),
                 const SizedBox(height: kDefaultMargin * 2.2),
