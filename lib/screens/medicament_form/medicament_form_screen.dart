@@ -89,7 +89,6 @@ class MedicamentFormScreen extends GetView<MedicamentFormController> {
                       : controller.step == 1
                           ? InkWell(
                               onTap: () {
-                                //await controller.register(context);
                                 controller.jumpToStepTwo(context);
                               },
                               child: Container(

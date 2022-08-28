@@ -55,8 +55,8 @@ class MapViewScreen extends GetView<MapViewScreenController> {
                       markerId: MarkerId(
                           "point-id-${controller.pharmaciesList[index].id}"),
                       infoWindow: InfoWindow(
-                          onTap: () async {
-                            await controller.onSlidePharmacie(index);
+                          onTap: () {
+                            controller.onJumpToOtherPage(index);
                           },
                           title: controller.pharmaciesList[index].nom
                               .toString()
@@ -236,6 +236,7 @@ class MapViewScreen extends GetView<MapViewScreenController> {
                         clipBehavior: Clip.antiAlias,
                         decoration: const BoxDecoration(),
                         child: PageView.builder(
+                          controller: controller.pageController,
                           itemCount: controller.pharmaciesList.length,
                           onPageChanged: (value) async {
                             controller.onSlidePharmacie(value);

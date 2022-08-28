@@ -47,4 +47,7 @@ class OnboardingScreenController extends GetxController {
         duration: const Duration(milliseconds: 300), curve: Curves.ease);
     update();
   }
+
+ 
+
 }

@@ -24,6 +24,8 @@ class MapViewScreenController extends GetxController{
 
   TextEditingController textEditingControllerLocalisation = TextEditingController();
 
+  final PageController pageController = PageController();
+
   final Completer<GoogleMapController> mapController = Completer();
   Rx<BitmapDescriptor> mapMarker =
       BitmapDescriptor.defaultMarkerWithHue(0.0).obs;
@@ -209,6 +211,14 @@ class MapViewScreenController extends GetxController{
   Future<void> onPositionChange() async {
     final GoogleMapController control = await mapController.future;
     control.animateCamera(CameraUpdate.newCameraPosition(_kLake));
+  }
+
+  void onJumpToOtherPage(int page) {
+    print("==========================================");
+    print("e suis ici");
+    print('==========================================');
+    pageController.jumpToPage(page) ;
+    update();
   }
 
 }
