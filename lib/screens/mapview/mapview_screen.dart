@@ -325,10 +325,10 @@ class MapViewScreen extends GetView<MapViewScreenController> {
                                     ),
                                     const Spacer(),
                                     Text(
-                                      (("${DateTime.now().hour}:${DateTime.now().minute} AM".compareTo(controller.pharmaciesList[index].ouverture!)) <= 0) 
-                                      && (("${DateTime.now().hour}:${DateTime.now().minute} PM".compareTo(controller.pharmaciesList[index].fermeture!)) >= 0)
-                                          ? "Ouverte"
-                                          : "Fermée",
+                                      ((TimeOfDay(hour: DateTime.now().hour, minute: DateTime.now().minute).format(context).compareTo(controller.pharmaciesList[index].ouverture!)) <= 0) 
+                                        && ((TimeOfDay(hour: DateTime.now().hour, minute: DateTime.now().minute).format(context).compareTo(controller.pharmaciesList[index].fermeture!)) >= 0)
+                                          ? "Ouverte ${TimeOfDay(hour: DateTime.now().hour, minute: DateTime.now().minute).format(context)}  ${controller.pharmaciesList[index].fermeture!}"
+                                          : "Fermée ${TimeOfDay(hour: DateTime.now().hour, minute: DateTime.now().minute).format(context)}  ${controller.pharmaciesList[index].fermeture!}",
                                       style: const TextStyle(
                                         color: kOrangeColor,
                                         fontSize: 16,
