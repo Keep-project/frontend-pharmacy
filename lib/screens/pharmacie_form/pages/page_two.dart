@@ -41,25 +41,19 @@ class PageTwo extends GetView<PharmacieFormScreenController> {
                           controller.update();
                         },
                         onCameraIdle: () async {
-                          //await controller.onCameraIdle();
+                          await controller.onCameraIdle();
                         },
-
-                        // markers: {
-                        //   controller.currentLocation != null
-                        //       ? Marker(
-                        //           markerId: const MarkerId("point-id-0"),
-                        //           infoWindow: const InfoWindow(
-                        //               title: "Current location",
-                        //               snippet: "Ma position actuelle"),
-                        //           icon: controller.mapMarker.value,
-                        //           position: LatLng(
-                        //               controller.currentLocation!.latitude!,
-                        //               controller.currentLocation!.longitude!),
-                        //         )
-                        //       : const Marker(
-                        //           markerId: MarkerId("point-id-2"),
-                        //         ),
-                        // },
+                        markers: {
+                          Marker(
+                            markerId: const MarkerId("point-id-0"),
+                            infoWindow: InfoWindow(
+                                title: "Localisation actuelle",
+                                snippet: controller.localisationInformations != null ? controller.localisationInformations!.country! : "Yoaundé" ),
+                            icon: controller.mapMarker.value,
+                            position: LatLng(controller.position.latitude,
+                                controller.position.longitude),
+                          )
+                        },
                       ),
                     ),
                     Positioned(
@@ -118,6 +112,7 @@ class PageTwo extends GetView<PharmacieFormScreenController> {
                             right: 20,
                             child: Container(
                                 width: double.maxFinite,
+                                height: Get.height * 0.4,
                                 decoration: BoxDecoration(
                                   color: Colors.white,
                                   borderRadius: BorderRadius.circular(10),
@@ -173,9 +168,10 @@ class PageTwo extends GetView<PharmacieFormScreenController> {
                   padding:
                       const EdgeInsets.symmetric(horizontal: kDefaultPadding),
                   child: Column(children: [
-                    const SizedBox(height: kDefaultPadding * 1.2),
+                    const SizedBox(height: kDefaultPadding / 2),
                     CustomTextField2(
                       onChanged: (string) {},
+                      controller: controller.textEditingPays,
                       title: "Pays",
                       hintText: "Ex: Cameroun",
                     ),
@@ -185,8 +181,9 @@ class PageTwo extends GetView<PharmacieFormScreenController> {
                         Expanded(
                           child: CustomTextField2(
                             onChanged: (string) {},
+                            controller: controller.textEditingVille,
                             title: "Ville",
-                            hintText: "Ex: 150",
+                            hintText: "Ex: Yaoundé",
                           ),
                         ),
                         const SizedBox(
@@ -195,8 +192,9 @@ class PageTwo extends GetView<PharmacieFormScreenController> {
                         Expanded(
                           child: CustomTextField2(
                             onChanged: (string) {},
+                            controller: controller.textEditingQuartier,
                             title: "Quartier",
-                            hintText: "Ex: 400",
+                            hintText: "Ex: Mvan",
                           ),
                         ),
                       ],
@@ -236,9 +234,9 @@ class PageTwo extends GetView<PharmacieFormScreenController> {
                         const SizedBox(width: kDefaultPadding),
                         Expanded(
                           child: InkWell(
-                            onTap: () {
+                            onTap: () async {
                               if (controller.step == 2) {
-                                //controller.jumpToStepThree(context);
+                                await controller.addPharmacy(context);
                               }
                             },
                             child: Container(

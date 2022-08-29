@@ -2,6 +2,8 @@
 
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
+
 class PharmacieResponseModel {
   final int? status;
   final bool? success;
@@ -46,8 +48,8 @@ class Pharmacie {
   final int? stock;
   final double? latitude;
   final double? longitude;
-  final DateTime? ouverture;
-  final DateTime? fermeture;
+  final String? ouverture;
+  final String? fermeture;
   final int? user;
   final DateTime? created_at;
   final DateTime? updated_at;
@@ -77,12 +79,8 @@ class Pharmacie {
       stock: json['stock'] ?? 0,
       latitude: json['latitude'] ?? "",
       longitude: json['longitude'] ?? "",
-      ouverture: json['h_ouverture'] == null
-          ? null
-          : DateTime.parse(json['h_ouverture']),
-      fermeture: json['h_fermeture'] == null
-          ? null
-          : DateTime.parse(json['h_fermeture']),
+      ouverture: json['h_ouverture'] ?? "08:00 AM",
+      fermeture: json['h_fermeture'] ?? "20:00 AM",
       user: json['user'] ?? 0,
       created_at: json['created_at'] == null
           ? null

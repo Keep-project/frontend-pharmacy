@@ -11,20 +11,25 @@ import 'package:pharmacy_app/core/api_key.dart';
 import 'package:pharmacy_app/core/app_snackbar.dart';
 import 'package:location/location.dart' as l;
 import 'package:pharmacy_app/core/app_state.dart';
-import 'package:pharmacy_app/models/request_data_models/register_model.dart';
-import 'package:pharmacy_app/router/app_router.dart';
+import 'package:pharmacy_app/models/request_data_models/pharmacie_model.dart';
 import 'package:pharmacy_app/screens/pharmacie_form/pages/pages.dart';
-import 'package:pharmacy_app/services/remote_services/authentication/authentication.dart';
+import 'package:pharmacy_app/services/remote_services/pharmacie/pharmacie.dart';
 
 class PharmacieFormScreenController extends GetxController {
   LoadingStatus pharmacieStatus = LoadingStatus.initial;
 
-  final RemoteAuthenticationService _authService =
-      RemoteAuthenticationServiceImpl();
+  final PharmacieService _pharmacieService =
+      PharmacieServiceImpl();
   final TextEditingController textEditingNom = TextEditingController();
   final TextEditingController textEditingEmail = TextEditingController();
-  final TextEditingController textEditingPassword = TextEditingController();
+  final TextEditingController textEditingPhone = TextEditingController();
+  final TextEditingController textEditingPays = TextEditingController();
+  final TextEditingController textEditingQuartier = TextEditingController();
+  final TextEditingController textEditingVille = TextEditingController();
   final TextEditingController textEditingControllerLocalisation = TextEditingController();
+
+  TimeOfDay ouverture = TimeOfDay.now();
+  TimeOfDay fermeture = TimeOfDay.now();
 
   final PageController pageController = PageController();
   int step = 1;
@@ -33,7 +38,7 @@ final Completer<GoogleMapController> mapController = Completer();
   Rx<BitmapDescriptor> mapMarker =
       BitmapDescriptor.defaultMarkerWithHue(0.0).obs;
   
-  List<LatLng> positions = <LatLng>[];
+  LatLng position = const LatLng(3.866667, 11.516667);
 
   final CameraPosition _kLake = const CameraPosition(
       bearing: 192.8334901395799,
@@ -74,7 +79,6 @@ final Completer<GoogleMapController> mapController = Completer();
   void dispose() {
     textEditingNom.dispose();
     textEditingEmail.dispose();
-    textEditingPassword.dispose();
     super.dispose();
   }
 
@@ -98,9 +102,23 @@ final Completer<GoogleMapController> mapController = Completer();
           details.result!.geometry!.location!.lat!,
           details.result!.geometry!.location!.lng!);
       localisationInformations = placemarks.first;
+      print("==================================");
+      print(localisationInformations);
+      print("==================================");
+      position = LatLng(newCameraPosition!.target.latitude, newCameraPosition!.target.longitude);
+      textEditingPays.text = localisationInformations!.country!;
+      textEditingVille.text = localisationInformations!.administrativeArea!;
+      textEditingQuartier.text = localisationInformations!.subAdministrativeArea!;
+
+      
 
       //loadingLocation = LoadingStatus.completed;
 
+    }
+    else {
+      print("==================================");
+      print(details);
+      print("==================================");
     }
     update();
   }
@@ -118,6 +136,23 @@ final Completer<GoogleMapController> mapController = Completer();
   final List<Widget> pages = const <Widget>[PageOne(), PageTwo()];
 
   void jumpToStepTwo(BuildContext context) {
+
+    if (textEditingNom.text.trim().isEmpty) {
+      CustomSnacbar.showMessage(
+          context, "Veuillez renseigner le nom de votre pharmacie");
+      return;
+    }
+    if (!GetUtils.isEmail(textEditingEmail.text.trim())) {
+      CustomSnacbar.showMessage(
+          context, "Veuillez entrez une adresse mail correcte !");
+      return;
+    }
+
+    if (!GetUtils.isPhoneNumber(textEditingPhone.text.trim())) {
+      CustomSnacbar.showMessage(
+          context, "Veuillez entrez un contact téléphonique correcte !");
+      return;
+    }
     pageController.nextPage(
         duration: const Duration(milliseconds: 300), curve: Curves.ease);
     step = 2;
@@ -132,46 +167,42 @@ final Completer<GoogleMapController> mapController = Completer();
     update();
   }
 
-  Future register(BuildContext context) async {
-    if (textEditingNom.text.trim().toString().length < 4 &&
-        textEditingPassword.text.trim().toString().length < 8) {
-      CustomSnacbar.showMessage(context,
-          "Le champs nom doit avoir au moins 04 caractères et le champs mot de passe au moins 08 caractères !");
-      return;
-    }
-    if (textEditingNom.text.trim().toString().length < 4) {
+  Future addPharmacy(BuildContext context) async {
+    
+    if (textEditingPays.text.trim().isEmpty ) {
       CustomSnacbar.showMessage(
-          context, "Le champs nom doit avoir au moins 04 caractères !");
+          context, "Le champs pays doit être renseigné!");
       return;
     }
-    if (textEditingPassword.text.trim().toString().length < 8) {
-      CustomSnacbar.showMessage(context,
-          "Le champs mot de passe doit avoir au moins 08 caractères !");
-      return;
-    }
-    if (textEditingEmail.text.trim().toString().length < 10) {
+    if (textEditingVille.text.trim().isEmpty ) {
       CustomSnacbar.showMessage(
-          context, "Veuillez entrez une adresse mail correcte !");
+          context, "Le champs ville doit être renseigné!");
       return;
     }
+
+    PharmacieRequestModel pharmacieModel = PharmacieRequestModel(
+      nom: textEditingNom.text.trim(),
+      localisation: "${textEditingPays.text.trim()}-${textEditingVille.text.trim()}-${textEditingQuartier.text.trim()}",
+      phone: textEditingPhone.text.trim(),
+      latitude: position.latitude,
+      longitude: position.longitude,
+      ouverture: ouverture.format(context),
+      fermeture: fermeture.format(context),  
+    );
     pharmacieStatus = LoadingStatus.searching;
     update();
-    await _authService.register(
-      registerReqModel: RegisterRequestModel(
-        username: textEditingNom.text.trim(),
-        email: textEditingEmail.text.trim(),
-        password: textEditingPassword.text.trim(),
-      ),
-      onRegisterSuccess: (data) {
+    await _pharmacieService.add(
+      pharmacieModel: pharmacieModel,
+      onSuccess: (data) {
         CustomSnacbar.showMessage(
-            context, "Compte créer avec succès !\nConnectez vous maintenant.");
-        Get.offAndToNamed(AppRoutes.LOGIN);
+            context, "Pharmacie créée avec succès !");
         pharmacieStatus = LoadingStatus.completed;
         update();
       },
-      onRegisterError: (error) {
-        print("============ Register ===========");
+      onError: (error) {
+        print("============ pharmacy / error ===========");
         print(error.response!.statusCode);
+        print(error.response!);
         if (error.response!.statusCode == 400) {
           CustomSnacbar.showMessage(
               context, "${error.response!.data['message']}");
@@ -183,12 +214,50 @@ final Completer<GoogleMapController> mapController = Completer();
     );
   }
   
-    // Clear Location
+  Future getOpenTimePicker(BuildContext context) async {
+    var t1 = await showTimePicker(
+    context: context,
+    initialTime: TimeOfDay.now(),
+    );
+    if (t1 == null) { return; }
+    ouverture = t1; 
+    print("06:40 AM".compareTo("09:00 AM"));
+    update();
+  }
+
+  Future getCloseTimePicker(BuildContext context) async {
+    var t1 = await showTimePicker(
+    context: context,
+    initialTime: TimeOfDay.now(),
+    );
+    if (t1 == null) { return; }
+    fermeture = t1;
+    update();
+  }
+
+  // Clear Location
   Future<void> clearLocation() async {
     textEditingControllerLocalisation.clear();
     coordinates = [];
     predictions = [];
     localisationInformations = null;
+    update();
+  }
+
+  Future onCameraIdle() async {
+    update();
+    //when map drag stops
+    List<Placemark> placemarks = await placemarkFromCoordinates(
+        newCameraPosition!.target.latitude,
+        newCameraPosition!.target.longitude
+    );
+    position = LatLng(newCameraPosition!.target.latitude, newCameraPosition!.target.longitude);
+    localisationInformations = placemarks.first;
+
+    textEditingPays.text = localisationInformations!.country!;
+    textEditingVille.text = localisationInformations!.administrativeArea!;
+    textEditingQuartier.text = localisationInformations!.subAdministrativeArea!;
+
     update();
   }
 }

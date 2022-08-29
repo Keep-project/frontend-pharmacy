@@ -298,7 +298,7 @@ class MapViewScreen extends GetView<MapViewScreenController> {
                                           ),
                                         ),
                                         Text(
-                                          "Ouverte de ${controller.pharmaciesList[index].ouverture!.hour.toString().padLeft(2, '0')}:${controller.pharmaciesList[index].ouverture!.minute.toString().padLeft(2, '0')} à ${controller.pharmaciesList[index].fermeture!.hour.toString().padLeft(2, '0')}:${controller.pharmaciesList[index].fermeture!.minute.toString().padLeft(2, '0')}",
+                                          "Ouverte de ${controller.pharmaciesList[index].ouverture!} à ${controller.pharmaciesList[index].fermeture!}",
                                           textAlign: TextAlign.left,
                                           style: TextStyle(
                                             color: kDarkColor.withOpacity(0.6),
@@ -325,16 +325,8 @@ class MapViewScreen extends GetView<MapViewScreenController> {
                                     ),
                                     const Spacer(),
                                     Text(
-                                      (DateTime.now().hour >=
-                                                  controller
-                                                      .pharmaciesList[index]
-                                                      .ouverture!
-                                                      .hour) &&
-                                              (DateTime.now().hour <=
-                                                  controller
-                                                      .pharmaciesList[index]
-                                                      .fermeture!
-                                                      .hour)
+                                      (("${DateTime.now().hour}:${DateTime.now().minute} AM".compareTo(controller.pharmaciesList[index].ouverture!)) <= 0) 
+                                      && (("${DateTime.now().hour}:${DateTime.now().minute} PM".compareTo(controller.pharmaciesList[index].fermeture!)) >= 0)
                                           ? "Ouverte"
                                           : "Fermée",
                                       style: const TextStyle(

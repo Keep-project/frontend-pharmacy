@@ -54,6 +54,7 @@ class PharmacieServiceImpl implements PharmacieService {
     ApiRequest(
       url: "${Constants.API_URL}/pharmacie/",
       data: pharmacieModel!.toMap(),
+      token: await _localAuth.getToken(),
     ).post(onSuccess: (data) {
       onSuccess!(data);
     }, onError: (error) {

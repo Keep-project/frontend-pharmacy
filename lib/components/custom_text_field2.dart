@@ -8,6 +8,7 @@ class CustomTextField2 extends StatelessWidget {
   final String? hintText;
   final TextInputType? textInputType;
   final int? maxLines;
+  final TextEditingController? controller;
   const CustomTextField2({
     Key? key,
     required this.onChanged,
@@ -16,6 +17,7 @@ class CustomTextField2 extends StatelessWidget {
     required this.hintText,
     this.textInputType,
     this.maxLines,
+    this.controller,
   }) : super(key: key);
 
   @override
@@ -43,7 +45,8 @@ class CustomTextField2 extends StatelessWidget {
         ),
         child: TextField(
             onChanged: onChanged,
-            keyboardType: textInputType ?? TextInputType.text,
+            controller: controller,
+            keyboardType: textInputType,
             style: const TextStyle(
               color: Colors.black,
               fontWeight: FontWeight.w400,
@@ -55,7 +58,7 @@ class CustomTextField2 extends StatelessWidget {
               isDense: true,
               border: InputBorder.none,
               contentPadding:
-                  const EdgeInsets.only(left: 10, right: 10, top: 14),
+                  const EdgeInsets.only(left: 10, right: 2, top: 14),
               suffixIcon: suffixIcon ??
                   Icon(Icons.add, color: Colors.grey.withOpacity(0)),
             )),

@@ -339,20 +339,8 @@ class DetailScreen extends GetView<DetailScreenController> {
                                                   "Tel: ${controller.medicament!.pharmacies![index].phone!.toString()}",
                                               stock: controller.medicament!
                                                   .pharmacies![index].stock!,
-                                              status: (DateTime.now().hour >=
-                                                          controller
-                                                              .medicament!
-                                                              .pharmacies![
-                                                                  index]
-                                                              .ouverture!
-                                                              .hour) &&
-                                                      (DateTime.now().hour <=
-                                                          controller
-                                                              .medicament!
-                                                              .pharmacies![
-                                                                  index]
-                                                              .fermeture!
-                                                              .hour)
+                                              status: (("${DateTime.now().hour}:${DateTime.now().minute} AM".compareTo(controller.medicament!.pharmacies![index].ouverture!)) <= 0 &&
+                                                      ("${DateTime.now().hour}:${DateTime.now().minute} PM".compareTo(controller.medicament!.pharmacies![index].fermeture!)) >= 0)
                                                   ? "Ouverte"
                                                   : 'Fermée',
                                             ),
