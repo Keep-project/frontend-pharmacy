@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:pharmacy_app/core/app_colors.dart';
 import 'package:pharmacy_app/core/app_sizes.dart';
 import 'package:pharmacy_app/router/app_router.dart';
+import 'package:pharmacy_app/services/local_services/authentication/authentification.dart';
 
 class AppNavigationDrawer extends StatelessWidget {
   const AppNavigationDrawer({Key? key}) : super(key: key);
@@ -107,6 +108,24 @@ class AppNavigationDrawer extends StatelessWidget {
                         title: "Entrepôt/Magasin",
                         iconData: Icons.warehouse_rounded,
                         onTap: () {Get.offAndToNamed(AppRoutes.ENTREPOT);},
+                      ),
+                      const SizedBox(height: kDefaultPadding * 2.5),
+                      const Padding(
+                        padding: EdgeInsets.only(right: kDefaultPadding*2),
+                        child: Divider(
+                          thickness: 0.9,
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      DrawerMenuItem(
+                        title: "Se déconnecter",
+                        iconData: Icons.power_off,
+                        onTap: () async {
+                          final LocalAuthentificationService _localAuth =
+                              LocalAuthentificationServiceImpl();
+                          await _localAuth.deleteToken();
+                          Get.offAllNamed(AppRoutes.LOGIN);
+                        },
                       ),
                     ],
                   ),      

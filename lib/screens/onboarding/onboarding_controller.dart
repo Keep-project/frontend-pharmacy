@@ -42,6 +42,12 @@ class OnboardingScreenController extends GetxController {
     }
   }
 
+  @override
+  void onInit() async {
+    await verifyToken();
+    super.onInit();
+  }
+
   void onPressChangedPage() {
     pageController.nextPage(
         duration: const Duration(milliseconds: 300), curve: Curves.ease);

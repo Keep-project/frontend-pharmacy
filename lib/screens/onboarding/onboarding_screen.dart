@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pharmacy_app/core/app_colors.dart';
 import 'package:pharmacy_app/core/app_sizes.dart';
+import 'package:pharmacy_app/router/app_router.dart';
 import 'package:pharmacy_app/screens/onboarding/onboarding_controller.dart';
 
 class OnboardingScreen extends GetView<OnboardingScreenController> {
@@ -71,7 +72,7 @@ class OnboardingScreen extends GetView<OnboardingScreenController> {
                             onTap: () {
                               if (controller.currentPageIndex ==
                                   controller.pages.length - 1) {
-                                controller.verifyToken();
+                                Get.offAllNamed(AppRoutes.LOGIN);
                                 return;
                               }
                               controller.onPressChangedPage();
