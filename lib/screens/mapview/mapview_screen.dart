@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:pharmacy_app/core/app_colors.dart';
 import 'package:pharmacy_app/core/app_sizes.dart';
 import 'package:pharmacy_app/screens/mapview/mapview.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class MapViewScreen extends GetView<MapViewScreenController> {
   const MapViewScreen({Key? key}) : super(key: key);
@@ -273,8 +274,11 @@ class MapViewScreen extends GetView<MapViewScreenController> {
                                         ),
                                       ),
                                       const Spacer(),
-                                      const Icon(CupertinoIcons.phone,
-                                          size: 26, color: kWhiteColor)
+                                      InkWell(
+                                        onTap: () async { launchUrl(Uri.parse("tel://${controller.pharmaciesList[index].phone!}")); },
+                                        child: const Icon(CupertinoIcons.phone,
+                                            size: 26, color: kWhiteColor),
+                                      )
                                     ]),
                                   ),
                                   const Spacer(),
@@ -324,8 +328,10 @@ class MapViewScreen extends GetView<MapViewScreenController> {
                                       ),
                                     ),
                                     const Spacer(),
-                                    Text(((DateTime.now().hour >= int.parse(controller.pharmaciesList[index].ouverture!.split(":")[0])) && controller.pharmaciesList[index].ouverture!.endsWith("AM"))
-                                        && ((DateTime.now().hour <= int.parse(controller.pharmaciesList[index].fermeture!.split(":")[0])) && controller.pharmaciesList[index].fermeture!.endsWith("PM"))
+                                    Text(
+                                      ((DateTime.now().hour >= (int.parse(controller.pharmaciesList[index].ouverture!.split(":")[0]))) && controller.pharmaciesList[index].ouverture!.endsWith("AM"))
+                                      &&
+                                      ((DateTime.now().hour <= (int.parse(controller.pharmaciesList[index].fermeture!.split(":")[0])) + 12) && controller.pharmaciesList[index].fermeture!.endsWith("PM"))
                                           ? "Ouverte"
                                           : "Fermée",
                                       style: const TextStyle(
