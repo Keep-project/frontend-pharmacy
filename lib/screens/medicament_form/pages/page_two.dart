@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:pharmacy_app/components/custom_dropdown.dart';
 import 'package:pharmacy_app/components/custom_text_field2.dart';
 import 'package:pharmacy_app/core/app_colors.dart';
@@ -20,6 +21,7 @@ class PageTwo extends GetView<MedicamentFormController> {
                     Expanded(
                       child: CustomTextField2(
                         onChanged: (string) {},
+                        textInputType: TextInputType.number,
                         title: "Stock limite pour alerte",
                         hintText: "Ex: 150",
                       ),
@@ -30,13 +32,14 @@ class PageTwo extends GetView<MedicamentFormController> {
                     Expanded(
                       child: CustomTextField2(
                         onChanged: (string) {},
+                        textInputType: TextInputType.number,
                         title: "Stock désiré optimal",
                         hintText: "Ex: 400",
                       ),
                     ),
                   ],
                 ),
-                const SizedBox(height: kDefaultPadding -4),
+                const SizedBox(height: kDefaultPadding - 4),
                 Row(
                   children: [
                     Expanded(
@@ -85,9 +88,26 @@ class PageTwo extends GetView<MedicamentFormController> {
                           ),
                           const SizedBox(height: 5),
                           CustomIconButton(
-                            title: "10/02/2010",
+                            title: controller.datePremptionToString,
                             iconData: Icons.calendar_month,
-                            onTap: (){},
+                            onTap: () async {
+                              DateTime? newdate = await showDatePicker(
+                                context: context,
+                                initialDate: controller.datePremption,
+                                firstDate: DateTime(
+                                    controller.datePremption.year - 10),
+                                lastDate: DateTime(
+                                    controller.datePremption.year + 10),
+                              );
+                              if (newdate == null) {
+                                return;
+                              }
+                              controller.datePremptionToString =
+                                  "${newdate.day.toString().padLeft(2, '0')}/${newdate.month.toString().padLeft(2, '0')}/${newdate.year}";
+                              controller.datePremption = newdate;
+
+                              controller.update();
+                            },
                           ),
                         ],
                       ),
@@ -102,7 +122,7 @@ class PageTwo extends GetView<MedicamentFormController> {
                           const Opacity(
                             opacity: 0.6,
                             child: Text(
-                              "Choisir une photo",
+                              "Ajouter une image",
                               style: TextStyle(
                                 fontSize: 16,
                                 color: kDarkColor,
@@ -113,7 +133,12 @@ class PageTwo extends GetView<MedicamentFormController> {
                           CustomIconButton(
                             title: "10/02/2010",
                             iconData: Icons.camera_alt_outlined,
-                            onTap: (){},
+                            onTap: () async {
+                              await controller.chooseImage(ImageSource.gallery);
+                            },
+                            onLongPress: () async {
+                              await controller.chooseImage(ImageSource.camera);
+                            },
                           ),
                         ],
                       ),
@@ -129,30 +154,36 @@ class CustomIconButton extends StatelessWidget {
   final String title;
   final IconData iconData;
   final Function()? onTap;
+  final Function()? onLongPress;
   const CustomIconButton({
-    Key? key, required this.title, required this.iconData, this.onTap,
+    Key? key,
+    required this.title,
+    required this.iconData,
+    this.onTap,
+    this.onLongPress,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
+      onLongPress: onLongPress,
       child: Container(
           width: double.infinity,
-          padding: const EdgeInsets.only(
-              left: 10, top: 10, bottom: 10, right: 10),
+          padding:
+              const EdgeInsets.only(left: 10, top: 10, bottom: 10, right: 10),
           decoration: BoxDecoration(
             color: Colors.white,
             border: Border.all(
               width: 1,
               color: kTextColor2.withOpacity(0.3),
             ),
-            borderRadius:
-                BorderRadius.circular(kDefaultRadius - 2),
+            borderRadius: BorderRadius.circular(kDefaultRadius - 2),
           ),
           child: Row(
             children: [
-              Text(title,
+              Text(
+                title,
                 style: TextStyle(
                   fontSize: 14,
                   color: kDarkColor.withOpacity(0.5),

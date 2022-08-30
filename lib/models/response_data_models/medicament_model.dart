@@ -52,6 +52,7 @@ class Medicament {
   final int? stockOptimal;
   final String? description;
   final String? posologie;
+  final String? pharmaciename;
   final int? categorie;
   final int? user;
   final int? voix;
@@ -78,6 +79,7 @@ class Medicament {
     this.stockOptimal,
     this.description,
     this.posologie,
+    this.pharmaciename,
     this.categorie,
     this.user,
     this.voix,
@@ -107,6 +109,7 @@ class Medicament {
       stockOptimal: json["stockOptimal"] ?? 0,
       description: json["description"] ?? "",
       posologie : json["posologie"] ??"",
+      pharmaciename: json["get_pharmacie_name"] ?? "",
       categorie: json["categorie"]?? 0,
       user: json["user"]?? 0,
       voix: json["voix"]?? 0,
@@ -139,6 +142,7 @@ class Medicament {
       'stockOptimal': stockOptimal,
       'description': description,
       'posologie': posologie,
+      'pharmaciename': pharmaciename,
       'categorie': categorie,
       'user': user,
       'voix': voix,

@@ -79,6 +79,11 @@ final Completer<GoogleMapController> mapController = Completer();
   void dispose() {
     textEditingNom.dispose();
     textEditingEmail.dispose();
+    textEditingControllerLocalisation.dispose();
+    textEditingPays.dispose();
+    textEditingPhone.dispose();
+    textEditingQuartier.dispose();
+    textEditingVille.dispose();
     super.dispose();
   }
 

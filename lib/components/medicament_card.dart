@@ -5,20 +5,21 @@ import 'package:pharmacy_app/core/app_sizes.dart';
 import 'package:pharmacy_app/models/response_data_models/medicament_model.dart';
 import 'package:pharmacy_app/router/app_router.dart';
 
-
 class MedicamentCard extends StatelessWidget {
   final Medicament medicament;
   const MedicamentCard({
-    Key? key, required this.medicament,
+    Key? key,
+    required this.medicament,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: (){Get.toNamed(AppRoutes.DETAILS, arguments: medicament.id.toString());},
+      onTap: () {
+        Get.toNamed(AppRoutes.DETAILS, arguments: medicament.id.toString());
+      },
       child: Container(
-        margin:
-            const EdgeInsets.only(bottom: kDefaultMargin * 1.5),
+        margin: const EdgeInsets.only(bottom: kDefaultMargin * 1.5),
         padding: const EdgeInsets.all(5),
         height: 220,
         width: Get.width / 2 - 32,
@@ -52,9 +53,7 @@ class MedicamentCard extends StatelessWidget {
                             image: DecorationImage(
                               fit: BoxFit.cover,
                               image: NetworkImage(medicament.photo!),
-                            )
-                          )
-                        ),
+                            ))),
                   ),
                   Positioned(
                     top: 0,
@@ -87,8 +86,7 @@ class MedicamentCard extends StatelessWidget {
                         ),
                         child: Row(
                           children: const [
-                            Icon(Icons.room,
-                                color: kOrangeColor, size: 16),
+                            Icon(Icons.room, color: kOrangeColor, size: 16),
                             Text(
                               "Yaoundé, Cameroun",
                               style: TextStyle(
@@ -107,39 +105,30 @@ class MedicamentCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(medicament.nom!.toString().capitalizeFirst!,
+                    Text(
+                      medicament.nom!.toString().capitalizeFirst!,
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
                       style: TextStyle(
-                        color: Colors.black.withOpacity(0.5),
+                        color: Colors.black.withOpacity(0.8),
                         fontWeight: FontWeight.w600,
                         fontSize: 12,
                       ),
                     ),
-                    Row(children: [
-                      RichText(
-                        text: TextSpan(children: [
-                          TextSpan(
-                            text: "Périme le ",
-                            style: TextStyle(
-                              color:
-                                  Colors.black.withOpacity(0.5),
-                              fontWeight: FontWeight.w600,
-                              fontSize: 9,
-                            ),
-                          ),
-                          TextSpan(
-                              text: medicament.dateToString(),
-                              style: TextStyle(
-                                color:
-                                    Colors.black.withOpacity(0.5),
-                                fontWeight: FontWeight.w600,
-                                fontSize: 9,
-                              )),
-                        ]),
+                    Text(
+                      medicament.pharmaciename!,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        color: Colors.black.withOpacity(0.6),
+                        fontWeight: FontWeight.w500,
+                        fontSize: 13,
                       ),
+                    ),
+                    Row(children: [
                       const Spacer(),
-                      Text(medicament.masse!,
+                      Text(
+                        medicament.masse!,
                         style: const TextStyle(
                           color: kOrangeColor,
                           fontWeight: FontWeight.w600,
@@ -155,4 +144,3 @@ class MedicamentCard extends StatelessWidget {
     );
   }
 }
-

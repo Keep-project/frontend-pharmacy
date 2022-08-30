@@ -62,7 +62,7 @@ class HomeScreen extends GetView<HomeScreenController> {
                     ),
                   ),
                   TextSpan(
-                    text: "Poket Pharma",
+                    text: "Pocket Pharma",
                     style: TextStyle(
                       color: kPrimaryColor,
                       fontSize: 20,
