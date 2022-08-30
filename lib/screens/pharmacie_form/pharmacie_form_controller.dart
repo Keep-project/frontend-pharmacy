@@ -221,9 +221,10 @@ final Completer<GoogleMapController> mapController = Completer();
     );
     if (t1 == null) { return; }
     ouverture = t1; 
-    print("06:40 AM".compareTo("09:00 AM"));
     update();
   }
+
+ 
 
   Future getCloseTimePicker(BuildContext context) async {
     var t1 = await showTimePicker(

@@ -214,11 +214,9 @@ class MapViewScreenController extends GetxController{
   }
 
   void onJumpToOtherPage(int page) {
-    print("==========================================");
-    print("e suis ici");
-    print('==========================================');
     pageController.jumpToPage(page) ;
     update();
   }
+
 
 }

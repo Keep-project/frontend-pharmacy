@@ -12,6 +12,7 @@ import 'package:pharmacy_app/core/app_state.dart';
 import 'package:pharmacy_app/router/app_router.dart';
 import 'package:pharmacy_app/screens/details/components/pharmacie_card.dart';
 import 'package:pharmacy_app/screens/details/details.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class DetailScreen extends GetView<DetailScreenController> {
   const DetailScreen({Key? key}) : super(key: key);
@@ -330,19 +331,23 @@ class DetailScreen extends GetView<DetailScreenController> {
                                           ...List.generate(
                                             controller
                                                 .medicament!.pharmacies!.length,
-                                            (index) => PharmacyCard(
-                                              name: controller.medicament!
-                                                  .pharmacies![index].nom!
-                                                  .toString()
-                                                  .capitalize!,
-                                              phone:
-                                                  "Tel: ${controller.medicament!.pharmacies![index].phone!.toString()}",
-                                              stock: controller.medicament!
-                                                  .pharmacies![index].stock!,
-                                              status: (("${DateTime.now().hour}:${DateTime.now().minute} AM".compareTo(controller.medicament!.pharmacies![index].ouverture!)) <= 0 &&
-                                                      ("${DateTime.now().hour}:${DateTime.now().minute} PM".compareTo(controller.medicament!.pharmacies![index].fermeture!)) >= 0)
-                                                  ? "Ouverte"
-                                                  : 'Fermée',
+                                            (index) => InkWell(
+                                              onTap: () async { launchUrl(Uri.parse("tel://${controller.medicament!.pharmacies![index].phone!}")); },
+                                              child: PharmacyCard(
+                                                name: controller.medicament!
+                                                    .pharmacies![index].nom!
+                                                    .toString()
+                                                    .capitalize!,
+                                                phone:
+                                                    "Tel: ${controller.medicament!.pharmacies![index].phone!.toString()}",
+                                                stock: controller.medicament!
+                                                    .pharmacies![index].stock!,
+                                                status: ( ((DateTime.now().hour >= (int.parse(controller.medicament!.pharmacies![index].ouverture!.split(":")[0]))) && controller.medicament!.pharmacies![index].ouverture!.endsWith("AM"))
+                                                &&
+                                                ((DateTime.now().hour <= (int.parse(controller.medicament!.pharmacies![index].fermeture!.split(":")[0])) + 12) && controller.medicament!.pharmacies![index].fermeture!.endsWith("PM")))
+                                                    ? "Ouverte"
+                                                    : 'Fermée',
+                                              ),
                                             ),
                                           ),
                                         ])
