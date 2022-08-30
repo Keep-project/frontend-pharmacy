@@ -45,6 +45,7 @@ class Pharmacie {
   final String? nom;
   final String? localisation;
   final String? phone;
+  final String? email;
   final int? stock;
   final double? latitude;
   final double? longitude;
@@ -59,6 +60,7 @@ class Pharmacie {
       this.nom,
       this.localisation,
       this.phone,
+      this.email,
       this.stock,
       this.latitude,
       this.longitude,
@@ -76,6 +78,7 @@ class Pharmacie {
       nom: json['nom'] ?? "",
       localisation: json['localisation'] ?? "",
       phone: json['tel'] ?? "",
+      email: json['email'] ?? "",
       stock: json['stock'] ?? 0,
       latitude: json['latitude'] ?? "",
       longitude: json['longitude'] ?? "",
@@ -94,6 +97,7 @@ class Pharmacie {
       'nom': nom,
       'localisation': localisation,
       'phone': phone,
+      'email': email,
       'stock': stock,
       'latitude': latitude,
       'longitude': longitude,
