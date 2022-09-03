@@ -87,12 +87,38 @@ class MapViewScreenController extends GetxController {
       latitude: currentLocation!.latitude ?? 3.866667,
       distance: distance ,
       onSuccess: (data) {
+        pharmaciesList.clear();
+        positions.clear();
         pharmaciesList.addAll(data.results!);
       for (Pharmacie p in data.results!) {
         positions.add(LatLng(p.latitude!, p.longitude!));
       }
       pharmayStatus = LoadingStatus.completed;
       update();
+    }, onError: (error) {
+      print("============================");
+      print(error);
+      print("============================");
+      pharmayStatus = LoadingStatus.failed;
+      update();
+    });
+  }
+
+  Future filterPharmacies() async {
+    pharmayStatus = LoadingStatus.searching;
+    update();
+    await _pharmacieService.filter(
+      search: textEditingControllerLocalisation.text.trim(),
+      onSuccess: (data) {
+        pharmaciesList.clear();
+        positions.clear();
+        print(data);
+        pharmaciesList.addAll(data.results!);
+        for (Pharmacie p in data.results!) {
+          positions.add(LatLng(p.latitude!, p.longitude!));
+        }
+        pharmayStatus = LoadingStatus.completed;
+        update();
     }, onError: (error) {
       print("============================");
       print(error);
@@ -164,6 +190,8 @@ class MapViewScreenController extends GetxController {
               .longitude!), // Initialisation de la position sur Yaoundé
       zoom: 10.4746,
     );
+    final GoogleMapController control = await mapController.future;
+    control.animateCamera(CameraUpdate.newCameraPosition(kGooglePlex));
     await getPharmacies();
 
 
@@ -219,18 +247,17 @@ class MapViewScreenController extends GetxController {
     update();
   }
 
-  // Future onCameraIdle() async {
-  //   update();
-  //   //when map drag stops
-  //   List<Placemark> placemarks = await placemarkFromCoordinates(
-  //       newCameraPosition!.target.latitude,
-  //       newCameraPosition!.target.longitude
-  //   );
-  //   positions.add(LatLng(newCameraPosition!.target.latitude, newCameraPosition!.target.longitude));
-  //   localisationInformations = placemarks.first;
+  Future onCameraIdle() async {
+    update();
+    //when map drag stops
+    List<Placemark> placemarks = await placemarkFromCoordinates(
+        newCameraPosition!.target.latitude,
+        newCameraPosition!.target.longitude
+    );
+    localisationInformations = placemarks.first;
 
-  //   update();
-  // }
+    update();
+  }
 
   // Clear Location
   Future<void> clearLocation() async {
@@ -238,6 +265,7 @@ class MapViewScreenController extends GetxController {
     coordinates = [];
     predictions = [];
     localisationInformations = null;
+    await getPharmacies();
     update();
   }
 

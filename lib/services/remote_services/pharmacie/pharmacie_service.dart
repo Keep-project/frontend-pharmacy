@@ -14,6 +14,12 @@ abstract class PharmacieService {
     Function(dynamic error)? onError,
   });
 
+  Future<void> filter({
+    String? search,
+    Function(dynamic data)? onSuccess,
+    Function(dynamic error)? onError,
+  });
+
   Future<void> add({
     PharmacieRequestModel? pharmacieModel,
     Function(dynamic data)? onSuccess,

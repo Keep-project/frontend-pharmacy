@@ -68,20 +68,20 @@ class MapViewScreen extends GetView<MapViewScreenController> {
                       position: controller.positions[index],
                     ),
                   ),
-                  // controller.currentLocation != null
-                  //     ? Marker(
-                  //         markerId: const MarkerId("point-id-0"),
-                  //         infoWindow: const InfoWindow(
-                  //             title: "Current location",
-                  //             snippet: "Ma position actuelle"),
-                  //         icon: controller.mapMarker.value,
-                  //         position: LatLng(
-                  //             controller.currentLocation!.latitude!,
-                  //             controller.currentLocation!.longitude!),
-                  //       )
-                  //     : const Marker(
-                  //         markerId: MarkerId("point-id-2"),
-                  //       ),
+                  controller.currentLocation != null
+                      ? Marker(
+                          markerId: const MarkerId("point-id-0"),
+                          infoWindow: const InfoWindow(
+                              title: "Current location",
+                              snippet: "Ma position actuelle"),
+                          icon: controller.mapMarker.value,
+                          position: LatLng(
+                              controller.currentLocation!.latitude!,
+                              controller.currentLocation!.longitude!),
+                        )
+                      : const Marker(
+                          markerId: MarkerId("point-id-2"),
+                        ),
                   Marker(
                     markerId: const MarkerId("point-id-1"),
                     infoWindow: const InfoWindow(
@@ -137,11 +137,10 @@ class MapViewScreen extends GetView<MapViewScreenController> {
                               child: TextField(
                                 controller: controller
                                     .textEditingControllerLocalisation,
-                                onChanged: (String value) {
-                                  if ((value.toString().isNotEmpty) &&
-                                      (value.toString().trim() !=
-                                          controller.searchText)) {
-                                    controller.autoCompleteSearch(value);
+                                onChanged: (String value) async {
+                                  if (value.toString().isNotEmpty) {
+                                    await controller.filterPharmacies();
+                                    //controller.autoCompleteSearch(value);
                                   } else {
                                     controller.predictions = [];
                                     controller.update();
@@ -152,6 +151,7 @@ class MapViewScreen extends GetView<MapViewScreenController> {
                                         color: Colors.red, size: 24),
                                     suffixIcon: GestureDetector(
                                         onTap: () async {
+                                          unfocus();
                                           await controller.clearLocation();
                                         },
                                         child: const Icon(Icons.close,
@@ -167,67 +167,96 @@ class MapViewScreen extends GetView<MapViewScreenController> {
                               ),
                             ),
                           ),
-                          const SizedBox(
-                            width: kDefaultPadding,
-                          ),
-                          const SizedBox(height: 16),
+                          const SizedBox(width: kDefaultPadding / 3),
+                          GestureDetector(
+                              onTap: () {
+                                showDialog(
+                                    context: context,
+                                    builder: (context) =>
+                                        FilterDialog(controller: controller));
+                              },
+                              child: const Icon(Icons.more_vert,
+                                  size: 26, color: kDarkColor)),
+                          const SizedBox(width: kDefaultPadding / 2),
                         ],
                       ),
                     ],
                   ),
                 ),
               ),
-              controller.predictions.isNotEmpty
-                  ? Positioned(
-                      top: 60,
-                      left: 20,
-                      right: 20,
-                      child: Container(
-                          width: double.maxFinite,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: ListView.builder(
-                              shrinkWrap: true,
-                              itemCount: controller.predictions.length,
-                              itemBuilder: (controll, ip) {
-                                return InkWell(
-                                  onTap: () async {
-                                    unfocus();
-                                    await controller.onSelectPlace(ip);
-                                  },
-                                  child: Container(
-                                    decoration: const BoxDecoration(),
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        ListTile(
-                                            horizontalTitleGap: 0,
-                                            leading: const Icon(Icons.room,
-                                                color: kOrangeColor,
-                                                size: kDefaultPadding),
-                                            title: Text(
-                                                '${controller.predictions[ip].description}',
-                                                overflow: TextOverflow.ellipsis,
-                                                maxLines: 2,
-                                                style: const TextStyle(
-                                                    color: kDarkColor,
-                                                    fontSize: 15,
-                                                    fontWeight:
-                                                        FontWeight.bold))),
-                                        controller.predictions.length - 1 != ip
-                                            ? const Divider(
-                                                thickness: 2,
-                                              )
-                                            : const Text(""),
-                                      ],
-                                    ),
-                                  ),
-                                );
-                              })),
-                    )
+              controller.pharmaciesList.isEmpty ? Positioned(
+                bottom: kDefaultMargin / 2,
+                left: 0,
+                right: 0,
+                child: Container(
+                  height: 140,
+                  margin:
+                      const EdgeInsets.symmetric(horizontal: kDefaultMargin),
+                  decoration: BoxDecoration(
+                    color: kWhiteColor,
+                    borderRadius: BorderRadius.circular(kDefaultRadius)
+                  ),
+                  child: const Center(
+                    child: Text("Aucune pharmacie trouvée !!!",
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                  ),
+                ),
+              )
+              // controller.predictions.isNotEmpty
+              //     ? Positioned(
+              //         top: 60,
+              //         left: 20,
+              //         right: 20,
+              //         child: Container(
+              //             width: double.maxFinite,
+              //             decoration: BoxDecoration(
+              //               color: Colors.white,
+              //               borderRadius: BorderRadius.circular(10),
+              //             ),
+              //             child: ListView.builder(
+              //                 shrinkWrap: true,
+              //                 itemCount: controller.predictions.length,
+              //                 itemBuilder: (controll, ip) {
+              //                   return InkWell(
+              //                     onTap: () async {
+              //                       unfocus();
+              //                       await controller.onSelectPlace(ip);
+              //                     },
+              //                     child: Container(
+              //                       decoration: const BoxDecoration(),
+              //                       child: Column(
+              //                         mainAxisAlignment:
+              //                             MainAxisAlignment.center,
+              //                         children: [
+              //                           ListTile(
+              //                               horizontalTitleGap: 0,
+              //                               leading: const Icon(Icons.room,
+              //                                   color: kOrangeColor,
+              //                                   size: kDefaultPadding),
+              //                               title: Text(
+              //                                   '${controller.predictions[ip].description}',
+              //                                   overflow: TextOverflow.ellipsis,
+              //                                   maxLines: 2,
+              //                                   style: const TextStyle(
+              //                                       color: kDarkColor,
+              //                                       fontSize: 15,
+              //                                       fontWeight:
+              //                                           FontWeight.bold))),
+              //                           controller.predictions.length - 1 != ip
+              //                               ? const Divider(
+              //                                   thickness: 2,
+              //                                 )
+              //                               : const Text(""),
+              //                         ],
+              //                       ),
+              //                     ),
+              //                   );
+              //                 })),
+              //       )
                   : Positioned(
                       bottom: kDefaultMargin / 2,
                       left: 0,
@@ -275,7 +304,10 @@ class MapViewScreen extends GetView<MapViewScreenController> {
                                       ),
                                       const Spacer(),
                                       InkWell(
-                                        onTap: () async { launchUrl(Uri.parse("tel://${controller.pharmaciesList[index].phone!}")); },
+                                        onTap: () async {
+                                          launchUrl(Uri.parse(
+                                              "tel://${controller.pharmaciesList[index].phone!}"));
+                                        },
                                         child: const Icon(CupertinoIcons.phone,
                                             size: 26, color: kWhiteColor),
                                       )
@@ -288,7 +320,8 @@ class MapViewScreen extends GetView<MapViewScreenController> {
                                         size: 46, color: kTextColor),
                                     const SizedBox(width: kDefaultPadding / 2),
                                     Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Text(
                                           "Tel: ${controller.pharmaciesList[index].phone!.toString()}",
@@ -329,9 +362,24 @@ class MapViewScreen extends GetView<MapViewScreenController> {
                                     ),
                                     const Spacer(),
                                     Text(
-                                      ((DateTime.now().hour >= (int.parse(controller.pharmaciesList[index].ouverture!.split(":")[0]))) && controller.pharmaciesList[index].ouverture!.endsWith("AM"))
-                                      &&
-                                      ((DateTime.now().hour <= (int.parse(controller.pharmaciesList[index].fermeture!.split(":")[0])) + 12) && controller.pharmaciesList[index].fermeture!.endsWith("PM"))
+                                      ((DateTime.now().hour >=
+                                                      (int.parse(controller
+                                                          .pharmaciesList[index]
+                                                          .ouverture!
+                                                          .split(":")[0]))) &&
+                                                  controller.pharmaciesList[index].ouverture!
+                                                      .endsWith("AM")) &&
+                                              ((DateTime.now().hour <=
+                                                      (int.parse(controller
+                                                              .pharmaciesList[
+                                                                  index]
+                                                              .fermeture!
+                                                              .split(":")[0])) +
+                                                          12) &&
+                                                  controller
+                                                      .pharmaciesList[index]
+                                                      .fermeture!
+                                                      .endsWith("PM"))
                                           ? "Ouverte"
                                           : "Fermée",
                                       style: const TextStyle(
@@ -355,5 +403,110 @@ class MapViewScreen extends GetView<MapViewScreenController> {
         ),
       );
     });
+  }
+}
+
+class FilterDialog extends StatelessWidget {
+  final dynamic controller;
+  const FilterDialog({
+    Key? key,
+    this.controller,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      backgroundColor: kWhiteColor,
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(kDefaultRadius)),
+      alignment: Alignment.center,
+      child: Container(
+        height: 228,
+        padding: const EdgeInsets.all(kDefaultPadding),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              "Saisisez le rayon de recherche",
+              style: TextStyle(
+                fontSize: 18,
+                color: kTextColor2,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            Text(
+              "en K.M",
+              style: TextStyle(
+                color: kDarkColor.withOpacity(0.6),
+                fontWeight: FontWeight.w400,
+              ),
+            ),
+            const SizedBox(height: kDefaultMargin / 2),
+            const Divider(
+              thickness: 1.5,
+            ),
+            const SizedBox(height: kDefaultMargin * 1.5),
+            Container(
+              height: 45,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                border: Border.all(
+                  width: 1.5,
+                  color: kTextColor2,
+                ),
+                borderRadius: BorderRadius.circular(kDefaultRadius / 2),
+              ),
+              child: TextField(
+                onChanged: (String value) async {
+                  if (value.toString().isNotEmpty) {
+                    controller.distance = int.parse(value.trim());
+                  }
+                },
+                keyboardType: TextInputType.number,
+                decoration: const InputDecoration(
+                    enabledBorder: InputBorder.none,
+                    focusedBorder: InputBorder.none,
+                    hintText: "rayon de recherche",
+                    contentPadding: EdgeInsets.only(
+                        left: 10, top: 3, bottom: 8, right: 10)),
+              ),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                InkWell(
+                  onTap: () async {
+                    Get.back();
+                    await controller.getPharmacies();
+                  },
+                  child: Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: kDefaultPadding),
+                    height: 45,
+                    decoration: BoxDecoration(
+                      color: kTextColor,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: const Center(
+                        child: Text(
+                      "Rechercher",
+                      style: TextStyle(
+                        color: kWhiteColor,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    )),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: kDefaultMargin / 2),
+          ],
+        ),
+      ),
+    );
   }
 }

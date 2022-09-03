@@ -31,15 +31,15 @@ class PharmacieServiceImpl implements PharmacieService {
   }
 
   @override
-  Future findAll({
-    double? longitude,
-    double? latitude,
-    int? distance,
-    Function(dynamic data)? onSuccess,
+  Future findAll(
+      {double? longitude,
+      double? latitude,
+      int? distance,
+      Function(dynamic data)? onSuccess,
       Function(dynamic date)? onError}) async {
     ApiRequest(
       url: "${Constants.API_URL}/pharmacie/proche/$distance",
-      data: { "longitude": longitude, "latitude": latitude },
+      data: {"longitude": longitude, "latitude": latitude},
       token: await _localAuth.getToken(),
     ).post(onSuccess: (data) {
       onSuccess!(PharmacieResponseModel.fromMap(data));
@@ -79,6 +79,24 @@ class PharmacieServiceImpl implements PharmacieService {
       data: pharmacieModel!.toMap(),
     ).put(onSuccess: (data) {
       onSuccess!(data);
+    }, onError: (error) {
+      if (error != null) {
+        onError!(error);
+      }
+    });
+  }
+
+  @override
+  Future<void> filter(
+      {String? search,
+      Function(dynamic data)? onSuccess,
+      Function(dynamic error)? onError}) async {
+    ApiRequest(
+      url: "${Constants.API_URL}/pharmacie/filter/",
+      data: { 'search': search },
+      token: await _localAuth.getToken(),
+    ).post(onSuccess: (data) {
+      onSuccess!(PharmacieResponseModel.fromMap(data));
     }, onError: (error) {
       if (error != null) {
         onError!(error);
