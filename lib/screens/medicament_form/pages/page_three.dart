@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pharmacy_app/components/custom_dropdown.dart';
 import 'package:pharmacy_app/components/custom_text_field2.dart';
-import 'package:pharmacy_app/core/app_colors.dart';
 import 'package:pharmacy_app/core/app_sizes.dart';
 import 'package:pharmacy_app/screens/medicament_form/medicament_form.dart';
 
@@ -17,6 +15,7 @@ class PageThree extends GetView<MedicamentFormController> {
                 const SizedBox(height: kDefaultPadding * 1.2),
                 CustomTextField2(
                   onChanged: (string) {},
+                  controller: controller.textEditingDescription,
                   title: "Description du produit",
                   hintText: "Entrez la description de votre produit ici...",
                   maxLines: 5,
@@ -24,11 +23,11 @@ class PageThree extends GetView<MedicamentFormController> {
                 const SizedBox(height: kDefaultPadding / 1.4),
                 CustomTextField2(
                   onChanged: (string) {},
+                  controller: controller.textEditingPosologie,
                   title: "Posologie",
                   hintText: "Entrez la posologie de votre produit ici...",
                   maxLines: 4,
                 ),
-
               ],
             ));
   }

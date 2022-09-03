@@ -21,6 +21,7 @@ class ApiRequest {
     Dio _dioR =
         Dio(BaseOptions( headers: {
       'Authorization': 'Bearer $token',
+      "Content-Type": 'application/json',
     }));
     (_dioR.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
         (HttpClient client) {

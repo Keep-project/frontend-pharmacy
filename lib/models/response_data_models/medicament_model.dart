@@ -121,8 +121,7 @@ class Medicament {
       historiques: json["historiques"] == null ? [] : List<HistoriquePrix>.from(json["historiques"].map((e) => HistoriquePrix.fromMap(e))),
       entrepot: json["entrepot"]?? 0,
       created_at: json["created_at"] == null ? null : DateTime.parse(json['created_at']),
-      updated_at: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"])
-
+      updated_at: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
     );
 
     String dateToString() => "${date_exp!.year.toString().padLeft(4, '0')}/${date_exp!.month.toString().padLeft(2, '0')}/${date_exp!.day.toString().padLeft(2, '0')}";

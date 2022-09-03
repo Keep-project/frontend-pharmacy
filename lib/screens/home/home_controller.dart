@@ -165,7 +165,6 @@ class HomeScreenController extends GetxController{
     );
   }
 
-
   Future changeSelectedCategory(int index) async {
 
     if (selectedCategorieIndex.value != index) {

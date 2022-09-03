@@ -39,6 +39,7 @@ class ActionsDialog extends StatelessWidget {
             ),
             GestureDetector(
               onTap: () {
+                Get.back();
                 Get.toNamed(AppRoutes.PHARMACIEFORM);
               },
               child: Row(
@@ -68,6 +69,7 @@ class ActionsDialog extends StatelessWidget {
             const SizedBox(height: kDefaultMargin * 1.5),
             GestureDetector(
               onTap: () {
+                Get.back();
                 Get.toNamed(AppRoutes.MEDICAMENTSFORM);
               },
               child: Row(

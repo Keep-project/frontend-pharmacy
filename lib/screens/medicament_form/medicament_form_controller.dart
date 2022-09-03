@@ -1,5 +1,8 @@
+
+
 // ignore_for_file: avoid_print
 
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -7,19 +10,25 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pharmacy_app/core/app_snackbar.dart';
 import 'package:pharmacy_app/core/app_state.dart';
-import 'package:pharmacy_app/models/request_data_models/register_model.dart';
+import 'package:pharmacy_app/models/request_data_models/medicament_model.dart';
 import 'package:pharmacy_app/router/app_router.dart';
 import 'package:pharmacy_app/screens/medicament_form/pages/pages.dart';
-import 'package:pharmacy_app/services/remote_services/authentication/authentication.dart';
+import 'package:pharmacy_app/services/remote_services/medicament/medicament.dart';
+
+
 
 class MedicamentFormController extends GetxController {
-  final RemoteAuthenticationService _authService =
-      RemoteAuthenticationServiceImpl();
+  final MedicamentService _medicamentService =
+      MedicamentServiceImpl();
   final TextEditingController textEditingNom = TextEditingController();
   final TextEditingController textEditingPrixVente = TextEditingController();
   final TextEditingController textEditingMarque = TextEditingController();
   final TextEditingController textEditingMasseUnite = TextEditingController();
   final TextEditingController textEditingStock = TextEditingController();
+  final TextEditingController textEditingStockAlert = TextEditingController();
+  final TextEditingController textEditingStockOptimal = TextEditingController();
+  final TextEditingController textEditingDescription = TextEditingController();
+  final TextEditingController textEditingPosologie = TextEditingController();
 
   LoadingStatus medicamentStatus = LoadingStatus.initial;
 
@@ -31,6 +40,7 @@ class MedicamentFormController extends GetxController {
 
   final picker = ImagePicker();
   var imageFile;
+  String photo = "";
   String imageName = "Aucune image choisie";
 
 
@@ -63,6 +73,10 @@ class MedicamentFormController extends GetxController {
     textEditingMarque.dispose();
     textEditingMasseUnite.dispose();
     textEditingStock.dispose();
+    textEditingStockAlert.dispose();
+    textEditingStockOptimal.dispose();
+    textEditingDescription.dispose();
+    textEditingPosologie.dispose();
     super.dispose();
   }
 
@@ -74,10 +88,10 @@ class MedicamentFormController extends GetxController {
     );
     if (pickedFile != null) {
       imageFile = File(pickedFile.path);
-      imageName = imageFile.name;
-      // var imageBytes = imageFile.readAsBytesSync();
-      // var encoded = base64Encode(imageBytes);
-      // photo = "data:image/png;base64, $encoded";
+      imageName = pickedFile.name;
+      var imageBytes = imageFile.readAsBytesSync();
+      var encoded = base64Encode(imageBytes);
+      photo = "data:image/png;base64, $encoded";
       update();
     }
   }
@@ -108,7 +122,7 @@ class MedicamentFormController extends GetxController {
 
     if (textEditingPrixVente.text.trim().toString().isEmpty) {
       CustomSnacbar.showMessage(
-          context, "Veuillez renseigner le prix unitaire du médicament !");
+          context, "Veuillez renseigner le prix unitaire du médicament!");
       return;
     }
 
@@ -130,11 +144,23 @@ class MedicamentFormController extends GetxController {
   }
 
   void jumpToStepThree(BuildContext context) {
-    if (textEditingNom.text.trim().toString().isEmpty) {
+    if (textEditingStockAlert.text.trim().toString().isEmpty) {
       CustomSnacbar.showMessage(
-          context, "Veuillez renseigner le nom du médicament !");
+          context, "Veuillez renseigner le stock d'alerte du produit !");
       return;
     }
+    if (textEditingStockOptimal.text.trim().toString().isEmpty) {
+      CustomSnacbar.showMessage(
+          context, "Veuillez renseigner le stock optimal du produit !");
+      return;
+    }
+
+    if ( imageFile == null) {
+      CustomSnacbar.showMessage(
+          context, "Veuillez renseigner une image du médicment !");
+      return;
+    }
+
     pageController.nextPage(
         duration: const Duration(milliseconds: 300), curve: Curves.ease);
     step = 3;
@@ -149,31 +175,54 @@ class MedicamentFormController extends GetxController {
   }
 
   Future addMedecine(BuildContext context) async {
-    if (textEditingNom.text.trim().toString().length < 4) {
+
+    if (textEditingDescription.text.trim().isEmpty) {
       CustomSnacbar.showMessage(
-          context, "Le champs nom doit avoir au moins 04 caractères !");
+          context, "Veuillez renseigner une petite description pour le médicament !");
       return;
     }
 
-    medicamentStatus = LoadingStatus.searching;
+    if (textEditingPosologie.text.trim().isEmpty) {
+      CustomSnacbar.showMessage(
+          context, "Veuillez renseigner comment le médicament doit être pris ainsi que les conditions de conservation !");
+      return;
+    }
+
+    MedicamentRequestModel new_medecine = MedicamentRequestModel(
+      nom: textEditingNom.text.trim(),
+      categorie: selectedCategorie == "Enfant" ? 1 : categories.firstWhere((c) => c['libelle'] == selectedCategorie)['id'],
+      prix: int.parse(textEditingPrixVente.text.trim()),
+      marque: textEditingMarque.text.trim(),
+      masse: textEditingMasseUnite.text.trim(),
+      qte_stock: int.parse(textEditingStock.text.trim()),
+      stockAlert: int.parse(textEditingStockAlert.text.trim()),
+      pharmacie: 1,
+      voix: 0,
+      entrepot: 1,
+      stockOptimal: int.parse(textEditingStockOptimal.text.trim()),
+      tva: selectedTva == "19.25%" ? 1 : tvas.firstWhere((c) => c['libelle'] == selectedTva)['id'],
+      basePrix: selectedBasePrix == "HT" ? "1" : baseprix.firstWhere((c) => c['libelle'] == selectedBasePrix)['id'].toString(),
+      date_exp: datePremption,
+      image: photo,
+      description: textEditingDescription.text.trim(),
+      posologie: textEditingPosologie.text.trim(),
+    );
+
+    // medicamentStatus = LoadingStatus.searching;
     update();
-    await _authService.register(
-      registerReqModel: RegisterRequestModel(
-        username: textEditingNom.text.trim(),
-      ),
-      onRegisterSuccess: (data) {
-        CustomSnacbar.showMessage(
-            context, "Compte créer avec succès !\nConnectez vous maintenant.");
-        Get.offAndToNamed(AppRoutes.LOGIN);
+    await _medicamentService.add(
+      medicamentModel: new_medecine,
+      onSuccess: (data) {
+        CustomSnacbar.showMessage(context, "Médicament ajouté avec succès !");
+        Get.toNamed(AppRoutes.HOME);
         medicamentStatus = LoadingStatus.completed;
         update();
       },
-      onRegisterError: (error) {
-        print("============ Register ===========");
-        print(error.response!.statusCode);
+      onError: (error) {
+        print("============ Médicament form / error ===========");
+        print(error.response!);
         if (error.response!.statusCode == 400) {
-          CustomSnacbar.showMessage(
-              context, "${error.response!.data['message']}");
+          CustomSnacbar.showMessage(context, "${error.response!.data['message']}");
         }
         print("=================================");
         medicamentStatus = LoadingStatus.failed;

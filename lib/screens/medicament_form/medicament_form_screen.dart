@@ -152,10 +152,11 @@ class MedicamentFormScreen extends GetView<MedicamentFormController> {
                                 const SizedBox(width: kDefaultPadding),
                                 Expanded(
                                   child: InkWell(
-                                    onTap: () {
+                                    onTap: () async {
                                       if ( controller.step == 2 )  {
                                         controller.jumpToStepThree(context);
                                       }
+                                      else { await controller.addMedecine(context); }
                                     },
                                     child: Container(
                                       height: 50,

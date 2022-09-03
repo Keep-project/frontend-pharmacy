@@ -53,6 +53,7 @@ class MedicamentServiceImpl implements MedicamentService {
     ApiRequest(
       url: "${Constants.API_URL}/medicament/",
       data: medicamentModel!.toMap(),
+      token: await _localAuth.getToken(),
     ).post(onSuccess: (data) {
       onSuccess!(data);
     }, onError: (error) {
@@ -71,6 +72,7 @@ class MedicamentServiceImpl implements MedicamentService {
     ApiRequest(
       url: "${Constants.API_URL}/pharmacie/$idMedicament",
       data: medicamentModel!.toMap(),
+      token: await _localAuth.getToken(),
     ).put(onSuccess: (data) {
       onSuccess!(data);
     }, onError: (error) {

@@ -31,13 +31,17 @@ class PharmacieServiceImpl implements PharmacieService {
   }
 
   @override
-  Future findAll(
-      {Function(dynamic data)? onSuccess,
+  Future findAll({
+    double? longitude,
+    double? latitude,
+    int? distance,
+    Function(dynamic data)? onSuccess,
       Function(dynamic date)? onError}) async {
     ApiRequest(
-      url: "${Constants.API_URL}/pharmacie/",
+      url: "${Constants.API_URL}/pharmacie/proche/$distance",
+      data: { "longitude": longitude, "latitude": latitude },
       token: await _localAuth.getToken(),
-    ).get(onSuccess: (data) {
+    ).post(onSuccess: (data) {
       onSuccess!(PharmacieResponseModel.fromMap(data));
     }, onError: (error) {
       if (error != null) {

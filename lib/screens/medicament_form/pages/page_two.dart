@@ -21,6 +21,7 @@ class PageTwo extends GetView<MedicamentFormController> {
                     Expanded(
                       child: CustomTextField2(
                         onChanged: (string) {},
+                        controller: controller.textEditingStockAlert,
                         textInputType: TextInputType.number,
                         title: "Stock limite pour alerte",
                         hintText: "Ex: 150",
@@ -32,6 +33,7 @@ class PageTwo extends GetView<MedicamentFormController> {
                     Expanded(
                       child: CustomTextField2(
                         onChanged: (string) {},
+                        controller: controller.textEditingStockOptimal,
                         textInputType: TextInputType.number,
                         title: "Stock désiré optimal",
                         hintText: "Ex: 400",
@@ -131,7 +133,7 @@ class PageTwo extends GetView<MedicamentFormController> {
                           ),
                           const SizedBox(height: 5),
                           CustomIconButton(
-                            title: "10/02/2010",
+                            title: controller.imageName,
                             iconData: Icons.camera_alt_outlined,
                             onTap: () async {
                               await controller.chooseImage(ImageSource.gallery);
@@ -145,6 +147,24 @@ class PageTwo extends GetView<MedicamentFormController> {
                     ),
                   ],
                 ),
+                const SizedBox(height: kDefaultPadding - 4),
+                controller.imageFile != null ? Container(
+                    height: 100,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: kTextColor.withOpacity(.08),
+                      borderRadius: BorderRadius.circular(8),
+                      image: controller.imageFile != null
+                          ? DecorationImage(
+                              image: FileImage(controller.imageFile),
+                              fit: BoxFit.cover)
+                          : null,
+                    ),
+                    child: const Center(
+                      child:
+                          Icon(Icons.camera_alt, size: 56, color: kDarkColor),
+                    ),
+                  ): Container(),
               ],
             ));
   }
@@ -182,11 +202,18 @@ class CustomIconButton extends StatelessWidget {
           ),
           child: Row(
             children: [
-              Text(
-                title,
-                style: TextStyle(
-                  fontSize: 14,
-                  color: kDarkColor.withOpacity(0.5),
+              Container(
+                constraints: const BoxConstraints(
+                  maxWidth: 120,
+                ),
+                child: Text(
+                  title,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: kDarkColor.withOpacity(0.5),
+                  ),
                 ),
               ),
               const Spacer(),
