@@ -30,7 +30,7 @@ class MapViewScreenController extends GetxController {
 
   List<LatLng> positions = <LatLng>[];
 
-  int distance = 23383;
+  int distance = 5; // initialisation du rayon de recherche à 5 KM par défaut
 
   CameraPosition _kLake = const CameraPosition(
       bearing: 192.8334901395799,

@@ -20,7 +20,7 @@ class MedicamentscreenController extends GetxController{
   RxInt selectedCategorieIndex = 0.obs;
   
   l.LocationData? currentLocation;
-  int distance = 23383;
+  int distance = 5; // initialisation du rayon de recherche à 5 KM par défaut
 
   int _count = 0;
   var next, previous;

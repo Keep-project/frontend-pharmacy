@@ -141,7 +141,6 @@ class MapViewScreen extends GetView<MapViewScreenController> {
                                 onChanged: (String value) async {
                                   if (value.toString().isNotEmpty) {
                                     await controller.filterPharmacies();
-                                    //controller.autoCompleteSearch(value);
                                   } else {
                                     controller.predictions = [];
                                     controller.update();
@@ -174,7 +173,7 @@ class MapViewScreen extends GetView<MapViewScreenController> {
                                 showDialog(
                                     context: context,
                                     builder: (context) =>
-                                        FilterDialog(controller: controller));
+                                        Options(controller: controller));
                               },
                               child: const Icon(Icons.more_vert,
                                   size: 26, color: kDarkColor)),
@@ -425,9 +424,9 @@ class MapViewScreen extends GetView<MapViewScreenController> {
   }
 }
 
-class FilterDialog extends StatelessWidget {
+class Options extends StatelessWidget {
   final dynamic controller;
-  const FilterDialog({
+  const Options({
     Key? key,
     this.controller,
   }) : super(key: key);
