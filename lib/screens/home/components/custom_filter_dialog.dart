@@ -98,7 +98,7 @@ class FilterDialog extends StatelessWidget {
             const SizedBox(height: kDefaultMargin),
             GestureDetector(
               onTap: () async {
-                await controller.filterMedicamentsList(key: "filter");
+                await controller.filterMedicamentsList();
                 Get.back();
               },
               child: Container(

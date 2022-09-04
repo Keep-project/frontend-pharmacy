@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pharmacy_app/core/app_colors.dart';
 import 'package:pharmacy_app/core/app_sizes.dart';
+import 'package:pharmacy_app/core/app_state.dart';
 import 'package:pharmacy_app/screens/mapview/mapview.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -184,7 +185,25 @@ class MapViewScreen extends GetView<MapViewScreenController> {
                   ),
                 ),
               ),
-              controller.pharmaciesList.isEmpty ? Positioned(
+              controller.pharmacyStatus == LoadingStatus.searching ? 
+              Positioned(
+                bottom: kDefaultMargin / 2,
+                left: 0,
+                right: 0,
+                child: Container(
+                  height: 140,
+                  margin:
+                      const EdgeInsets.symmetric(horizontal: kDefaultMargin),
+                  decoration: BoxDecoration(
+                    color: kWhiteColor,
+                    borderRadius: BorderRadius.circular(kDefaultRadius)
+                  ),
+                  child: const Center(
+                    child: CircularProgressIndicator(color: kTextColor),
+                  ),
+                ),
+              ) : Container(),
+              controller.pharmaciesList.isEmpty && controller.pharmacyStatus != LoadingStatus.searching ? Positioned(
                 bottom: kDefaultMargin / 2,
                 left: 0,
                 right: 0,

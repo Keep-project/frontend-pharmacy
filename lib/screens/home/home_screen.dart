@@ -77,8 +77,6 @@ class HomeScreen extends GetView<HomeScreenController> {
                   onChanged: (data)async{ await controller.searchData(data); },
                   onTap: () async {
                     unfocus();
-                    if ( controller.searchController.text.isEmpty ) { return; }
-                    await controller.filterMedicamentsList();
                   }
                 ),
                 const SizedBox(height: kDefaultMargin * 2.2),

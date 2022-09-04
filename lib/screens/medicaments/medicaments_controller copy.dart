@@ -2,12 +2,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:location/location.dart' as l;
 import 'package:pharmacy_app/core/app_state.dart';
 import 'package:pharmacy_app/models/response_data_models/medicament_model.dart';
 import 'package:pharmacy_app/services/remote_services/medicament/medicament.dart';
 
-class HomeScreenController extends GetxController{
+class MedicamentscreenController extends GetxController{
   final ScrollController scrollController = ScrollController();
   TextEditingController searchController = TextEditingController();
 
@@ -18,14 +17,12 @@ class HomeScreenController extends GetxController{
 
   List<Medicament> medicamentsList = <Medicament>[];
   RxInt selectedCategorieIndex = 0.obs;
-
-  l.LocationData? currentLocation;
-  int distance = 23383;
   
 
   int _count = 0;
   var next, previous;
   bool  is_searching  = false;
+  String searchCategory = "Tous";
 
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -35,8 +32,7 @@ class HomeScreenController extends GetxController{
 
   @override
   void onInit() async {
-    await getCurrentLocation();
-    await filterList();
+    await medicamentList();
     await listerner();
     super.onInit();
   }
@@ -49,7 +45,12 @@ class HomeScreenController extends GetxController{
           infinityStatus = LoadingStatus.searching;
           update();
           Future.delayed(const Duration(seconds: 1), () async {
-            await filterList();
+            if (selectedCategorieIndex.value == 0 && searchCategory == "Tous") {
+              await medicamentList();
+            }
+            else {
+              await filterList();
+            }
           });
         }
       }
@@ -62,45 +63,6 @@ class HomeScreenController extends GetxController{
     searchController.dispose();
     super.dispose();
   }
-
-    Future getCurrentLocation() async {
-    infinityStatus = LoadingStatus.searching;
-    update();
-    l.Location location = l.Location();
-    currentLocation = await location.getLocation();
-
-    bool _serviceEnabled;
-    l.PermissionStatus _permissionGranted;
-    l.LocationData _locationData;
-
-    _serviceEnabled = await location.serviceEnabled();
-    if (!_serviceEnabled) {
-      print("Service indisponible !");
-      _serviceEnabled = await location.requestService();
-      if (!_serviceEnabled) {
-        print("Service toujours indisponible !");
-        return;
-      }
-    }
-
-    _permissionGranted = await location.hasPermission();
-    if (_permissionGranted == l.PermissionStatus.denied) {
-      print("Permission refusée !");
-      _permissionGranted = await location.requestPermission();
-      if (_permissionGranted != l.PermissionStatus.granted) {
-        print("Permission not garented !");
-        return;
-      }
-    }
-
-    location.onLocationChanged.listen((l.LocationData newLocation) {
-       currentLocation = newLocation;
-    });
-    update();
-   
-  }
-
-
 
   List<Map<String, dynamic>> categories = [
     {
@@ -140,10 +102,28 @@ class HomeScreenController extends GetxController{
     
   ];
 
-
   Future medicamentList() async {
-    await filterList();
-    
+    infinityStatus = LoadingStatus.searching;
+    update();
+    await _medicamentService.medicamentsList(
+        url: next,
+        onSuccess: (data) {
+          _count = data.count!;
+          next = data.next;
+          previous = data.previous;
+          medicamentsList.addAll(data.results!);
+          infinityStatus = LoadingStatus.completed;
+          is_searching = false;
+          update();
+        },
+        onError: (error) {
+          print("=============== Médicament / error ================");
+          print(error);
+          print("==========================================");
+          infinityStatus = LoadingStatus.failed;
+          update();
+        }
+    );
   }
 
   Future filterList() async {
@@ -161,8 +141,7 @@ class HomeScreenController extends GetxController{
             "query": [
               {"categorie": categories[selectedCategorieIndex.value]['libelle'] },
               {"voix": selectedVoix },
-              {"search": searchController.text.trim() },
-              {"position": [currentLocation!.latitude ?? 3.866667, currentLocation!.longitude ?? 11.516667, distance] },
+              {"search": searchController.text.trim() }
             ]
           },
         onSuccess: (data) {
@@ -175,7 +154,7 @@ class HomeScreenController extends GetxController{
           update();
         },
         onError: (error) {
-          print("=============== Home error ================");
+          print("=============== Médicament / error ================");
           print(error.response);
           print("==========================================");
           infinityStatus = LoadingStatus.failed;
@@ -189,8 +168,16 @@ class HomeScreenController extends GetxController{
     if (selectedCategorieIndex.value != index) {
       selectedCategorieIndex.value = index;
       next = null;
-      medicamentsList.clear();
-      await filterList();
+      medicamentsList = [];
+      switch (selectedCategorieIndex.value) {
+        case 0:
+          searchCategory = "Tous";
+          await medicamentList();
+          break;
+        default:
+          await filterList();
+          break;
+      }
       update();
     }
   }
@@ -201,18 +188,21 @@ class HomeScreenController extends GetxController{
   }
 
 
-  Future filterMedicamentsList() async {
+  Future filterMedicamentsList({String? key}) async {
     next = null;
-    medicamentsList.clear();
-    await filterList();
+    medicamentsList = [];
+    searchCategory = key!;
+    if (searchController.text.isNotEmpty || key == "filter") {
+      await filterList();
+    }
     update();
   }
 
   Future searchData(String data) async {
     if (data.trim().length > 2) {
-      next=null;
-      medicamentsList.clear();
-      await filterList();
+      await filterMedicamentsList(key: 'filter');
     }
   }
+
+
 }

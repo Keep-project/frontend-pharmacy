@@ -15,7 +15,7 @@ import 'package:pharmacy_app/models/response_data_models/pharmacie_model.dart';
 import 'package:pharmacy_app/services/remote_services/pharmacie/pharmacie.dart';
 
 class MapViewScreenController extends GetxController {
-  LoadingStatus pharmayStatus = LoadingStatus.initial;
+  LoadingStatus pharmacyStatus = LoadingStatus.initial;
   final PharmacieService _pharmacieService = PharmacieServiceImpl();
   List<Pharmacie> pharmaciesList = <Pharmacie>[];
 
@@ -79,51 +79,51 @@ class MapViewScreenController extends GetxController {
   }
 
   Future getPharmacies() async {
-    pharmayStatus = LoadingStatus.searching;
+    pharmacyStatus = LoadingStatus.searching;
+    pharmaciesList.clear();
+    positions.clear();
     update();
-
     await _pharmacieService.findAll(
       longitude: currentLocation!.longitude ?? 11.516667,
       latitude: currentLocation!.latitude ?? 3.866667,
       distance: distance ,
       onSuccess: (data) {
-        pharmaciesList.clear();
-        positions.clear();
         pharmaciesList.addAll(data.results!);
       for (Pharmacie p in data.results!) {
         positions.add(LatLng(p.latitude!, p.longitude!));
       }
-      pharmayStatus = LoadingStatus.completed;
+      pharmacyStatus = LoadingStatus.completed;
       update();
-    }, onError: (error) {
+    },
+    onError: (error) {
       print("============================");
       print(error);
       print("============================");
-      pharmayStatus = LoadingStatus.failed;
+      pharmacyStatus = LoadingStatus.failed;
       update();
     });
   }
 
   Future filterPharmacies() async {
-    pharmayStatus = LoadingStatus.searching;
+    pharmacyStatus = LoadingStatus.searching;
+    pharmaciesList.clear();
+    positions.clear();
     update();
     await _pharmacieService.filter(
       search: textEditingControllerLocalisation.text.trim(),
       onSuccess: (data) {
-        pharmaciesList.clear();
-        positions.clear();
-        print(data);
+        
         pharmaciesList.addAll(data.results!);
         for (Pharmacie p in data.results!) {
           positions.add(LatLng(p.latitude!, p.longitude!));
         }
-        pharmayStatus = LoadingStatus.completed;
+        pharmacyStatus = LoadingStatus.completed;
         update();
     }, onError: (error) {
       print("============================");
       print(error);
       print("============================");
-      pharmayStatus = LoadingStatus.failed;
+      pharmacyStatus = LoadingStatus.failed;
       update();
     });
   }
@@ -151,6 +151,8 @@ class MapViewScreenController extends GetxController {
 
 
   Future getCurrentLocation() async {
+    pharmacyStatus = LoadingStatus.searching;
+    update();
     l.Location location = l.Location();
     currentLocation = await location.getLocation();
 
