@@ -43,7 +43,7 @@ class LoginScreenController extends GetxController{
     await _userService.getUser(onSuccess: (data) async {
       await _localAuth.saveUser(json.encode(data.results!.toMap()));
       Future.delayed(const Duration(seconds: 1), (){
-        Get.offAllNamed(AppRoutes.HOME);
+        Get.offAllNamed(AppRoutes.STARTPAGE);
         loginStatus = LoadingStatus.completed;
         update();
       }) ;
