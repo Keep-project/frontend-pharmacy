@@ -63,7 +63,7 @@ class HomeScreenController extends GetxController{
     super.dispose();
   }
 
-    Future getCurrentLocation() async {
+  Future getCurrentLocation() async {
     infinityStatus = LoadingStatus.searching;
     update();
     l.Location location = l.Location();
@@ -185,7 +185,6 @@ class HomeScreenController extends GetxController{
   }
 
   Future changeSelectedCategory(int index) async {
-
     if (selectedCategorieIndex.value != index) {
       selectedCategorieIndex.value = index;
       next = null;
