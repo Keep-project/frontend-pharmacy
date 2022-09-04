@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pharmacy_app/components/search_bar.dart';
 import 'package:pharmacy_app/core/app_colors.dart';
-import 'package:pharmacy_app/screens/home/components/custom_filter_dialog.dart';
+import 'package:pharmacy_app/screens/mode_visiteur/home/components/custom_filter_dialog.dart';
 
 class SearchBarAndButton extends StatelessWidget {
   final BuildContext context;

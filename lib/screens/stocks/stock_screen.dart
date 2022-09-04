@@ -8,7 +8,7 @@ import 'package:pharmacy_app/core/app_colors.dart';
 import 'package:pharmacy_app/core/app_sizes.dart';
 import 'package:pharmacy_app/router/app_router.dart';
 import 'package:pharmacy_app/screens/details/details_screen.dart';
-import 'package:pharmacy_app/screens/home/components/search_custom_button.dart';
+import 'package:pharmacy_app/screens/mode_visiteur/home/components/search_custom_button.dart';
 import 'package:pharmacy_app/screens/stocks/stock.dart';
 
 class StockScreen extends GetView<StockController> {

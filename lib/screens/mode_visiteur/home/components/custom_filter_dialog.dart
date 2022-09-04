@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pharmacy_app/core/app_colors.dart';
 import 'package:pharmacy_app/core/app_sizes.dart';
-import 'package:pharmacy_app/screens/home/components/custom_button.dart';
-import 'package:pharmacy_app/screens/home/components/custom_checkbox.dart';
+import 'package:pharmacy_app/screens/mode_visiteur/home/components/custom_button.dart';
+import 'package:pharmacy_app/screens/mode_visiteur/home/components/custom_checkbox.dart';
 
 class FilterDialog extends StatelessWidget {
   final dynamic controller;

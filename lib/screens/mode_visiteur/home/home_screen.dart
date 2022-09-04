@@ -3,17 +3,17 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pharmacy_app/components/medicament_card.dart';
 import 'package:pharmacy_app/components/title_text.dart';
 import 'package:pharmacy_app/core/app_colors.dart';
 import 'package:pharmacy_app/core/app_drawer.dart';
 import 'package:pharmacy_app/core/app_sizes.dart';
 import 'package:pharmacy_app/core/app_state.dart';
 import 'package:pharmacy_app/router/app_router.dart';
-import 'package:pharmacy_app/screens/home/components/category_item.dart';
-import 'package:pharmacy_app/screens/home/components/custom_action_dialog.dart';
-import 'package:pharmacy_app/components/medicament_card.dart';
-import 'package:pharmacy_app/screens/home/components/search_custom_button.dart';
-import 'package:pharmacy_app/screens/home/home.dart';
+import 'package:pharmacy_app/screens/mode_visiteur/home/components/category_item.dart';
+import 'package:pharmacy_app/screens/mode_visiteur/home/components/custom_action_dialog.dart';
+import 'package:pharmacy_app/screens/mode_visiteur/home/components/search_custom_button.dart';
+import 'package:pharmacy_app/screens/mode_visiteur/home/home.dart';
 
 
 class HomeScreen extends GetView<HomeScreenController> {

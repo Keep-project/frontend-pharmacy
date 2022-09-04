@@ -1,6 +1,6 @@
 
 import 'package:get/get.dart';
-import 'package:pharmacy_app/screens/home/home.dart';
+import 'package:pharmacy_app/screens/mode_visiteur/home/home.dart';
 
 class HomeScreenBinding extends Bindings{
 
