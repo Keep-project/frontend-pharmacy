@@ -21,6 +21,7 @@ import 'package:pharmacy_app/screens/medicaments/medicaments.dart';
 import 'package:pharmacy_app/screens/mouvement_produit/mouvement_produit.dart';
 import 'package:pharmacy_app/screens/mouvement_stock/mouvement_stock.dart';
 import 'package:pharmacy_app/screens/onboarding/onboarding.dart';
+import 'package:pharmacy_app/screens/pharmacie/pharmacie.dart';
 import 'package:pharmacy_app/screens/pharmacie_form/pharmacie_form.dart';
 import 'package:pharmacy_app/screens/register/register.dart';
 import 'package:pharmacy_app/screens/rendez_vous/rendez_vous.dart';
@@ -160,6 +161,12 @@ class AppPages {
       name: AppRoutes.INVENTAIRES_FORM,
       page: () => const InventaireFormScreen(),
       binding: InventaireFormBinding(),
+    ),
+
+    GetPage(
+      name: AppRoutes.PHARMACIE_USER,
+      page: () => const PharmacieScreen(),
+      binding: PharmacieScreenBinding(),
     ),
   ]; 
 }

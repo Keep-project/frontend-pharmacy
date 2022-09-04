@@ -43,10 +43,9 @@ class LoginScreenController extends GetxController{
     await _userService.getUser(onSuccess: (data) async {
       await _localAuth.saveUser(json.encode(data.results!.toMap()));
       Future.delayed(const Duration(seconds: 1), (){
-        Get.offAllNamed(AppRoutes.STARTPAGE);
         loginStatus = LoadingStatus.completed;
         update();
-      }) ;
+      });
     },
 
     onError: (error) {
@@ -64,10 +63,10 @@ class LoginScreenController extends GetxController{
             username: textEditingNom.text.trim(),
             password: textEditingPassword.text.trim()),
         onLoginSuccess: (data) async {
+          await _localAuth.saveToken(data.access);
           textEditingNom.clear();
           textEditingPassword.clear();
-          await _localAuth.saveToken(data.access);
-          Get.offAllNamed(AppRoutes.HOME);
+          Get.offAllNamed(AppRoutes.STARTPAGE);
         },
         onLoginError: (error) {
           if (error.response!.statusCode == 400) {

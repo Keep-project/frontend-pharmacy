@@ -29,4 +29,5 @@ class AppRoutes {
   static const String FACTURES = "/factures";
   static const String FACTURES_FORM = "/factures_form";
   static const String DETAIL_FACTURES = "/detail_factures";
+  static const String PHARMACIE_USER = "/pharmacie_user";
 }

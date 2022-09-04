@@ -29,13 +29,22 @@ class FilterDialog extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                "Filtres",
-                style: TextStyle(
-                  fontSize: 18,
-                  color: kTextColor2,
-                  fontWeight: FontWeight.w600,
-                ),
+              Row(
+                children:[
+                  const Text(
+                    "Filtres",
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: kTextColor2,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  const Spacer(),
+                  InkWell(
+                    onTap: () { Get.back();},
+                    child: Icon(Icons.close, size: 26, color: kDarkColor.withOpacity(0.5)),
+                  ),
+                ],
               ),
               const SizedBox(height: kDefaultMargin / 2),
               const Divider(

@@ -103,4 +103,19 @@ class PharmacieServiceImpl implements PharmacieService {
       }
     });
   }
+  
+  @override
+  Future<void> userPharmacies({Function(dynamic data)? onSuccess, Function(dynamic error)? onError}) async {
+    ApiRequest(
+      url: "${Constants.API_URL}/pharmacie/me/",
+      data: {},
+      token: await _localAuth.getToken(),
+    ).get(onSuccess: (data) {
+      onSuccess!(PharmacieResponseModel.fromMap(data));
+    }, onError: (error) {
+      if (error != null) {
+        onError!(error);
+      }
+    });
+  }
 }

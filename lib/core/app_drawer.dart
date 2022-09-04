@@ -109,14 +109,19 @@ class AppNavigationDrawer extends StatelessWidget {
                         iconData: Icons.warehouse_rounded,
                         onTap: () {Get.offAndToNamed(AppRoutes.ENTREPOT);},
                       ),
-                      const SizedBox(height: kDefaultPadding * 2.5),
+                      DrawerMenuItem(
+                        title: "Mode gestion",
+                        iconData: Icons.settings_applications,
+                        onTap: () {Get.offAndToNamed(AppRoutes.PHARMACIE_USER);},
+                      ),
+                      const SizedBox(height: kDefaultPadding * 2),
                       const Padding(
                         padding: EdgeInsets.only(right: kDefaultPadding*2),
                         child: Divider(
                           thickness: 0.9,
                         ),
                       ),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: 8),
                       DrawerMenuItem(
                         title: "Se déconnecter",
                         iconData: Icons.power_off,
