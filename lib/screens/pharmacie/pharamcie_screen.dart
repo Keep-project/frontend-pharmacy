@@ -110,17 +110,6 @@ class PharmacieScreen extends GetView<PharmacieScreenController> {
                                       ),
                                     )),
                               ),
-                              controller.pharmacyStatus ==
-                                      LoadingStatus.searching
-                                  ? Container(
-                                      height: 200,
-                                      width: Get.width / 2 - 30,
-                                      decoration: const BoxDecoration(),
-                                      child: const Center(
-                                          child: CircularProgressIndicator(
-                                              color: kTextColor)),
-                                    )
-                                  : Container(),
                               ...List.generate(
                                 controller.pharmaciesList.length,
                                 (index) => GestureDetector(
@@ -189,6 +178,17 @@ class PharmacieScreen extends GetView<PharmacieScreenController> {
                                       )),
                                 ),
                               ),
+                              controller.pharmacyStatus ==
+                                      LoadingStatus.searching
+                                  ? Container(
+                                      height: 200,
+                                      width: Get.width / 2 - 30,
+                                      decoration: const BoxDecoration(),
+                                      child: const Center(
+                                          child: CircularProgressIndicator(
+                                              color: kTextColor)),
+                                    )
+                                  : Container(),
                             ],
                           ),
                         ),
