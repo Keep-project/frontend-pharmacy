@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:pharmacy_app/core/app_colors.dart';
 import 'package:pharmacy_app/core/app_sizes.dart';
 import 'package:pharmacy_app/router/app_router.dart';
-import 'package:pharmacy_app/screens/onboarding/onboarding_controller.dart';
+import 'package:pharmacy_app/screens/mode_visiteur/onboarding/onboarding_controller.dart';
 
 class OnboardingScreen extends GetView<OnboardingScreenController> {
   const OnboardingScreen({Key? key}) : super(key: key);

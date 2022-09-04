@@ -9,8 +9,8 @@ import 'package:pharmacy_app/core/app_drawer.dart';
 import 'package:pharmacy_app/core/app_sizes.dart';
 import 'package:pharmacy_app/core/app_state.dart';
 import 'package:pharmacy_app/components/medicament_card.dart';
-import 'package:pharmacy_app/screens/medicaments/medicaments.dart';
 import 'package:pharmacy_app/screens/mode_visiteur/home/components/search_custom_button.dart';
+import 'package:pharmacy_app/screens/mode_visiteur/medicaments/medicaments.dart';
 
 class MedicamentScreen extends GetView<MedicamentscreenController> {
   const MedicamentScreen({Key? key}) : super(key: key);

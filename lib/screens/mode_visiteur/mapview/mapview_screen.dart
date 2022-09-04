@@ -7,7 +7,7 @@ import 'package:get/get.dart';
 import 'package:pharmacy_app/core/app_colors.dart';
 import 'package:pharmacy_app/core/app_sizes.dart';
 import 'package:pharmacy_app/core/app_state.dart';
-import 'package:pharmacy_app/screens/mapview/mapview.dart';
+import 'package:pharmacy_app/screens/mode_visiteur/mapview/mapview.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class MapViewScreen extends GetView<MapViewScreenController> {
