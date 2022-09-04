@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pharmacy_app/core/app_colors.dart';
 import 'package:pharmacy_app/core/app_sizes.dart';
+import 'package:pharmacy_app/core/app_snackbar.dart';
 import 'package:pharmacy_app/screens/mode_visiteur/home/components/custom_button.dart';
 import 'package:pharmacy_app/screens/mode_visiteur/home/components/custom_checkbox.dart';
 
@@ -128,8 +129,13 @@ class FilterDialog extends StatelessWidget {
                 ),
                 child: TextField(
                   onChanged: (String value) async {
-                    if (value.toString().isNotEmpty) {
-                      controller.distance = int.parse(value.trim());
+                    if (value.isNotEmpty) {
+                      try {
+                        controller.distance = double.parse(value.trim());
+                      } catch (e) {
+                        Get.back();
+                        CustomSnacbar.showMessage(context, "Veuillez saisir une valeur correcte !!");
+                      }
                     }
                   },
                   keyboardType: TextInputType.number,

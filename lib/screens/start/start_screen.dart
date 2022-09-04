@@ -16,7 +16,6 @@ class StartScreen extends GetView<StartScreenController> {
           builder: (controller) => Scaffold(
                 body: SingleChildScrollView(
                   child: Container(
-                    height: Get.height,
                     width: Get.width,
                     decoration: const BoxDecoration(),
                     child: Column(
@@ -230,6 +229,7 @@ class StartScreen extends GetView<StartScreenController> {
                                 ),
                               )),
                         ),
+                        const SizedBox( height: kDefaultPadding*3),
                       ],
                     ),
                   ),

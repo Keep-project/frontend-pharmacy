@@ -25,7 +25,6 @@ class PharmacieScreenController extends GetxController {
     update();
     await _pharmacieService.userPharmacies(
       onSuccess: (data) {
-        print(data.results!);
         pharmaciesList.addAll(data.results!);
       pharmacyStatus = LoadingStatus.completed;
       update();

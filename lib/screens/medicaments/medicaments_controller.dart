@@ -20,7 +20,7 @@ class MedicamentscreenController extends GetxController{
   RxInt selectedCategorieIndex = 0.obs;
   
   l.LocationData? currentLocation;
-  int distance = 5; // initialisation du rayon de recherche à 5 KM par défaut
+  double distance = 5; // initialisation du rayon de recherche à 5 KM par défaut
 
   int _count = 0;
   var next, previous;
@@ -155,7 +155,7 @@ class MedicamentscreenController extends GetxController{
               {"categorie": categories[selectedCategorieIndex.value]['libelle'] },
               {"voix": selectedVoix },
               {"search": searchController.text.trim() },
-              {"position": [currentLocation!.latitude ?? 3.866667, currentLocation!.longitude ?? 11.516667, distance] },
+              {"position": [ currentLocation!.latitude ?? 3.866667, currentLocation!.longitude ?? 11.516667, distance ] },
             ]
           },
         onSuccess: (data) {
