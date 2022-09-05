@@ -5,7 +5,7 @@ import 'package:pharmacy_app/components/custom_dropdown.dart';
 import 'package:pharmacy_app/components/custom_text_field2.dart';
 import 'package:pharmacy_app/core/app_colors.dart';
 import 'package:pharmacy_app/core/app_sizes.dart';
-import 'package:pharmacy_app/screens/medicament_form/medicament_form.dart';
+import 'package:pharmacy_app/screens/mode_gestion/medicament_form/medicament_form.dart';
 
 class PageTwo extends GetView<MedicamentFormController> {
   const PageTwo({Key? key}) : super(key: key);

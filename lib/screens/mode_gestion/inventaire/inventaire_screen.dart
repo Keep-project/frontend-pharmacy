@@ -8,7 +8,7 @@ import 'package:pharmacy_app/core/app_colors.dart';
 import 'package:pharmacy_app/core/app_drawer.dart';
 import 'package:pharmacy_app/core/app_sizes.dart';
 import 'package:pharmacy_app/screens/details/details_screen.dart';
-import 'package:pharmacy_app/screens/inventaire/inventaire.dart';
+import 'package:pharmacy_app/screens/mode_gestion/inventaire/inventaire.dart';
 import 'package:pharmacy_app/screens/mode_visiteur/home/components/search_custom_button.dart';
 
 class InventaireScreen extends GetView<InventaireController> {

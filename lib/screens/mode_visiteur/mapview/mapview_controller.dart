@@ -82,6 +82,7 @@ class MapViewScreenController extends GetxController {
     pharmacyStatus = LoadingStatus.searching;
     pharmaciesList.clear();
     positions.clear();
+    
     update();
     await _pharmacieService.findAll(
       longitude: currentLocation!.longitude ?? 11.516667,
@@ -89,9 +90,9 @@ class MapViewScreenController extends GetxController {
       distance: distance ,
       onSuccess: (data) {
         pharmaciesList.addAll(data.results!);
-      for (Pharmacie p in data.results!) {
-        positions.add(LatLng(p.latitude!, p.longitude!));
-      }
+        for (Pharmacie p in data.results!) {
+          positions.add(LatLng(p.latitude!, p.longitude!));
+        }
       pharmacyStatus = LoadingStatus.completed;
       update();
     },

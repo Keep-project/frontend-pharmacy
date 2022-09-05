@@ -62,6 +62,11 @@ class LocalAuthentificationServiceImpl implements LocalAuthentificationService {
     pref.setString(Constants.PHARMACY_ID, idPharmacie);
     return true;
   }
+   @override
+  Future<String?> getPharmacyId() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    return pref.getString(Constants.PHARMACY_ID);
+  }
   
   
 

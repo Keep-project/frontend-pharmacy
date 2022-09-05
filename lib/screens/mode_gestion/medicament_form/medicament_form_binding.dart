@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:pharmacy_app/screens/medicament_form/medicament_form.dart';
+import 'package:pharmacy_app/screens/mode_gestion/medicament_form/medicament_form.dart';
 
 class  MedicamentFormBinding extends Bindings{
 

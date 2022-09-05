@@ -9,8 +9,8 @@ import 'package:pharmacy_app/core/app_colors.dart';
 import 'package:pharmacy_app/core/app_sizes.dart';
 import 'package:pharmacy_app/screens/details/details_screen.dart';
 import 'package:pharmacy_app/screens/facture_form/facture_form.dart';
+import 'package:pharmacy_app/screens/pharmacie_form/pages/pages.dart';
 
-import '../medicament_form/pages/page_two.dart';
 
 class FactureFormScreen extends GetView<FactureFormController> {
   const FactureFormScreen({Key? key}) : super(key: key);

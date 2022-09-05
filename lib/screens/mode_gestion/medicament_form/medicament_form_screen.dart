@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 import 'package:pharmacy_app/core/app_colors.dart';
 import 'package:pharmacy_app/core/app_sizes.dart';
 import 'package:pharmacy_app/core/app_state.dart';
-import 'package:pharmacy_app/screens/medicament_form/medicament_form.dart';
+import 'package:pharmacy_app/screens/mode_gestion/medicament_form/medicament_form.dart';
 
 class MedicamentFormScreen extends GetView<MedicamentFormController> {
   const MedicamentFormScreen({Key? key}) : super(key: key);

@@ -77,3 +77,6 @@ class PharmacieScreenController extends GetxController {
     update();
   }
 }
+
+
+

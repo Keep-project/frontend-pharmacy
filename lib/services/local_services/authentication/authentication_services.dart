@@ -8,4 +8,5 @@ abstract class LocalAuthentificationService {
   Future<bool> deleteToken();
   Future<bool> hasAuthToken();
   Future<bool> savePharmacyId(String idPharmacie);
+  Future<String?> getPharmacyId();
 }

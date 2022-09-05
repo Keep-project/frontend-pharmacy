@@ -5,7 +5,7 @@ import 'package:pharmacy_app/core/app_colors.dart';
 import 'package:pharmacy_app/core/app_sizes.dart';
 import 'package:pharmacy_app/core/app_state.dart';
 import 'package:pharmacy_app/router/app_router.dart';
-import 'package:pharmacy_app/screens/pharmacie/pharmacie.dart';
+import 'package:pharmacy_app/screens/mode_gestion/pharmacie/pharmacie.dart';
 import 'package:pharmacy_app/services/local_services/authentication/authentification.dart';
 
 class PharmacieScreen extends GetView<PharmacieScreenController> {
@@ -120,7 +120,7 @@ class PharmacieScreen extends GetView<PharmacieScreenController> {
                                     await _localAuth.savePharmacyId(controller
                                         .pharmaciesList[index].id
                                         .toString());
-                                    //Get.toNamed(AppRoutes.MAPVIEW);
+                                    Get.toNamed(AppRoutes.STOCK);
                                   },
                                   child: Container(
                                       height: 200,

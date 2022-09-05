@@ -83,21 +83,41 @@ class MedicamentServiceImpl implements MedicamentService {
   }
 
   @override
-  Future filterList({
-      data,
+  Future filterList(
+      {data,
       String? url,
       Function(dynamic data)? onSuccess,
       Function(dynamic date)? onError}) async {
-      ApiRequest(
-        url: url ?? "${Constants.API_URL}/medicament/filter/",
-        data: data,
-        token: await _localAuth.getToken(),
-      ).post(onSuccess: (data) {
-        onSuccess!(MedicamentResponseModel.fromMap(data));
-      }, onError: (error) {
-        if (error != null) {
-          onError!(error);
-        }
-      });
+    ApiRequest(
+      url: url ?? "${Constants.API_URL}/medicament/filter/",
+      data: data,
+      token: await _localAuth.getToken(),
+    ).post(onSuccess: (data) {
+      onSuccess!(MedicamentResponseModel.fromMap(data));
+    }, onError: (error) {
+      if (error != null) {
+        onError!(error);
+      }
+    });
+  }
+
+  @override
+  Future medicamentForPharmacy(
+      {data,
+      String? url,
+      String? idPharmacie,
+      Function(dynamic data)? onSuccess,
+      Function(dynamic date)? onError}) async {
+    ApiRequest(
+      url: url ?? "${Constants.API_URL}/medicament/me/$idPharmacie",
+      data: data,
+      token: await _localAuth.getToken(),
+    ).post(onSuccess: (data) {
+      onSuccess!(MedicamentResponseModel.fromMap(data));
+    }, onError: (error) {
+      if (error != null) {
+        onError!(error);
+      }
+    });
   }
 }
