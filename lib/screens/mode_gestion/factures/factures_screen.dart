@@ -7,6 +7,7 @@ import 'package:pharmacy_app/components/my_row.dart';
 import 'package:pharmacy_app/components/title_text.dart';
 import 'package:pharmacy_app/core/app_colors.dart';
 import 'package:pharmacy_app/core/app_sizes.dart';
+import 'package:pharmacy_app/core/app_state.dart';
 import 'package:pharmacy_app/router/app_router.dart';
 import 'package:pharmacy_app/screens/mode_gestion/factures/factures.dart';
 import 'package:pharmacy_app/screens/mode_visiteur/home/components/search_custom_button.dart';
@@ -17,12 +18,13 @@ class FactureScreen extends GetView<FactureController> {
   @override
   Widget build(BuildContext context) {
     var currentFocus;
-      void unfocus() {
-        currentFocus = FocusScope.of(context);
-        if (!currentFocus.hasPrimaryFocus) {
-          currentFocus.unfocus();
-        }
+    void unfocus() {
+      currentFocus = FocusScope.of(context);
+      if (!currentFocus.hasPrimaryFocus) {
+        currentFocus.unfocus();
       }
+    }
+
     return GetBuilder<FactureController>(
       builder: (controller) => SafeArea(
         child: Scaffold(
@@ -33,13 +35,14 @@ class FactureScreen extends GetView<FactureController> {
               children: [
                 const SizedBox(height: kDefaultPadding),
                 SearchBarAndButton(
-                  context: context,
-                  controller: controller,
-                  onChanged: (data)async{ await controller.searchData(data); },
-                  onTap: () async {
-                    unfocus();
-                  }
-                ),
+                    context: context,
+                    controller: controller,
+                    onChanged: (data) async {
+                      await controller.searchData(data);
+                    },
+                    onTap: () async {
+                      unfocus();
+                    }),
                 const SizedBox(height: kDefaultMargin * 2.8),
                 Row(
                   children: [
@@ -47,7 +50,8 @@ class FactureScreen extends GetView<FactureController> {
                       height: 25,
                       width: 30,
                       decoration: const BoxDecoration(),
-                      child: SvgPicture.asset("assets/icons/Icon awesome-money-bill-alt.svg",
+                      child: SvgPicture.asset(
+                          "assets/icons/Icon awesome-money-bill-alt.svg",
                           fit: BoxFit.fill),
                     ),
                     const SizedBox(width: 5),
@@ -55,111 +59,163 @@ class FactureScreen extends GetView<FactureController> {
                   ],
                 ),
                 const SizedBox(height: kDefaultMargin * 1.6),
-                Expanded(
-                  child: SingleChildScrollView(
-                    child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          ...List.generate(
-                            10,
-                            (index) => Padding(
-                              padding: const EdgeInsets.only(bottom: 16),
-                              child: CardContainer(
-                                header: Row(
-                                  children: [
-                                    Row(
-                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      children: [
-                                        SvgPicture.asset(
-                                            "assets/icons/Icon feather-download.svg",
-                                            height: 18,
-                                            width: 18),
-                                        const SizedBox(width: 5),
-                                        Text(
-                                          "FAC2022-00$index",
-                                          style: TextStyle(
-                                            color: kDarkColor.withOpacity(0.9),
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w600,
+                controller.infinityStatus == LoadingStatus.searching &&
+                        controller.facturesList.isEmpty
+                    ? const Expanded(
+                        child: Center(
+                          child: CircularProgressIndicator(color: kTextColor),
+                        ),
+                      )
+                    : Expanded(
+                        child: SingleChildScrollView(
+                          controller: controller.scrollController,
+                          child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                ...List.generate(
+                                  controller.facturesList.length,
+                                  (index) => Padding(
+                                    padding: const EdgeInsets.only(bottom: 16),
+                                    child: CardContainer(
+                                      header: Row(
+                                        children: [
+                                          Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: [
+                                              SvgPicture.asset(
+                                                  "assets/icons/Icon feather-download.svg",
+                                                  height: 18,
+                                                  width: 18),
+                                              const SizedBox(width: 5),
+                                              Text(
+                                                "FAC2022-00$index",
+                                                style: TextStyle(
+                                                  color: kDarkColor
+                                                      .withOpacity(0.9),
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.w600,
+                                                ),
+                                              ),
+                                            ],
                                           ),
-                                        ),
-                                      ],
+                                          const Spacer(),
+                                          Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                "Créee le 12/03/2002",
+                                                style: TextStyle(
+                                                  color: kDarkColor
+                                                      .withOpacity(0.9),
+                                                  fontSize: 13,
+                                                  fontWeight: FontWeight.w400,
+                                                ),
+                                              ),
+                                              Text(
+                                                "Par: Super Admin",
+                                                style: TextStyle(
+                                                  color: kDarkColor
+                                                      .withOpacity(0.4),
+                                                  fontSize: 12,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                      body: Column(
+                                        children: [
+                                          const SizedBox(height: 8),
+                                          const MyRow(
+                                            title: "Montant HT",
+                                            value: "4000 F",
+                                          ),
+                                          const MyRow(
+                                            title: "Montant TTC",
+                                            value: "4770 F",
+                                          ),
+                                          const MyRow(
+                                            title: "Date d'échéance",
+                                            value: "13/03/2002",
+                                            color: kOrangeColor,
+                                          ),
+                                          Row(
+                                            children: [
+                                              const Spacer(),
+                                              Container(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal:
+                                                            kDefaultPadding,
+                                                        vertical:
+                                                            kDefaultPadding /
+                                                                3),
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          kDefaultRadius * 3),
+                                                  color: kTextColor2
+                                                      .withOpacity(0.12),
+                                                ),
+                                                child: const Text(
+                                                  "Payée",
+                                                  style: TextStyle(
+                                                    color: kTextColor2,
+                                                    fontSize: 12,
+                                                    fontWeight: FontWeight.w500,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          const SizedBox(
+                                              height: kDefaultPadding / 2),
+                                        ],
+                                      ),
                                     ),
-                                    const Spacer(),
-                                    Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          "Créee le 12/03/2002",
-                                          style: TextStyle(
-                                            color: kDarkColor.withOpacity(0.9),
-                                            fontSize: 13,
-                                            fontWeight: FontWeight.w400,
-                                          ),
-                                        ),
-                                        Text(
-                                          "Par: Super Admin",
-                                          style: TextStyle(
-                                            color: kDarkColor.withOpacity(0.4),
-                                            fontSize: 12,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
+                                  ),
                                 ),
-                                body: Column(
-                                  children: [
-                                    const SizedBox(height: 8),
-                                    const MyRow(
-                                      title: "Montant HT",
-                                      value: "4000 F",
-                                    ),
-                                    const MyRow(
-                                      title: "Montant TTC",
-                                      value: "4770 F",
-                                    ),
-                                    const MyRow(
-                                      title: "Date d'échéance",
-                                      value: "13/03/2002",
-                                      color: kOrangeColor,
-                                    ),
-                                    Row(
-                                      children: [
-                                        const Spacer(),
-                                        Container(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: kDefaultPadding,
-                                              vertical: kDefaultPadding / 3),
-                                          decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(
-                                                kDefaultRadius * 3),
-                                            color:
-                                                kTextColor2.withOpacity(0.12),
-                                          ),
-                                          child: const Text(
-                                            "Payée",
-                                            style: TextStyle(
-                                              color: kTextColor2,
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.w500,
-                                            ),
-                                          ),
+                                controller.infinityStatus ==
+                                        LoadingStatus.searching
+                                    ? Container(
+                                        padding: const EdgeInsets.all(0),
+                                        height: 220,
+                                        child: const Center(
+                                          child: CircularProgressIndicator(
+                                              color: kOrangeColor),
                                         ),
-                                      ],
-                                    ),
-                                    const SizedBox(height: kDefaultPadding / 2),
-                                  ],
-                                ),
-                              ),
+                                      )
+                                    : Container(),
+                                const SizedBox(height: kDefaultMargin * 1.8),
+                              ]),
+                        ),
+                      ),
+                controller.facturesList.isEmpty &&
+                        controller.infinityStatus == LoadingStatus.completed
+                    ? Expanded(
+                        flex: 3,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: kDefaultPadding * 2),
+                          decoration: const BoxDecoration(),
+                          width: double.infinity,
+                          child: Text(
+                            "Ooops !!!\nVous n'avez encore aucune facture enregistrée ici",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: kGreyColor.withOpacity(0.7),
+                              fontSize: 18,
+                              fontWeight: FontWeight.w400,
                             ),
                           ),
-                          const SizedBox(height: kDefaultMargin * 1.8),
-                        ]),
-                  ),
-                ),
+                        ),
+                      )
+                    : Container(),
               ],
             ),
           ),

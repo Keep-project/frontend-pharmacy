@@ -166,11 +166,11 @@ class FactureController extends GetxController {
           idPharmacie: await _localAuth.getPharmacyId(),
         onSuccess: (data) async {
           print(data.toMap());
-          // _count = data.count!;
-          // next = data.next;
-          // previous = data.previous;
-          // facturesList.addAll(data.results!);
-          // infinityStatus = LoadingStatus.completed;
+          _count = data.count!;
+          next = data.next;
+          previous = data.previous;
+          facturesList.addAll(data.results!);
+          infinityStatus = LoadingStatus.completed;
           is_searching = false;
           update();
         },
