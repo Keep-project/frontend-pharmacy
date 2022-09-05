@@ -16,6 +16,13 @@ class FactureScreen extends GetView<FactureController> {
 
   @override
   Widget build(BuildContext context) {
+    var currentFocus;
+      void unfocus() {
+        currentFocus = FocusScope.of(context);
+        if (!currentFocus.hasPrimaryFocus) {
+          currentFocus.unfocus();
+        }
+      }
     return GetBuilder<FactureController>(
       builder: (controller) => SafeArea(
         child: Scaffold(
@@ -26,7 +33,13 @@ class FactureScreen extends GetView<FactureController> {
               children: [
                 const SizedBox(height: kDefaultPadding),
                 SearchBarAndButton(
-                    context: context, controller: controller, onTap: () {}),
+                  context: context,
+                  controller: controller,
+                  onChanged: (data)async{ await controller.searchData(data); },
+                  onTap: () async {
+                    unfocus();
+                  }
+                ),
                 const SizedBox(height: kDefaultMargin * 2.8),
                 Row(
                   children: [

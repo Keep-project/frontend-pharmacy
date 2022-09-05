@@ -10,6 +10,7 @@ import 'package:pharmacy_app/core/app_colors.dart';
 import 'package:pharmacy_app/core/app_drawer.dart';
 import 'package:pharmacy_app/core/app_sizes.dart';
 import 'package:pharmacy_app/core/app_state.dart';
+import 'package:pharmacy_app/router/app_router.dart';
 import 'package:pharmacy_app/screens/mode_gestion/stocks/stock.dart';
 import 'package:pharmacy_app/screens/mode_visiteur/home/components/custom_action_dialog.dart';
 import 'package:pharmacy_app/screens/mode_visiteur/home/components/search_custom_button.dart';
@@ -47,7 +48,13 @@ class StockScreen extends GetView<StockController> {
               children: [
                 const SizedBox(height: kDefaultPadding),
                 SearchBarAndButton(
-                    context: context, controller: controller, onTap: () {}),
+                  context: context,
+                  controller: controller,
+                  onChanged: (data)async{ await controller.searchData(data); },
+                  onTap: () async {
+                    unfocus();
+                  }
+                ),
                 const SizedBox(height: kDefaultMargin * 2.8),
                 Row(
                   children: [
@@ -81,102 +88,108 @@ class StockScreen extends GetView<StockController> {
                           ...List.generate( controller.medicamentsList.length, (index) => 
                           Padding(
                             padding: const EdgeInsets.only(bottom: kDefaultPadding / 1.5),
-                            child: CardContainer(
-                              header: Row(
-                                children: [
-                                  Text(controller.medicamentsList[index].nom!.capitalizeFirst!,
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: const TextStyle(
-                                      color: kDarkColor,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                  const Spacer(),
-                                  Text(
-                                    "Ref: ${controller.medicamentsList[index].id!.toString().padLeft(2, '0')}",
-                                    style: const TextStyle(
-                                      color: kDarkColor,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              body: Column(
-                                children: [
-                                  const SizedBox(height: 8),
-                                  MyRow(
-                                    title: "Stock limite pour alerte",
-                                    value: controller.medicamentsList[index].stockAlert!.toString().padLeft(2, '0'),
-                                    color: kOrangeColor,
-                                  ),
-                                  MyRow(
-                                    title: "Stock désiré optimal",
-                                    value: controller.medicamentsList[index].stockOptimal!.toString().padLeft(2, '0'),
-                                  ),
-                                  controller.medicamentsList[index].stock! <= controller.medicamentsList[index].stockAlert! ?
-                                  MyRowIcon(
-                                    title: "Stock physique",
-                                    value: controller.medicamentsList[index].stock!.toString().padLeft(2, '0'),
-                                  ): MyRow(
-                                    title: "Stock physique",
-                                    value: controller.medicamentsList[index].stock!.toString().padLeft(2, '0'),
-                                  ),
-                                  const SizedBox(height: kDefaultPadding / 2),
-                                  Row(
-                                    children: [
-                                      Row(children: [
-                                        Text(
-                                          'P.U vente: ',
-                                          style: TextStyle(
-                                            color: kDarkColor.withOpacity(0.7),
-                                            fontSize: 16,
-                                          ),
-                                        ),
-                                        Text(
-                                          '${controller.medicamentsList[index].prix!} Fcfa',
-                                          style: TextStyle(
-                                            color: kTextColor2.withOpacity(0.9),
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w600,
-                                          ),
-                                        ),
-                                      ]),
-                                      const Spacer(),
-                                      Container(
-                                        height: 30,
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: kDefaultPadding / 2,
-                                            vertical: kDefaultPadding / 4),
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(
-                                              kDefaultRadius * 3),
-                                          color: kTextColor2.withOpacity(0.12),
-                                        ),
-                                        child: Row(
-                                          children: [
-                                            SvgPicture.asset(
-                                                "assets/icons/Icon map-moving-company.svg",
-                                                height: 10,
-                                                width: 10),
-                                            const SizedBox(width: 3),
-                                            const Text(
-                                              "Mouvements",
-                                              style: TextStyle(
-                                                color: kTextColor2,
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.w500,
-                                              ),
-                                            )
-                                          ],
-                                        ),
+                            child: InkWell(
+                              onTap: () { Get.toNamed(AppRoutes.DETAILS_GESTION, arguments: controller.medicamentsList[index].id!.toString());},
+                              child: CardContainer(
+                                header: Row(
+                                  children: [
+                                    Text(controller.medicamentsList[index].nom!.capitalizeFirst!,
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: const TextStyle(
+                                        color: kDarkColor,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w600,
                                       ),
-                                    ],
-                                  ),
-                                  const SizedBox(height: kDefaultPadding / 2),
-                                ],
+                                    ),
+                                    const Spacer(),
+                                    Text(
+                                      "Ref: ${controller.medicamentsList[index].id!.toString().padLeft(2, '0')}",
+                                      style: const TextStyle(
+                                        color: kDarkColor,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                body: Column(
+                                  children: [
+                                    const SizedBox(height: 8),
+                                    MyRow(
+                                      title: "Stock limite pour alerte",
+                                      value: controller.medicamentsList[index].stockAlert!.toString().padLeft(2, '0'),
+                                      color: kOrangeColor,
+                                    ),
+                                    MyRow(
+                                      title: "Stock désiré optimal",
+                                      value: controller.medicamentsList[index].stockOptimal!.toString().padLeft(2, '0'),
+                                    ),
+                                    controller.medicamentsList[index].stock! <= controller.medicamentsList[index].stockAlert! ?
+                                    MyRowIcon(
+                                      title: "Stock physique",
+                                      value: controller.medicamentsList[index].stock!.toString().padLeft(2, '0'),
+                                    ): MyRow(
+                                      title: "Stock physique",
+                                      value: controller.medicamentsList[index].stock!.toString().padLeft(2, '0'),
+                                    ),
+                                    const SizedBox(height: kDefaultPadding / 2),
+                                    Row(
+                                      children: [
+                                        Row(children: [
+                                          Text(
+                                            'P.U vente: ',
+                                            style: TextStyle(
+                                              color: kDarkColor.withOpacity(0.7),
+                                              fontSize: 16,
+                                            ),
+                                          ),
+                                          Text(
+                                            '${controller.medicamentsList[index].prix!} Fcfa',
+                                            style: TextStyle(
+                                              color: kTextColor2.withOpacity(0.9),
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
+                                        ]),
+                                        const Spacer(),
+                                        InkWell(
+                                          onTap: () {},
+                                          child: Container(
+                                            height: 30,
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: kDefaultPadding / 2,
+                                                vertical: kDefaultPadding / 4),
+                                            decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.circular(
+                                                  kDefaultRadius * 3),
+                                              color: kTextColor2.withOpacity(0.12),
+                                            ),
+                                            child: Row(
+                                              children: [
+                                                SvgPicture.asset(
+                                                    "assets/icons/Icon map-moving-company.svg",
+                                                    height: 10,
+                                                    width: 10),
+                                                const SizedBox(width: 3),
+                                                const Text(
+                                                  "Mouvements",
+                                                  style: TextStyle(
+                                                    color: kTextColor2,
+                                                    fontSize: 12,
+                                                    fontWeight: FontWeight.w500,
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    const SizedBox(height: kDefaultPadding / 2),
+                                  ],
+                                ),
                               ),
                             ),
                           ),),

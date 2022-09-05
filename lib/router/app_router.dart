@@ -7,7 +7,8 @@ class AppRoutes {
   static const String LOGIN = "/login";
   static const String REGISTER = "/register";
   static const String HOME = "/home";
-  static const String DETAILS = "/details";
+  static const String DETAILS_VISITEUR = "/details_visiteur";
+  static const String DETAILS_GESTION = "/details_gestion";
   static const String MEDICAMENTS = "/medicaments";
   static const String MAPVIEW = "/mapview";
   static const String MEDICAMENTSFORM = "/medicament_form";

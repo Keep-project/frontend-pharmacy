@@ -11,6 +11,7 @@ import 'package:pharmacy_app/screens/mode_gestion/entrepot/entrepot.dart';
 import 'package:pharmacy_app/screens/mode_gestion/entrepot_form/entrepot_form.dart';
 import 'package:pharmacy_app/screens/mode_gestion/facture_form/facture_form.dart';
 import 'package:pharmacy_app/screens/mode_gestion/factures/factures.dart';
+import 'package:pharmacy_app/screens/mode_gestion/gestion_details/details.dart';
 import 'package:pharmacy_app/screens/mode_gestion/inventaire/inventaire.dart';
 import 'package:pharmacy_app/screens/mode_gestion/inventaire_form/inventaire_form.dart';
 import 'package:pharmacy_app/screens/mode_gestion/medicament_form/medicament_form.dart';
@@ -55,9 +56,15 @@ class AppPages {
     ),
 
     GetPage(
-      name: AppRoutes.DETAILS,
+      name: AppRoutes.DETAILS_VISITEUR,
       page: () => const DetailVisteurScreen(),
       binding: DetailVisiteurScreenBinding(),
+    ),
+
+     GetPage(
+      name: AppRoutes.DETAILS_GESTION,
+      page: () => const DetailGestionScreen(),
+      binding: DetailGestionScreenBinding(),
     ),
     GetPage(
       name: AppRoutes.MEDICAMENTS,

@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:pharmacy_app/components/card_container.dart';
+import 'package:pharmacy_app/components/my_row.dart';
 import 'package:pharmacy_app/components/title_text.dart';
 import 'package:pharmacy_app/core/app_colors.dart';
 import 'package:pharmacy_app/core/app_drawer.dart';
 import 'package:pharmacy_app/core/app_sizes.dart';
-import 'package:pharmacy_app/screens/mode_gestion/gestion_details/details.dart';
 import 'package:pharmacy_app/screens/mode_gestion/inventaire/inventaire.dart';
 import 'package:pharmacy_app/screens/mode_visiteur/home/components/search_custom_button.dart';
 

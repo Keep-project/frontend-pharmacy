@@ -26,7 +26,9 @@ class SearchBar extends StatelessWidget {
       ),
       child: TextField(
         controller: controller,
-        onChanged: (data) async { await onChanged!(data); },
+        onChanged: (data) async {
+        await onChanged!(data);
+        },
         style: const TextStyle(
           color: Colors.black,
           fontSize: 16,

@@ -16,7 +16,7 @@ class MedicamentCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Get.toNamed(AppRoutes.DETAILS, arguments: medicament.id.toString());
+        Get.toNamed(AppRoutes.DETAILS_VISITEUR, arguments: medicament.id.toString());
       },
       child: Container(
         margin: const EdgeInsets.only(bottom: kDefaultMargin * 1.5),
