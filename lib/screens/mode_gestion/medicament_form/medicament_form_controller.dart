@@ -12,9 +12,9 @@ import 'package:pharmacy_app/core/app_snackbar.dart';
 import 'package:pharmacy_app/core/app_state.dart';
 import 'package:pharmacy_app/models/request_data_models/medicament_model.dart';
 import 'package:pharmacy_app/router/app_router.dart';
-import 'package:pharmacy_app/screens/inventaire_form/pages/page_one.dart';
-import 'package:pharmacy_app/screens/inventaire_form/pages/page_two.dart';
+import 'package:pharmacy_app/screens/mode_gestion/medicament_form/pages/page_one.dart';
 import 'package:pharmacy_app/screens/mode_gestion/medicament_form/pages/page_three.dart';
+import 'package:pharmacy_app/screens/mode_gestion/medicament_form/pages/page_two.dart';
 import 'package:pharmacy_app/services/remote_services/medicament/medicament.dart';
 
 

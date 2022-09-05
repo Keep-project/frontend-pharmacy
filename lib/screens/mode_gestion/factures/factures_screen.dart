@@ -3,25 +3,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:pharmacy_app/components/card_container.dart';
+import 'package:pharmacy_app/components/my_row.dart';
 import 'package:pharmacy_app/components/title_text.dart';
 import 'package:pharmacy_app/core/app_colors.dart';
-import 'package:pharmacy_app/core/app_drawer.dart';
 import 'package:pharmacy_app/core/app_sizes.dart';
-import 'package:pharmacy_app/screens/mode_gestion/gestion_details/details.dart';
-import 'package:pharmacy_app/screens/mode_gestion/inventaire/inventaire.dart';
+import 'package:pharmacy_app/router/app_router.dart';
+import 'package:pharmacy_app/screens/mode_gestion/factures/factures.dart';
 import 'package:pharmacy_app/screens/mode_visiteur/home/components/search_custom_button.dart';
 
-class InventaireScreen extends GetView<InventaireController> {
-  const InventaireScreen({Key? key}) : super(key: key);
+class FactureScreen extends GetView<FactureController> {
+  const FactureScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<InventaireController>(
+    return GetBuilder<FactureController>(
       builder: (controller) => SafeArea(
         child: Scaffold(
-          key: controller.scaffoldKey,
-          appBar: buildAppBar(controller, context,),
-          drawer: const AppNavigationDrawer(),
+          appBar: buildAppBar(),
           body: Container(
             padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
             child: Column(
@@ -36,11 +34,11 @@ class InventaireScreen extends GetView<InventaireController> {
                       height: 25,
                       width: 30,
                       decoration: const BoxDecoration(),
-                      child: SvgPicture.asset("assets/icons/Icon material-card-giftcard.svg",
+                      child: SvgPicture.asset("assets/icons/Icon awesome-money-bill-alt.svg",
                           fit: BoxFit.fill),
                     ),
                     const SizedBox(width: 5),
-                    const TitleText(title: "Liste des inventaires"),
+                    const TitleText(title: "Liste des factures"),
                   ],
                 ),
                 const SizedBox(height: kDefaultMargin * 1.6),
@@ -57,28 +55,42 @@ class InventaireScreen extends GetView<InventaireController> {
                               child: CardContainer(
                                 header: Row(
                                   children: [
-                                    Text(
-                                      "Inventaire sur Paracétamol 0$index",
-                                      style: TextStyle(
-                                        color: kDarkColor.withOpacity(0.9),
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                    ),
-                                    const Spacer(),
                                     Row(
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      mainAxisAlignment: MainAxisAlignment.start,
                                       children: [
                                         SvgPicture.asset(
-                                            "assets/icons/Icon material-card-giftcard.svg",
-                                            height: 14,
-                                            width: 14),
+                                            "assets/icons/Icon feather-download.svg",
+                                            height: 18,
+                                            width: 18),
                                         const SizedBox(width: 5),
                                         Text(
-                                          "Ref: INV01",
+                                          "FAC2022-00$index",
                                           style: TextStyle(
                                             color: kDarkColor.withOpacity(0.9),
-                                            fontSize: 14,
+                                            fontSize: 16,
                                             fontWeight: FontWeight.w600,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    const Spacer(),
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          "Créee le 12/03/2002",
+                                          style: TextStyle(
+                                            color: kDarkColor.withOpacity(0.9),
+                                            fontSize: 13,
+                                            fontWeight: FontWeight.w400,
+                                          ),
+                                        ),
+                                        Text(
+                                          "Par: Super Admin",
+                                          style: TextStyle(
+                                            color: kDarkColor.withOpacity(0.4),
+                                            fontSize: 12,
                                           ),
                                         ),
                                       ],
@@ -89,12 +101,17 @@ class InventaireScreen extends GetView<InventaireController> {
                                   children: [
                                     const SizedBox(height: 8),
                                     const MyRow(
-                                      title: "Entrepôt",
-                                      value: "Magasin 01",
+                                      title: "Montant HT",
+                                      value: "4000 F",
                                     ),
                                     const MyRow(
-                                      title: "Produit",
-                                      value: "Paracétamol 500mg",
+                                      title: "Montant TTC",
+                                      value: "4770 F",
+                                    ),
+                                    const MyRow(
+                                      title: "Date d'échéance",
+                                      value: "13/03/2002",
+                                      color: kOrangeColor,
                                     ),
                                     Row(
                                       children: [
@@ -110,7 +127,7 @@ class InventaireScreen extends GetView<InventaireController> {
                                                 kTextColor2.withOpacity(0.12),
                                           ),
                                           child: const Text(
-                                            "Clôturé",
+                                            "Payée",
                                             style: TextStyle(
                                               color: kTextColor2,
                                               fontSize: 12,
@@ -138,14 +155,7 @@ class InventaireScreen extends GetView<InventaireController> {
     );
   }
 
-  AppBar buildAppBar(InventaireController controller, BuildContext context) {
-    var currentFocus;
-    void unfocus() {
-      currentFocus = FocusScope.of(context);
-      if (!currentFocus.hasPrimaryFocus) {
-        currentFocus.unfocus();
-      }
-    }
+  AppBar buildAppBar() {
     return AppBar(
       elevation: 0,
       backgroundColor: kTextColor2,
@@ -161,7 +171,7 @@ class InventaireScreen extends GetView<InventaireController> {
         ),
       ),
       title: const Text(
-        "Inventaires",
+        "Factures clients",
         style: TextStyle(
           color: kWhiteColor,
           fontSize: 16,
@@ -169,10 +179,9 @@ class InventaireScreen extends GetView<InventaireController> {
         ),
       ),
       actions: [
-        GestureDetector(
+        InkWell(
           onTap: () {
-            unfocus();
-            controller.openDrawer();
+            Get.toNamed(AppRoutes.DASHBORD);
           },
           child: Container(
             height: 45,
@@ -183,7 +192,7 @@ class InventaireScreen extends GetView<InventaireController> {
               shape: BoxShape.circle,
             ),
             child: const Center(
-                child: Icon(Icons.menu,
+                child: Icon(CupertinoIcons.person_fill,
                     size: 30, color: kWhiteColor)),
           ),
         ),

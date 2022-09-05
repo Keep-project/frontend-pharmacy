@@ -3,31 +3,31 @@
 import 'package:get/get.dart';
 import 'package:pharmacy_app/router/app_router.dart';
 import 'package:pharmacy_app/screens/dashbord/dashbord.dart';
-import 'package:pharmacy_app/screens/detail_entrepot/detail_entrepot.dart';
-import 'package:pharmacy_app/screens/detail_facture/detail_facture.dart';
-import 'package:pharmacy_app/screens/detail_inventaire/detail_inventaire.dart';
-import 'package:pharmacy_app/screens/details/details.dart';
-import 'package:pharmacy_app/screens/entrepot/entrepot.dart';
-import 'package:pharmacy_app/screens/entrepot_form/entrepot_form.dart';
-import 'package:pharmacy_app/screens/facture_form/facture_form.dart';
-import 'package:pharmacy_app/screens/factures/factures.dart';
-import 'package:pharmacy_app/screens/inventaire_form/inventaire_form.dart';
 import 'package:pharmacy_app/screens/login/login.dart';
+import 'package:pharmacy_app/screens/mode_gestion/detail_entrepot/detail_entrepot.dart';
+import 'package:pharmacy_app/screens/mode_gestion/detail_facture/detail_facture.dart';
+import 'package:pharmacy_app/screens/mode_gestion/detail_inventaire/detail_inventaire.dart';
+import 'package:pharmacy_app/screens/mode_gestion/entrepot/entrepot.dart';
+import 'package:pharmacy_app/screens/mode_gestion/entrepot_form/entrepot_form.dart';
+import 'package:pharmacy_app/screens/mode_gestion/facture_form/facture_form.dart';
+import 'package:pharmacy_app/screens/mode_gestion/factures/factures.dart';
 import 'package:pharmacy_app/screens/mode_gestion/inventaire/inventaire.dart';
+import 'package:pharmacy_app/screens/mode_gestion/inventaire_form/inventaire_form.dart';
 import 'package:pharmacy_app/screens/mode_gestion/medicament_form/medicament_form.dart';
+import 'package:pharmacy_app/screens/mode_gestion/mouvement_produit/mouvement_produit.dart';
+import 'package:pharmacy_app/screens/mode_gestion/mouvement_stock/mouvement_stock.dart';
 import 'package:pharmacy_app/screens/mode_gestion/pharmacie/pharmacie.dart';
+import 'package:pharmacy_app/screens/mode_gestion/pharmacie_form/pharmacie_form.dart';
+import 'package:pharmacy_app/screens/mode_gestion/stocks/stock.dart';
 import 'package:pharmacy_app/screens/mode_visiteur/home/home.dart';
 import 'package:pharmacy_app/screens/mode_visiteur/mapview/mapview.dart';
 import 'package:pharmacy_app/screens/mode_visiteur/medicaments/medicaments.dart';
 import 'package:pharmacy_app/screens/mode_visiteur/onboarding/onboarding.dart';
-import 'package:pharmacy_app/screens/mouvement_produit/mouvement_produit.dart';
-import 'package:pharmacy_app/screens/mouvement_stock/mouvement_stock.dart';
-import 'package:pharmacy_app/screens/pharmacie_form/pharmacie_form.dart';
+import 'package:pharmacy_app/screens/mode_visiteur/visiteur_details/details.dart';
 import 'package:pharmacy_app/screens/register/register.dart';
 import 'package:pharmacy_app/screens/rendez_vous/rendez_vous.dart';
 import 'package:pharmacy_app/screens/rendez_vous_details/rendez_vous_details.dart';
 import 'package:pharmacy_app/screens/start/start.dart';
-import 'package:pharmacy_app/screens/stocks/stock.dart';
 
 class AppPages {
   
@@ -56,8 +56,8 @@ class AppPages {
 
     GetPage(
       name: AppRoutes.DETAILS,
-      page: () => const DetailScreen(),
-      binding: DetailScreenBinding(),
+      page: () => const DetailVisteurScreen(),
+      binding: DetailVisiteurScreenBinding(),
     ),
     GetPage(
       name: AppRoutes.MEDICAMENTS,
