@@ -59,17 +59,17 @@ class DetailInventaireScreen extends GetView<DetailInventaireController> {
                         ],
                       ),
                       const SizedBox(height: kDefaultPadding / 2),
-                      const MyRow(
+                      MyRow(
                         title: "Libellé",
-                        value: "Inventaire sur Paracétamol",
+                        value: controller.inventaire.libelle!,
                       ),
-                      const MyRow(
+                      MyRow(
                         title: "Entrepôt",
-                        value: "Magasin 01",
+                        value: controller.inventaire.entrepotName!,
                       ),
-                      const Text(
-                        "Le 10/03/2016 à 14h10",
-                        style: TextStyle(
+                      Text(
+                        "Le ${controller.inventaire.createdToString()} à ${controller.inventaire.hourToString()}",
+                        style: const TextStyle(
                           color: kTextColor2,
                           fontSize: 14,
                           fontWeight: FontWeight.w600,
@@ -102,14 +102,13 @@ class DetailInventaireScreen extends GetView<DetailInventaireController> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           ...List.generate(
-                            10,
+                            controller.inventaire.lignesInventaire!.length,
                             (index) => Padding(
                               padding: const EdgeInsets.only(bottom: 16),
                               child: CardContainer(
                                 header: Row(
                                   children: [
-                                    Text(
-                                      "Doliprane 200mg",
+                                    Text(controller.inventaire.lignesInventaire![index].productName!.capitalizeFirst!,
                                       style: TextStyle(
                                         color: kDarkColor.withOpacity(0.9),
                                         fontSize: 16,
@@ -121,13 +120,13 @@ class DetailInventaireScreen extends GetView<DetailInventaireController> {
                                 body: Column(
                                   children: [
                                     const SizedBox(height: 8),
-                                    const MyRow(
+                                    MyRow(
                                       title: "Quantité attendue",
-                                      value: "60",
+                                      value: controller.inventaire.lignesInventaire![index].quantiteAttendue.toString(),
                                     ),
-                                    const MyRow(
+                                    MyRow(
                                       title: "Quantité réelle",
-                                      value: "45",
+                                      value: controller.inventaire.lignesInventaire![index].quantiteReelle.toString(),
                                       color: kOrangeColor,
                                     ),
                                     Row(

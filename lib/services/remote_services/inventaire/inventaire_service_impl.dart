@@ -15,7 +15,7 @@ class InventaireServiceImpl implements InventaireService {
       Function(dynamic data)? onSuccess,
       Function(dynamic error)? onError}) async {
     ApiRequest(
-      url: "${Constants.API_URL}/invenatire/",
+      url: "${Constants.API_URL}/inventaire/",
       // data: entrepotModel!.toMap(),
     ).post(onSuccess: (data) {
       onSuccess!(data);
@@ -27,11 +27,13 @@ class InventaireServiceImpl implements InventaireService {
   }
 
   @override
-  Future findAll(
-      {Function(dynamic data)? onSuccess,
+  Future findAll({
+    String? url,
+    String? idPharmacie,
+    Function(dynamic data)? onSuccess,
       Function(dynamic date)? onError}) async {
     ApiRequest(
-      url: "${Constants.API_URL}/invenatire/",
+      url: url ?? "${Constants.API_URL}/inventaire/me/$idPharmacie",
       data: {},
       token: await _localAuth.getToken(),
     ).get(onSuccess: (data) {
@@ -49,7 +51,7 @@ class InventaireServiceImpl implements InventaireService {
       Function(dynamic data)? onSuccess,
       Function(dynamic error)? onError})  async {
      ApiRequest(
-      url: "${Constants.API_URL}/invenatire/$idInventaire",
+      url: "${Constants.API_URL}/inventaire/$idInventaire",
       data: {},
       token: await _localAuth.getToken(),
     ).get(onSuccess: (data) {
@@ -68,7 +70,7 @@ class InventaireServiceImpl implements InventaireService {
       Function(dynamic data)? onSuccess,
       Function(dynamic error)? onError}) async {
      ApiRequest(
-      url: "${Constants.API_URL}/invenatire/$idInventaire",
+      url: "${Constants.API_URL}/inventaire/$idInventaire",
       // data: factureModel!.toMap(),
     ).put(onSuccess: (data) {
       onSuccess!(data);

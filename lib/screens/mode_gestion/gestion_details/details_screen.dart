@@ -64,7 +64,7 @@ class DetailGestionScreen extends GetView<DetailScreenController> {
                         text: TextSpan(
                           children: [
                             TextSpan(
-                              text: "${controller.medicament!.nom!}\n",
+                              text: "${controller.medicament!.nom!.capitalizeFirst}\n",
                               style: const TextStyle(
                                 color: kDarkColor,
                                 fontSize: 22,
