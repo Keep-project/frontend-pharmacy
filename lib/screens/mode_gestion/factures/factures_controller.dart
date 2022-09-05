@@ -5,9 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:location/location.dart' as l;
 import 'package:pharmacy_app/core/app_state.dart';
-import 'package:pharmacy_app/models/response_data_models/medicament_model.dart';
+import 'package:pharmacy_app/models/response_data_models/facture_model.dart';
 import 'package:pharmacy_app/services/local_services/authentication/authentification.dart';
-import 'package:pharmacy_app/services/remote_services/medicament/medicament.dart';
+import 'package:pharmacy_app/services/remote_services/facture/facture.dart';
 
 class FactureController extends GetxController {
 
@@ -19,9 +19,10 @@ class FactureController extends GetxController {
 
   LoadingStatus infinityStatus = LoadingStatus.initial;
 
-  final MedicamentService _medicamentService = MedicamentServiceImpl();
+  final FactureService _factureService = FactureServiceImpl();
 
-  List<Medicament> medicamentsList = <Medicament>[];
+  List<Facture> facturesList = <Facture>[];
+
   RxInt selectedCategorieIndex = 0.obs;
   
   l.LocationData? currentLocation;
@@ -41,7 +42,7 @@ class FactureController extends GetxController {
   @override
   void onInit() async {
     await getCurrentLocation();
-    await getMedicamentsList();
+    await getFacturesList();
     await listerner();
     super.onInit();
   }
@@ -54,7 +55,7 @@ class FactureController extends GetxController {
           infinityStatus = LoadingStatus.searching;
           update();
           Future.delayed(const Duration(seconds: 1), () async {
-            await getMedicamentsList();
+            await getFacturesList();
           });
         }
       }
@@ -144,7 +145,7 @@ class FactureController extends GetxController {
   ];
 
 
-  Future getMedicamentsList() async {
+  Future getFacturesList() async {
     infinityStatus = LoadingStatus.searching;
     update();
     List<int> selectedVoix = [];
@@ -153,22 +154,23 @@ class FactureController extends GetxController {
         selectedVoix.add(v['id']);
       }
     }
-    await _medicamentService.medicamentForPharmacy(
+    await _factureService.findAll(
         url: next,
-        data: {
-            "query": [
-              {"categorie": categories[selectedCategorieIndex.value]['libelle'] },
-              {"voix": selectedVoix },
-              {"search": searchController.text.trim() },
-            ]
-          },
+        // data: {
+        //     "query": [
+        //       {"categorie": categories[selectedCategorieIndex.value]['libelle'] },
+        //       {"voix": selectedVoix },
+        //       {"search": searchController.text.trim() },
+        //     ]
+        //   },
           idPharmacie: await _localAuth.getPharmacyId(),
         onSuccess: (data) async {
-          _count = data.count!;
-          next = data.next;
-          previous = data.previous;
-          medicamentsList.addAll(data.results!);
-          infinityStatus = LoadingStatus.completed;
+          print(data.toMap());
+          // _count = data.count!;
+          // next = data.next;
+          // previous = data.previous;
+          // facturesList.addAll(data.results!);
+          // infinityStatus = LoadingStatus.completed;
           is_searching = false;
           update();
         },
@@ -186,8 +188,8 @@ class FactureController extends GetxController {
     if (selectedCategorieIndex.value != index) {
       selectedCategorieIndex.value = index;
       next = null;
-      medicamentsList.clear();
-      await getMedicamentsList();
+      facturesList.clear();
+      await getFacturesList();
       update();
     }
   }
@@ -200,16 +202,16 @@ class FactureController extends GetxController {
 
   Future filterMedicamentsList() async {
     next = null;
-    medicamentsList.clear();
-    await getMedicamentsList();
+    facturesList.clear();
+    await getFacturesList();
     update();
   }
 
   Future searchData(String data) async {
     if (data.trim().length > 2) {
       next=null;
-      medicamentsList.clear();
-      await getMedicamentsList();
+      facturesList.clear();
+      await getFacturesList();
     }
   }
 

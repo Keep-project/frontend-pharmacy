@@ -27,13 +27,16 @@ class FactureServiceImpl implements FactureService {
 
   @override
   Future findAll(
-      {Function(dynamic data)? onSuccess,
+    {
+      String? url,
+      String? idPharmacie,  
+      Function(dynamic data)? onSuccess,
       Function(dynamic date)? onError}) async {
     ApiRequest(
-      url: "${Constants.API_URL}/facture/",
+      url: url ?? "${Constants.API_URL}/facture/me/$idPharmacie",
       data: {},
       token: await _localAuth.getToken(),
-    ).get(onSuccess: (data) {
+    ).post(onSuccess: (data) {
       onSuccess!(FactureResponseModel.fromMap(data));
     }, onError: (error) {
       if (error != null) {

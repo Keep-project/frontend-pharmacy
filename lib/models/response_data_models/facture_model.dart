@@ -19,7 +19,7 @@ class FactureResponseModel {
           results: json['results'] == null
               ? []
               : List<Facture>.from(
-                  json['results'].map((x) => LigneProduit.fromMap(x))));
+                  json['results'].map((x) => Facture.fromMap(x))));
 
     Map<String, dynamic> toMap() => {
       'count': count,

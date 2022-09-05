@@ -4,6 +4,8 @@ import 'package:pharmacy_app/models/response_data_models/facture_model.dart';
 
 abstract class FactureService {
   Future<void> findAll({
+    String? url,
+    String? idPharmacie,
     Function(dynamic data)? onSuccess,
     Function(dynamic error)? onError,
   });
