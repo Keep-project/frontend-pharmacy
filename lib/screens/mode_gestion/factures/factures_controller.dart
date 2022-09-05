@@ -165,7 +165,6 @@ class FactureController extends GetxController {
         //   },
           idPharmacie: await _localAuth.getPharmacyId(),
         onSuccess: (data) async {
-          print(data.toMap());
           _count = data.count!;
           next = data.next;
           previous = data.previous;

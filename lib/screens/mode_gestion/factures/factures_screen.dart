@@ -77,105 +77,107 @@ class FactureScreen extends GetView<FactureController> {
                                   controller.facturesList.length,
                                   (index) => Padding(
                                     padding: const EdgeInsets.only(bottom: 16),
-                                    child: CardContainer(
-                                      header: Row(
-                                        children: [
-                                          Row(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            children: [
-                                              SvgPicture.asset(
-                                                  "assets/icons/Icon feather-download.svg",
-                                                  height: 18,
-                                                  width: 18),
-                                              const SizedBox(width: 5),
-                                              Text(
-                                                "FAC2022-00$index",
-                                                style: TextStyle(
-                                                  color: kDarkColor
-                                                      .withOpacity(0.9),
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.w600,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          const Spacer(),
-                                          Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                "Créee le 12/03/2002",
-                                                style: TextStyle(
-                                                  color: kDarkColor
-                                                      .withOpacity(0.9),
-                                                  fontSize: 13,
-                                                  fontWeight: FontWeight.w400,
-                                                ),
-                                              ),
-                                              Text(
-                                                "Par: Super Admin",
-                                                style: TextStyle(
-                                                  color: kDarkColor
-                                                      .withOpacity(0.4),
-                                                  fontSize: 12,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                      body: Column(
-                                        children: [
-                                          const SizedBox(height: 8),
-                                          const MyRow(
-                                            title: "Montant HT",
-                                            value: "4000 F",
-                                          ),
-                                          const MyRow(
-                                            title: "Montant TTC",
-                                            value: "4770 F",
-                                          ),
-                                          const MyRow(
-                                            title: "Date d'échéance",
-                                            value: "13/03/2002",
-                                            color: kOrangeColor,
-                                          ),
-                                          Row(
-                                            children: [
-                                              const Spacer(),
-                                              Container(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        horizontal:
-                                                            kDefaultPadding,
-                                                        vertical:
-                                                            kDefaultPadding /
-                                                                3),
-                                                decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          kDefaultRadius * 3),
-                                                  color: kTextColor2
-                                                      .withOpacity(0.12),
-                                                ),
-                                                child: const Text(
-                                                  "Payée",
+                                    child: InkWell(
+                                      onTap: () { Get.toNamed(AppRoutes.DETAIL_FACTURES, arguments: controller.facturesList[index]);},
+                                      child: CardContainer(
+                                        header: Row(
+                                          children: [
+                                            Row(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              children: [
+                                                SvgPicture.asset(
+                                                    "assets/icons/Icon feather-download.svg",
+                                                    height: 18,
+                                                    width: 18),
+                                                const SizedBox(width: 5),
+                                                Text("CODE-FAC: ${controller.facturesList[index].id.toString().padLeft(2, '0')}",
                                                   style: TextStyle(
-                                                    color: kTextColor2,
-                                                    fontSize: 12,
-                                                    fontWeight: FontWeight.w500,
+                                                    color: kDarkColor
+                                                        .withOpacity(0.9),
+                                                    fontSize: 16,
+                                                    fontWeight: FontWeight.w600,
                                                   ),
                                                 ),
-                                              ),
-                                            ],
-                                          ),
-                                          const SizedBox(
-                                              height: kDefaultPadding / 2),
-                                        ],
+                                              ],
+                                            ),
+                                            const Spacer(),
+                                            Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  "Créee le ${controller.facturesList[index].createdToString()}}",
+                                                  style: TextStyle(
+                                                    color: kDarkColor
+                                                        .withOpacity(0.9),
+                                                    fontSize: 13,
+                                                    fontWeight: FontWeight.w400,
+                                                  ),
+                                                ),
+                                                Text(
+                                                  "Par: ${controller.facturesList[index].username!.capitalizeFirst!}",
+                                                  style: TextStyle(
+                                                    color: kDarkColor
+                                                        .withOpacity(0.4),
+                                                    fontSize: 12,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                        body: Column(
+                                          children: [
+                                            const SizedBox(height: 8),
+                                            MyRow(
+                                              title: "Montant HT",
+                                              value: "${controller.facturesList[index].montantTotal} F",
+                                            ),
+                                            MyRow(
+                                              title: "Montant TTC",
+                                              value: "${controller.facturesList[index].montantTotal} F",
+                                            ),
+                                            MyRow(
+                                              title: "Date d'échéance",
+                                              value: controller.facturesList[index].createdToString(),
+                                              color: kOrangeColor,
+                                            ),
+                                            Row(
+                                              children: [
+                                                const Spacer(),
+                                                Container(
+                                                  padding:
+                                                      const EdgeInsets.symmetric(
+                                                          horizontal:
+                                                              kDefaultPadding,
+                                                          vertical:
+                                                              kDefaultPadding /
+                                                                  3),
+                                                  decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            kDefaultRadius * 3),
+                                                    color: kTextColor2
+                                                        .withOpacity(0.12),
+                                                  ),
+                                                  child: const Text(
+                                                    "Payée",
+                                                    style: TextStyle(
+                                                      color: kTextColor2,
+                                                      fontSize: 12,
+                                                      fontWeight: FontWeight.w500,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            const SizedBox(
+                                                height: kDefaultPadding / 2),
+                                          ],
+                                        ),
                                       ),
                                     ),
                                   ),

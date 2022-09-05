@@ -38,6 +38,7 @@ class Facture {
   final int? quantiteTotal;
   final int? reduction;
   final String? note;
+  final String? username;
   final DateTime? created_at;
   final DateTime? updated_at;
   final List<LigneProduit>? produits;
@@ -49,6 +50,7 @@ class Facture {
       this.quantiteTotal,
       this.reduction,
       this.note,
+      this.username,
       this.created_at,
       this.updated_at,
       this.produits
@@ -64,6 +66,7 @@ class Facture {
       quantiteTotal: json['quantiteTotal'] ?? 0,
       reduction: json['reduction'] ?? 0.0,
       note: json['note'] ?? "",
+      username: json['get_user_name'] ?? "",
       created_at: json["created_at"] == null
           ? null
           : DateTime.parse(json["created_at"]),
@@ -82,6 +85,7 @@ class Facture {
         'quantiteTotal': quantiteTotal,
         'reduction': reduction,
         'note': note,
+        'username': username,
         'created_at': created_at!.toIso8601String(),
         'updated_at': updated_at!.toIso8601String(),
         'produits': produits,
@@ -91,6 +95,7 @@ class Facture {
 
   String createdToString() => "${created_at!.year.toString().padLeft(4, '0')}/${created_at!.month.toString().padLeft(2, '0')}/${created_at!.day.toString().padLeft(2, '0')}";
   String updatedToString() => "${updated_at!.year.toString().padLeft(4, '0')}/${updated_at!.month.toString().padLeft(2, '0')}/${updated_at!.day.toString().padLeft(2, '0')}";
+  String hourToString() => "${updated_at!.hour.toString().padLeft(2, '0')}h${updated_at!.minute.toString().padLeft(2, '0')}";
 
 }
 
@@ -101,6 +106,7 @@ class LigneProduit {
   final int? montant;
   final int? quantite;
   final int? montantTotal;
+  final String? productName;
   final DateTime? created_at;
   final DateTime? updated_at;
 
@@ -111,6 +117,7 @@ class LigneProduit {
       this.montant,
       this.quantite,
       this.montantTotal,
+      this.productName,
       this.created_at,
       this.updated_at});
 
@@ -124,6 +131,7 @@ class LigneProduit {
       montant: json["montant"] ?? 0,
       quantite: json["quantite"] ?? 0,
       montantTotal: json["montantTotal"] ?? 0,
+      productName: json["get_medecine_name"] ?? "",
       created_at: json["created_at"] == null
           ? null
           : DateTime.parse(json["created_at"]),
@@ -138,6 +146,7 @@ class LigneProduit {
         'montant': montant,
         'quantite': quantite,
         'montantTotal': montantTotal,
+        'productName': productName,
         'created_at': created_at!.toIso8601String(),
         'updated_at': updated_at!.toIso8601String(),
       };

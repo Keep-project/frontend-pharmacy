@@ -67,7 +67,7 @@ class DetailFactureScreen extends GetView<DetailFactureController> {
                                             ),
                                           ),
                                           Text(
-                                            "6000 F",
+                                            "${controller.facture.montantTotal} F",
                                             style: TextStyle(
                                               color:
                                                   kDarkColor.withOpacity(0.7),
@@ -119,7 +119,7 @@ class DetailFactureScreen extends GetView<DetailFactureController> {
                                             ),
                                           ),
                                           Text(
-                                            "7155 F",
+                                            "${controller.facture.montantTotal} F",
                                             style: TextStyle(
                                               color:
                                                   kDarkColor.withOpacity(0.7),
@@ -144,9 +144,9 @@ class DetailFactureScreen extends GetView<DetailFactureController> {
                               children: [
                                 Row(
                                   children: [
-                                    const Text(
-                                      "Le 10/08/2004 14h02",
-                                      style: TextStyle(
+                                    Text(
+                                      "Le ${controller.facture.createdToString()} ${controller.facture.hourToString()}",
+                                      style: const TextStyle(
                                         color: kTextColor2,
                                         fontSize: 12,
                                         fontWeight: FontWeight.w500,
@@ -174,16 +174,16 @@ class DetailFactureScreen extends GetView<DetailFactureController> {
                                   ],
                                 ),
                                 const SizedBox(height: kDefaultPadding / 2.3),
-                                const MyRow(
-                                    title: "Référence", value: "FAC200-003"),
-                                const MyRow(
-                                    title: "Auteur", value: "Super Admin"),
+                                MyRow(
+                                    title: "Référence", value: "CODE-FAC: ${controller.facture.id!.toString().padLeft(2, '0')}"),
+                                MyRow(
+                                    title: "Auteur", value: controller.facture.username!.capitalizeFirst),
                                 const MyRow(
                                     title: "Type", value: "Facture standard"),
-                                const MyRow(title: "Réduction", value: "0%"),
-                                const MyRow(
+                                MyRow(title: "Réduction", value: "${controller.facture.reduction!}%"),
+                                MyRow(
                                   title: "Date d'échéance",
-                                  value: "13/08/2004",
+                                  value: controller.facture.createdToString(),
                                   color: kOrangeColor,
                                 ),
                                 const MyRow(
@@ -196,150 +196,152 @@ class DetailFactureScreen extends GetView<DetailFactureController> {
                           const TitleText(title: "Lignes de produits"),
                           const SizedBox(height: kDefaultPadding - 4),
                           ...List.generate(
-                            10,
+                            controller.facture.produits!.length,
                             (index) => Padding(
                               padding: const EdgeInsets.only(bottom: 16),
-                              child: CardContainer(
-                                header: Row(
-                                  children: [
-                                    Text(
-                                      "Inventaire sur Paracétamol 0$index",
-                                      style: TextStyle(
-                                        color: kDarkColor.withOpacity(0.9),
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w600,
+                              child: InkWell(
+                                onTap: () { Get.toNamed(AppRoutes.DETAILS_GESTION, arguments: controller.facture.produits![index].medicament!.toString() );},
+                                child: CardContainer(
+                                  header: Row(
+                                    children: [
+                                      Text(controller.facture.produits![index].productName!.capitalizeFirst!,
+                                        style: TextStyle(
+                                          color: kDarkColor.withOpacity(0.9),
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w600,
+                                        ),
                                       ),
-                                    ),
-                                    const Spacer(),
-                                    Text(
-                                      "Ref: INV01",
-                                      style: TextStyle(
-                                        color: kDarkColor.withOpacity(0.9),
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w600,
+                                      const Spacer(),
+                                      Text(
+                                        "Ref: ${controller.facture.produits![index].id!.toString().padLeft(2, '0')}",
+                                        style: TextStyle(
+                                          color: kDarkColor.withOpacity(0.9),
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w600,
+                                        ),
                                       ),
-                                    ),
-                                  ],
-                                ),
-                                body: Column(
-                                  children: [
-                                    const SizedBox(height: 8),
-                                    const MyRow(
-                                      title: "TVA",
-                                      value: "19.25%",
-                                    ),
-                                    const MyRow(
-                                      title: "P.U HT",
-                                      value: "150 F",
-                                    ),
-                                    const MyRow(
-                                      title: "Quantité",
-                                      value: "12",
-                                    ),
-                                    const MyRow(
-                                      title: "Réduction",
-                                      value: "0%",
-                                    ),
-                                    const MyRow(
-                                      title: "Total HT",
-                                      value: "1200 F",
-                                      color: kOrangeColor,
-                                    ),
-                                    Container(),
-                                    const SizedBox(height: kDefaultPadding / 2),
-                                  ],
+                                    ],
+                                  ),
+                                  body: Column(
+                                    children: [
+                                      const SizedBox(height: 8),
+                                      // const MyRow(
+                                      //   title: "TVA",
+                                      //   value: "19.25%",
+                                      // ),
+                                      MyRow(
+                                        title: "P.U HT",
+                                        value: "${controller.facture.produits![index].montant!} F",
+                                      ),
+                                      MyRow(
+                                        title: "Quantité",
+                                        value: controller.facture.produits![index].quantite!.toString(),
+                                      ),
+                                      MyRow(
+                                        title: "Réduction",
+                                        value: "${controller.facture.reduction!}%",
+                                      ),
+                                      MyRow(
+                                        title: "Total HT",
+                                        value: "${controller.facture.produits![index].montantTotal!} F",
+                                        color: kOrangeColor,
+                                      ),
+                                      Container(),
+                                      const SizedBox(height: kDefaultPadding / 2),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
                           ),
                           const SizedBox(height: kDefaultMargin * 1.6),
-                          Row(
-                            children: [
-                              Container(
-                                height: 25,
-                                width: 30,
-                                decoration: const BoxDecoration(),
-                                child: SvgPicture.asset(
-                                    "assets/icons/money-check-alt.svg",
-                                    fit: BoxFit.fill),
-                              ),
-                              const SizedBox(width: 5),
-                              const TitleText(
-                                  title: "Règlements reçu"),
-                            ],
-                          ),
-                          const SizedBox(height: kDefaultMargin),
-                          ...List.generate(
-                            2,
-                            (index) => Padding(
-                              padding: const EdgeInsets.only(bottom: 16),
-                              child: CardContainer(
-                                header: Row(
-                                  children: [
-                                    Row(
-                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      children: [
-                                        SvgPicture.asset(
-                                            "assets/icons/Icon feather-download.svg",
-                                            height: 18,
-                                            width: 18),
-                                        const SizedBox(width: 5),
-                                        Text(
-                                          "FAC2022-00$index",
-                                          style: TextStyle(
-                                            color: kDarkColor.withOpacity(0.9),
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w600,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    const Spacer(),
-                                    Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          "Payé le 12/03/2002",
-                                          style: TextStyle(
-                                            color: kDarkColor.withOpacity(0.9),
-                                            fontSize: 13,
-                                            fontWeight: FontWeight.w400,
-                                          ),
-                                        ),
-                                        Text(
-                                          "Par: Super Admin",
-                                          style: TextStyle(
-                                            color: kDarkColor.withOpacity(0.4),
-                                            fontSize: 12,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                                body: Column(
-                                  children: [
-                                    const SizedBox(height: 8),
-                                    const MyRow(
-                                      title: "Montant HT",
-                                      value: "4000 F",
-                                    ),
-                                    const MyRow(
-                                      title: "Montant TTC",
-                                      value: "4770 F",
-                                    ),
-                                    const MyRow(
-                                      title: "Date d'échéance",
-                                      value: "13/03/2002",
-                                      color: kOrangeColor,
-                                    ),
-                                    Container(),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
+                          // Row(
+                          //   children: [
+                          //     Container(
+                          //       height: 25,
+                          //       width: 30,
+                          //       decoration: const BoxDecoration(),
+                          //       child: SvgPicture.asset(
+                          //           "assets/icons/money-check-alt.svg",
+                          //           fit: BoxFit.fill),
+                          //     ),
+                          //     const SizedBox(width: 5),
+                          //     const TitleText(
+                          //         title: "Règlements reçu"),
+                          //   ],
+                          // ),
+                          // const SizedBox(height: kDefaultMargin),
+                          // ...List.generate(
+                          //   2,
+                          //   (index) => Padding(
+                          //     padding: const EdgeInsets.only(bottom: 16),
+                          //     child: CardContainer(
+                          //       header: Row(
+                          //         children: [
+                          //           Row(
+                          //             crossAxisAlignment: CrossAxisAlignment.center,
+                          //             mainAxisAlignment: MainAxisAlignment.start,
+                          //             children: [
+                          //               SvgPicture.asset(
+                          //                   "assets/icons/Icon feather-download.svg",
+                          //                   height: 18,
+                          //                   width: 18),
+                          //               const SizedBox(width: 5),
+                          //               Text(
+                          //                 "FAC2022-00$index",
+                          //                 style: TextStyle(
+                          //                   color: kDarkColor.withOpacity(0.9),
+                          //                   fontSize: 16,
+                          //                   fontWeight: FontWeight.w600,
+                          //                 ),
+                          //               ),
+                          //             ],
+                          //           ),
+                          //           const Spacer(),
+                          //           Column(
+                          //             crossAxisAlignment: CrossAxisAlignment.start,
+                          //             children: [
+                          //               Text(
+                          //                 "Payé le 12/03/2002",
+                          //                 style: TextStyle(
+                          //                   color: kDarkColor.withOpacity(0.9),
+                          //                   fontSize: 13,
+                          //                   fontWeight: FontWeight.w400,
+                          //                 ),
+                          //               ),
+                          //               Text(
+                          //                 "Par: Super Admin",
+                          //                 style: TextStyle(
+                          //                   color: kDarkColor.withOpacity(0.4),
+                          //                   fontSize: 12,
+                          //                 ),
+                          //               ),
+                          //             ],
+                          //           ),
+                          //         ],
+                          //       ),
+                          //       body: Column(
+                          //         children: [
+                          //           const SizedBox(height: 8),
+                          //           const MyRow(
+                          //             title: "Montant HT",
+                          //             value: "4000 F",
+                          //           ),
+                          //           const MyRow(
+                          //             title: "Montant TTC",
+                          //             value: "4770 F",
+                          //           ),
+                          //           const MyRow(
+                          //             title: "Date d'échéance",
+                          //             value: "13/03/2002",
+                          //             color: kOrangeColor,
+                          //           ),
+                          //           Container(),
+                          //         ],
+                          //       ),
+                          //     ),
+                          //   ),
+                          // ),
                           const SizedBox(height: kDefaultPadding),
                         ]),
                   ),
@@ -367,8 +369,7 @@ class DetailFactureScreen extends GetView<DetailFactureController> {
                   color: kWhiteColor, size: 30)),
         ),
       ),
-      title: const Text(
-        "Détail FAC2022-001",
+      title: const Text("Détail de la facture",
         style: TextStyle(
           color: kWhiteColor,
           fontSize: 16,
@@ -398,43 +399,3 @@ class DetailFactureScreen extends GetView<DetailFactureController> {
   }
 }
 
-class MyRowIcon extends StatelessWidget {
-  final String? title;
-  final String? value;
-  const MyRowIcon({
-    Key? key,
-    this.title,
-    this.value,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Text(
-          title!,
-          style: TextStyle(
-            color: kDarkColor.withOpacity(0.7),
-            fontSize: 16,
-          ),
-        ),
-        const Spacer(),
-        Row(
-          children: [
-            SvgPicture.asset("assets/icons/Composant 54 – 1.svg"),
-            const SizedBox(width: 3),
-            Text(
-              value!,
-              style: const TextStyle(
-                color: kDarkColor,
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ],
-        ),
-        const SizedBox(height: kDefaultPadding - 4),
-      ],
-    );
-  }
-}
