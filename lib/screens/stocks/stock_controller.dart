@@ -160,17 +160,14 @@ class StockController extends GetxController{
               {"categorie": categories[selectedCategorieIndex.value]['libelle'] },
               {"voix": selectedVoix },
               {"search": searchController.text.trim() },
-              // {"position": [ currentLocation!.latitude ?? 3.866667, currentLocation!.longitude ?? 11.516667, distance ] },
             ]
           },
           idPharmacie: await _localAuth.getPharmacyId(),
         onSuccess: (data) async {
-          print(data!.toMap());
-          print(await _localAuth.getPharmacyId());
-          // _count = data.count!;
-          // next = data.next;
-          // previous = data.previous;
-          // medicamentsList.addAll(data.results!);
+          _count = data.count!;
+          next = data.next;
+          previous = data.previous;
+          medicamentsList.addAll(data.results!);
           infinityStatus = LoadingStatus.completed;
           is_searching = false;
           update();
