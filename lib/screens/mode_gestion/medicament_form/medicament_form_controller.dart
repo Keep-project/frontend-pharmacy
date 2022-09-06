@@ -15,6 +15,7 @@ import 'package:pharmacy_app/router/app_router.dart';
 import 'package:pharmacy_app/screens/mode_gestion/medicament_form/pages/page_one.dart';
 import 'package:pharmacy_app/screens/mode_gestion/medicament_form/pages/page_three.dart';
 import 'package:pharmacy_app/screens/mode_gestion/medicament_form/pages/page_two.dart';
+import 'package:pharmacy_app/services/local_services/authentication/authentification.dart';
 import 'package:pharmacy_app/services/remote_services/medicament/medicament.dart';
 
 
@@ -33,6 +34,8 @@ class MedicamentFormController extends GetxController {
   final TextEditingController textEditingPosologie = TextEditingController();
 
   LoadingStatus medicamentStatus = LoadingStatus.initial;
+
+  final LocalAuthentificationService _localAuth =  LocalAuthentificationServiceImpl();
 
   final PageController pageController = PageController();
   int step = 1;
@@ -189,7 +192,7 @@ class MedicamentFormController extends GetxController {
           context, "Veuillez renseigner comment le médicament doit être pris ainsi que les conditions de conservation !");
       return;
     }
-
+    var id = await _localAuth.getPharmacyId();
     MedicamentRequestModel new_medecine = MedicamentRequestModel(
       nom: textEditingNom.text.trim(),
       categorie: selectedCategorie == "Enfant" ? 1 : categories.firstWhere((c) => c['libelle'] == selectedCategorie)['id'],
@@ -198,16 +201,16 @@ class MedicamentFormController extends GetxController {
       masse: textEditingMasseUnite.text.trim(),
       qte_stock: int.parse(textEditingStock.text.trim()),
       stockAlert: int.parse(textEditingStockAlert.text.trim()),
-      pharmacie: 1,
-      voix: 0,
-      entrepot: 1,
       stockOptimal: int.parse(textEditingStockOptimal.text.trim()),
-      tva: selectedTva == "19.25%" ? 1 : tvas.firstWhere((c) => c['libelle'] == selectedTva)['id'],
+      tva: selectedTva == "19.25%" ? 19.25 : 0.0, // tvas.firstWhere((c) => c['libelle'] == selectedTva)['id'],
       basePrix: selectedBasePrix == "HT" ? "1" : baseprix.firstWhere((c) => c['libelle'] == selectedBasePrix)['id'].toString(),
       date_exp: datePremption,
       image: photo,
       description: textEditingDescription.text.trim(),
       posologie: textEditingPosologie.text.trim(),
+      pharmacie: int.parse(id!),
+      voix: 0,
+      entrepot: 1,
     );
 
     // medicamentStatus = LoadingStatus.searching;

@@ -47,7 +47,7 @@ class MedicamentRequestModel {
         'masse': masse,
         'marque': marque,
         'date_exp': date_exp!.toIso8601String(),
-        'stock': qte_stock,
+        'qte_stock': qte_stock,
         'stockAlert': stockAlert,
         'stockOptimal': stockOptimal,
         'description': description,
