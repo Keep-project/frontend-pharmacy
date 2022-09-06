@@ -149,8 +149,7 @@ class MouvementStockScreen extends GetView<MouvementStockController> {
                                     ),
                                   ),
                                 ),
-                                controller.infinityStatus ==
-                                        LoadingStatus.searching
+                                controller.infinityStatus == LoadingStatus.searching
                                     ? Container(
                                         padding: const EdgeInsets.all(0),
                                         height: 220,
