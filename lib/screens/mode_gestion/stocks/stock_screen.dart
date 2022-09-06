@@ -155,7 +155,7 @@ class StockScreen extends GetView<StockController> {
                                         ]),
                                         const Spacer(),
                                         InkWell(
-                                          onTap: () {},
+                                          onTap: () { print("Liste des mouvements de stock");},
                                           child: Container(
                                             height: 30,
                                             padding: const EdgeInsets.symmetric(
