@@ -7,6 +7,7 @@ abstract class MouvementStockService {
   });
   Future mouvementStockForProduct({
     String? url,
+    String? idMedicament,
     Function(dynamic data)? onSuccess,
     Function(dynamic date)? onError,
   });

@@ -155,7 +155,7 @@ class StockScreen extends GetView<StockController> {
                                         ]),
                                         const Spacer(),
                                         InkWell(
-                                          onTap: () { print("Liste des mouvements de stock");},
+                                          onTap: () { Get.toNamed(AppRoutes.MOUVEMENT_PRODUIT, arguments: {'id': controller.medicamentsList[index].id!.toString(), 'productName': controller.medicamentsList[index].nom! } ); },
                                           child: Container(
                                             height: 30,
                                             padding: const EdgeInsets.symmetric(

@@ -38,6 +38,7 @@ class MouvementStock {
   final int? medicament;
   final String? description;
   final String? productName;
+  final String? entrepotName;
   final int? quantite;
   final DateTime? created_at;
   final DateTime? updated_at;
@@ -48,6 +49,7 @@ class MouvementStock {
       this.medicament,
       this.description,
       this.productName,
+      this.entrepotName,
       this.quantite,
       this.created_at,
       this.updated_at});
@@ -60,6 +62,7 @@ class MouvementStock {
     medicament: json['medicament'] ?? 0,
     description: json['description'] ?? "",
     productName: json['get_medecine_name'] ?? "",
+    entrepotName: json['get_entrepot_name'] ?? "",
     quantite: json['quantite'] ?? 0,
     created_at: json['created_at'] == null ? null : DateTime.parse(json['created_at']),
     updated_at: json['updated_at'] == null ? null : DateTime.parse(json['updated_at']),
@@ -71,6 +74,7 @@ class MouvementStock {
     'medicament': medicament,
     'description': description,
     'productName': productName,
+    'entrepotName': entrepotName,
     'quantite': quantite,
     'created_at': created_at!.toIso8601String(),
     'updated_at': updated_at!.toIso8601String(),

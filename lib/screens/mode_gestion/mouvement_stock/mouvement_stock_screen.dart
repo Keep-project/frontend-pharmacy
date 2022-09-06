@@ -6,6 +6,7 @@ import 'package:pharmacy_app/components/card_container.dart';
 import 'package:pharmacy_app/components/title_text.dart';
 import 'package:pharmacy_app/core/app_colors.dart';
 import 'package:pharmacy_app/core/app_sizes.dart';
+import 'package:pharmacy_app/core/app_state.dart';
 import 'package:pharmacy_app/router/app_router.dart';
 import 'package:pharmacy_app/screens/mode_gestion/mouvement_stock/mouvement_stock.dart';
 import 'package:pharmacy_app/screens/mode_visiteur/home/components/search_custom_button.dart';
@@ -32,344 +33,153 @@ class MouvementStockScreen extends GetView<MouvementStockController> {
                 const TitleText(
                   title: "Liste des mouvements de stock",
                 ),
-                const SizedBox(height: 20),
-                Expanded(
-                  child: SingleChildScrollView(
-                    child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          CardContainer(
-                            header: Row(
-                              children: [
-                                Text(
-                                  "Entrepôt 01",
-                                  style: TextStyle(
-                                    color: kDarkColor.withOpacity(0.9),
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                                const Spacer(),
-                                Row(
-                                  children: [
-                                    SvgPicture.asset(
-                                        "assets/icons/Icon map-moving-company.svg",
-                                        height: 10,
-                                        width: 10),
-                                    const SizedBox(width: 5),
-                                    Text(
-                                      "Ref: ET01",
-                                      style: TextStyle(
-                                        color: kDarkColor.withOpacity(0.9),
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                            body: Column(
+                const SizedBox(height: kDefaultPadding),
+                controller.infinityStatus == LoadingStatus.searching &&
+                        controller.mouvementStockList.isEmpty
+                    ? const Expanded(
+                        child: Center(
+                          child: CircularProgressIndicator(color: kTextColor),
+                        ),
+                      )
+                    : Expanded(
+                        child: SingleChildScrollView(
+                          child: Column(
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const SizedBox(height: kDefaultPadding / 2),
-                                Text(
-                                  "Transfert du stock de Doliprane 200mg dans un autre entrepôt",
-                                  style: TextStyle(
-                                    color: kDarkColor.withOpacity(0.9),
-                                    fontSize: 12,
-                                  ),
-                                ),
-                                const SizedBox(height: kDefaultPadding / 1.5),
-                                Row(
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Text(
-                                          "Quantité: ",
-                                          style: TextStyle(
-                                            color: kDarkColor.withOpacity(0.6),
-                                            fontSize: 14,
-                                          ),
-                                        ),
-                                        Text(
-                                          "-14",
-                                          style: TextStyle(
-                                            color: kTextColor2.withOpacity(0.9),
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w600,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    const Spacer(),
-                                    Text(
-                                      "10/08/2004 14h02",
-                                      style: TextStyle(
-                                        color: kTextColor2.withOpacity(0.9),
-                                        fontWeight: FontWeight.w400,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(height: kDefaultPadding / 2),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(height: kDefaultPadding / 2),
-                          CardContainer(
-                            header: Row(
-                              children: [
-                                Text(
-                                  "Entrepôt 02",
-                                  style: TextStyle(
-                                    color: kDarkColor.withOpacity(0.9),
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                                const Spacer(),
-                                Row(
-                                  children: [
-                                    SvgPicture.asset(
-                                        "assets/icons/Icon map-moving-company.svg",
-                                        height: 10,
-                                        width: 10),
-                                    const SizedBox(width: 5),
-                                    Text(
-                                      "Ref: ET02",
-                                      style: TextStyle(
-                                        color: kDarkColor.withOpacity(0.9),
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                            body: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const SizedBox(height: kDefaultPadding / 2),
-                                Text(
-                                  "Transfert du stock de Doliprane 200mg dans un autre entrepôt",
-                                  style: TextStyle(
-                                    color: kDarkColor.withOpacity(0.9),
-                                    fontSize: 12,
-                                  ),
-                                ),
-                                const SizedBox(height: kDefaultPadding / 1.5),
-                                Row(
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Text(
-                                          "Quantité: ",
-                                          style: TextStyle(
-                                            color: kDarkColor.withOpacity(0.6),
-                                            fontSize: 14,
-                                          ),
-                                        ),
-                                        Text(
-                                          "+14",
-                                          style: TextStyle(
-                                            color: kTextColor2.withOpacity(0.9),
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w600,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    const Spacer(),
-                                    Text(
-                                      "10/08/2004 14h02",
-                                      style: TextStyle(
-                                        color: kTextColor2.withOpacity(0.9),
-                                        fontWeight: FontWeight.w400,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(height: kDefaultPadding / 2),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(height: kDefaultPadding / 2),
-                          CardContainer(
-                            header: Row(
-                              children: [
-                                Text(
-                                  "Entrepôt 12",
-                                  style: TextStyle(
-                                    color: kDarkColor.withOpacity(0.9),
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                                const Spacer(),
-                                Row(
-                                  children: [
-                                    SvgPicture.asset(
-                                        "assets/icons/Icon map-moving-company.svg",
-                                        height: 10,
-                                        width: 10),
-                                    const SizedBox(width: 5),
-                                    Text(
-                                      "Ref: ET12",
-                                      style: TextStyle(
-                                        color: kDarkColor.withOpacity(0.9),
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                            body: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const SizedBox(height: kDefaultPadding / 2),
-                                Text(
-                                  "Correction du stcok pour le produit Doliprane",
-                                  style: TextStyle(
-                                    color: kDarkColor.withOpacity(0.9),
-                                    fontSize: 12,
-                                  ),
-                                ),
-                                const SizedBox(height: kDefaultPadding / 1.5),
-                                Row(
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Text(
-                                          "Quantité: ",
-                                          style: TextStyle(
-                                            color: kDarkColor.withOpacity(0.6),
-                                            fontSize: 14,
-                                          ),
-                                        ),
-                                        Text(
-                                          "+23",
-                                          style: TextStyle(
-                                            color: kTextColor2.withOpacity(0.9),
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w600,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    const Spacer(),
-                                    Text(
-                                      "04/06/2004 14h02",
-                                      style: TextStyle(
-                                        color: kTextColor2.withOpacity(0.9),
-                                        fontWeight: FontWeight.w400,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(height: kDefaultPadding / 2),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(height: kDefaultPadding / 2),
-                          ...List.generate(
-                            100,
-                            (index) => Padding(
-                              padding: const EdgeInsets.only(
-                                  bottom: kDefaultPadding / 2),
-                              child: CardContainer(
-                                header: Row(
-                                  children: [
-                                    Text(
-                                      "Entrepôt 12$index",
-                                      style: TextStyle(
-                                        color: kDarkColor.withOpacity(0.9),
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                    ),
-                                    const Spacer(),
-                                    Row(
-                                      children: [
-                                        SvgPicture.asset(
-                                            "assets/icons/Icon map-moving-company.svg",
-                                            height: 10,
-                                            width: 10),
-                                        const SizedBox(width: 5),
-                                        Text(
-                                          "Ref: ET12",
-                                          style: TextStyle(
-                                            color: kDarkColor.withOpacity(0.9),
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w600,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                                body: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    const SizedBox(height: kDefaultPadding / 2),
-                                    Text(
-                                      "Correction du stcok pour le produit Doliprane",
-                                      style: TextStyle(
-                                        color: kDarkColor.withOpacity(0.9),
-                                        fontSize: 12,
-                                      ),
-                                    ),
-                                    const SizedBox(height: kDefaultPadding / 1.5),
-                                    Row(
-                                      children: [
-                                        Row(
-                                          children: [
-                                            Text(
-                                              "Quantité: ",
-                                              style: TextStyle(
-                                                color:
-                                                    kDarkColor.withOpacity(0.6),
-                                                fontSize: 14,
-                                              ),
+                                ...List.generate(
+                                  controller.mouvementStockList.length,
+                                  (index) => Padding(
+                                    padding: const EdgeInsets.only(
+                                        bottom: kDefaultPadding / 2),
+                                    child: CardContainer(
+                                      header: Row(
+                                        children: [
+                                          Text(controller.mouvementStockList[index].entrepotName!.capitalizeFirst!,
+                                            style: TextStyle(
+                                              color:
+                                                  kDarkColor.withOpacity(0.9),
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w600,
                                             ),
-                                            Text(
-                                              "+23",
-                                              style: TextStyle(
-                                                color:
-                                                    kTextColor2.withOpacity(0.9),
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w600,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        const Spacer(),
-                                        Text(
-                                          "04/06/2004 14h02",
-                                          style: TextStyle(
-                                            color: kTextColor2.withOpacity(0.9),
-                                            fontWeight: FontWeight.w400,
                                           ),
-                                        ),
-                                      ],
+                                          const Spacer(),
+                                          Row(
+                                            children: [
+                                              SvgPicture.asset(
+                                                  "assets/icons/Icon map-moving-company.svg",
+                                                  height: 10,
+                                                  width: 10),
+                                              const SizedBox(width: 5),
+                                              Text(
+                                                "Ref: ${controller.mouvementStockList[index].id!}",
+                                                style: TextStyle(
+                                                  color: kDarkColor
+                                                      .withOpacity(0.9),
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.w600,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                      body: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          const SizedBox(
+                                              height: kDefaultPadding / 2),
+                                          Text(
+                                            "Correction du stcok pour le produit Doliprane",
+                                            style: TextStyle(
+                                              color:
+                                                  kDarkColor.withOpacity(0.9),
+                                              fontSize: 12,
+                                            ),
+                                          ),
+                                          const SizedBox(
+                                              height: kDefaultPadding / 1.5),
+                                          Row(
+                                            children: [
+                                              Row(
+                                                children: [
+                                                  Text(
+                                                    "Quantité: ",
+                                                    style: TextStyle(
+                                                      color: kDarkColor
+                                                          .withOpacity(0.6),
+                                                      fontSize: 14,
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    "+23",
+                                                    style: TextStyle(
+                                                      color: kTextColor2
+                                                          .withOpacity(0.9),
+                                                      fontSize: 16,
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              const Spacer(),
+                                              Text(
+                                                "04/06/2004 14h02",
+                                                style: TextStyle(
+                                                  color: kTextColor2
+                                                      .withOpacity(0.9),
+                                                  fontWeight: FontWeight.w400,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          const SizedBox(
+                                              height: kDefaultPadding / 2),
+                                        ],
+                                      ),
                                     ),
-                                    const SizedBox(height: kDefaultPadding / 2),
-                                  ],
+                                  ),
                                 ),
-                              ),
+                                controller.infinityStatus ==
+                                        LoadingStatus.searching
+                                    ? Container(
+                                        padding: const EdgeInsets.all(0),
+                                        height: 220,
+                                        child: const Center(
+                                          child: CircularProgressIndicator(
+                                              color: kOrangeColor),
+                                        ),
+                                      )
+                                    : Container(),
+                                const SizedBox(height: kDefaultMargin * 1.8),
+                              ]),
+                        ),
+                      ),
+                controller.mouvementStockList.isEmpty &&
+                        controller.infinityStatus == LoadingStatus.completed
+                    ? Expanded(
+                        flex: 3,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: kDefaultPadding * 2),
+                          decoration: const BoxDecoration(),
+                          width: double.infinity,
+                          child: Text(
+                            "Ooops !!!\nVous n'avez encore aucun mouvement de stock sur ce produit",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: kGreyColor.withOpacity(0.7),
+                              fontSize: 18,
+                              fontWeight: FontWeight.w400,
                             ),
-                          )
-                        ]),
-                  ),
-                ),
+                          ),
+                        ),
+                      )
+                    : Container(),
               ],
             ),
           ),

@@ -95,6 +95,11 @@ class AppNavigationDrawer extends StatelessWidget {
                         onTap: () {Get.offAndToNamed(AppRoutes.STOCK);},
                       ),
                       DrawerMenuItem(
+                        title: "Mouvements de stock",
+                        iconData: CupertinoIcons.gift_alt_fill,
+                        onTap: () {Get.offAndToNamed(AppRoutes.MOUVEMENT_STOCK);},
+                      ),
+                      DrawerMenuItem(
                         title: "Factures",
                         iconData: Icons.dashboard_outlined,
                         onTap: () {Get.offAndToNamed(AppRoutes.FACTURES);},
