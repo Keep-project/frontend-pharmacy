@@ -43,6 +43,7 @@ class MouvementStockScreen extends GetView<MouvementStockController> {
                       )
                     : Expanded(
                         child: SingleChildScrollView(
+                          controller: controller.scrollController,
                           child: Column(
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -55,7 +56,9 @@ class MouvementStockScreen extends GetView<MouvementStockController> {
                                     child: CardContainer(
                                       header: Row(
                                         children: [
-                                          Text(controller.mouvementStockList[index].entrepotName!.capitalizeFirst!,
+                                          Text(
+                                            controller.mouvementStockList[index]
+                                                .entrepotName!.capitalizeFirst!,
                                             style: TextStyle(
                                               color:
                                                   kDarkColor.withOpacity(0.9),
@@ -72,7 +75,7 @@ class MouvementStockScreen extends GetView<MouvementStockController> {
                                                   width: 10),
                                               const SizedBox(width: 5),
                                               Text(
-                                                "Ref: ${controller.mouvementStockList[index].id!}",
+                                                "Ref: ${controller.mouvementStockList[index].id!.toString().padLeft(2, '0')}",
                                                 style: TextStyle(
                                                   color: kDarkColor
                                                       .withOpacity(0.9),
@@ -93,11 +96,14 @@ class MouvementStockScreen extends GetView<MouvementStockController> {
                                           const SizedBox(
                                               height: kDefaultPadding / 2),
                                           Text(
-                                            "Correction du stcok pour le produit Doliprane",
+                                            controller.mouvementStockList[index]
+                                                .description!,
                                             style: TextStyle(
                                               color:
                                                   kDarkColor.withOpacity(0.9),
                                               fontSize: 12,
+                                              height: 1.3,
+                                              letterSpacing: 1.2,
                                             ),
                                           ),
                                           const SizedBox(
@@ -114,8 +120,7 @@ class MouvementStockScreen extends GetView<MouvementStockController> {
                                                       fontSize: 14,
                                                     ),
                                                   ),
-                                                  Text(
-                                                    "+23",
+                                                  Text(controller.mouvementStockList[index].quantite!.toString(),
                                                     style: TextStyle(
                                                       color: kTextColor2
                                                           .withOpacity(0.9),
@@ -128,7 +133,7 @@ class MouvementStockScreen extends GetView<MouvementStockController> {
                                               ),
                                               const Spacer(),
                                               Text(
-                                                "04/06/2004 14h02",
+                                                "${controller.mouvementStockList[index].createdToString()} à ${controller.mouvementStockList[index].hourToString()}",
                                                 style: TextStyle(
                                                   color: kTextColor2
                                                       .withOpacity(0.9),

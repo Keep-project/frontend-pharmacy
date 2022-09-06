@@ -46,7 +46,7 @@ class MouvementMedicamentScreen extends GetView<MouvementMedicamentController> {
                 ),
                 const SizedBox(height: kDefaultPadding),
                 controller.infinityStatus == LoadingStatus.searching &&
-                        controller.mouvementStockList.isEmpty
+                    controller.mouvementStockList.isEmpty
                     ? const Expanded(
                         child: Center(
                           child: CircularProgressIndicator(color: kTextColor),
@@ -54,6 +54,7 @@ class MouvementMedicamentScreen extends GetView<MouvementMedicamentController> {
                       )
                     : Expanded(
                         child: SingleChildScrollView(
+                          controller: controller.scrollController,
                           child: Column(
                             children: [
                               ...List.generate(
