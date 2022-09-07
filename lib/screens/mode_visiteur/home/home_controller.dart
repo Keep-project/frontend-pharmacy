@@ -1,16 +1,18 @@
 // ignore_for_file: avoid_print, non_constant_identifier_names, unused_field, prefer_typing_uninitialized_variables
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:location/location.dart' as l;
+import 'package:pharmacy_app/core/app_drawer.dart';
 import 'package:pharmacy_app/core/app_state.dart';
 import 'package:pharmacy_app/models/response_data_models/medicament_model.dart';
+import 'package:pharmacy_app/router/app_router.dart';
 import 'package:pharmacy_app/services/remote_services/medicament/medicament.dart';
 
-class HomeScreenController extends GetxController{
+class HomeScreenController extends GetxController {
   final ScrollController scrollController = ScrollController();
   TextEditingController searchController = TextEditingController();
-
 
   LoadingStatus infinityStatus = LoadingStatus.initial;
 
@@ -21,16 +23,15 @@ class HomeScreenController extends GetxController{
 
   l.LocationData? currentLocation;
   double distance = 5; // initialisation du rayon de recherche à 5 KM par défaut
-  
 
   int _count = 0;
   var next, previous;
-  bool  is_searching  = false;
+  bool is_searching = false;
 
-  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+  GlobalKey<ScaffoldState> homesScaffoldKey = GlobalKey<ScaffoldState>();
 
   void openDrawer() {
-    scaffoldKey.currentState!.openDrawer();
+    homesScaffoldKey.currentState!.openDrawer();
   }
 
   @override
@@ -43,8 +44,9 @@ class HomeScreenController extends GetxController{
 
   Future listerner() async {
     scrollController.addListener(() async {
-      if (scrollController.position.maxScrollExtent == scrollController.offset) {
-        if ( next != null && !is_searching ) {
+      if (scrollController.position.maxScrollExtent ==
+          scrollController.offset) {
+        if (next != null && !is_searching) {
           is_searching = true;
           infinityStatus = LoadingStatus.searching;
           update();
@@ -55,11 +57,12 @@ class HomeScreenController extends GetxController{
       }
     });
   }
-  
+
   @override
   void dispose() {
     scrollController.dispose();
     searchController.dispose();
+    homesScaffoldKey.currentState!.dispose();
     super.dispose();
   }
 
@@ -94,31 +97,16 @@ class HomeScreenController extends GetxController{
     }
 
     location.onLocationChanged.listen((l.LocationData newLocation) {
-       currentLocation = newLocation;
+      currentLocation = newLocation;
     });
     update();
-   
   }
 
-
-
   List<Map<String, dynamic>> categories = [
-    {
-      'id': 1,
-      'libelle': 'Tous'
-    },
-    {
-      'id': 2,
-      'libelle': 'Adolescents'
-    },
-    {
-      'id': 3,
-      'libelle': 'Enfants'
-    },
-    {
-      'id': 4,
-      'libelle': 'Adultes'
-    },
+    {'id': 1, 'libelle': 'Tous'},
+    {'id': 2, 'libelle': 'Adolescents'},
+    {'id': 3, 'libelle': 'Enfants'},
+    {'id': 4, 'libelle': 'Adultes'},
   ];
 
   List<Map<String, dynamic>> voix = [
@@ -137,34 +125,37 @@ class HomeScreenController extends GetxController{
       'libelle': 'Anale',
       'selected': false,
     },
-    
   ];
-
 
   Future medicamentList() async {
     await filterList();
-    
   }
 
   Future filterList() async {
     infinityStatus = LoadingStatus.searching;
     update();
     List<int> selectedVoix = [];
-    for (Map<String, dynamic> v in voix ) {
-      if (v['selected']){
+    for (Map<String, dynamic> v in voix) {
+      if (v['selected']) {
         selectedVoix.add(v['id']);
       }
     }
     await _medicamentService.filterList(
         url: next,
         data: {
-            "query": [
-              {"categorie": categories[selectedCategorieIndex.value]['libelle'] },
-              {"voix": selectedVoix },
-              {"search": searchController.text.trim() },
-              {"position": [currentLocation!.latitude ?? 3.866667, currentLocation!.longitude ?? 11.516667, distance] },
-            ]
-          },
+          "query": [
+            {"categorie": categories[selectedCategorieIndex.value]['libelle']},
+            {"voix": selectedVoix},
+            {"search": searchController.text.trim()},
+            {
+              "position": [
+                currentLocation!.latitude ?? 3.866667,
+                currentLocation!.longitude ?? 11.516667,
+                distance
+              ]
+            },
+          ]
+        },
         onSuccess: (data) {
           _count = data.count!;
           next = data.next;
@@ -180,8 +171,7 @@ class HomeScreenController extends GetxController{
           print("==========================================");
           infinityStatus = LoadingStatus.failed;
           update();
-        }
-    );
+        });
   }
 
   Future changeSelectedCategory(int index) async {
@@ -199,7 +189,6 @@ class HomeScreenController extends GetxController{
     update();
   }
 
-
   Future filterMedicamentsList() async {
     next = null;
     medicamentsList.clear();
@@ -209,9 +198,70 @@ class HomeScreenController extends GetxController{
 
   Future searchData(String data) async {
     if (data.trim().length > 2) {
-      next=null;
+      next = null;
       medicamentsList.clear();
       await filterList();
     }
   }
+
+  List<Widget> drawerItems = [
+    DrawerMenuItem(
+      title: "Accueil",
+      iconData: Icons.home_outlined,
+      onTap: () {
+        Get.back();
+      },
+    ),
+    DrawerMenuItem(
+      title: "Dashbord",
+      iconData: Icons.dashboard_outlined,
+      onTap: () {
+        Get.offAndToNamed(AppRoutes.DASHBORD);
+      },
+    ),
+    DrawerMenuItem(
+      title: "Stocks",
+      iconData: CupertinoIcons.gift_alt_fill,
+      onTap: () {
+        Get.offAndToNamed(AppRoutes.STOCK);
+      },
+    ),
+    DrawerMenuItem(
+      title: "Mouvements de stock",
+      iconData: CupertinoIcons.gift_alt_fill,
+      onTap: () {
+        Get.offAndToNamed(AppRoutes.MOUVEMENT_STOCK);
+      },
+    ),
+    DrawerMenuItem(
+      title: "Factures",
+      iconData: Icons.dashboard_outlined,
+      onTap: () {
+        Get.offAndToNamed(AppRoutes.FACTURES);
+      },
+    ),
+    DrawerMenuItem(
+      title: "Inventaire",
+      iconData: Icons.dashboard_outlined,
+      onTap: () {
+        Get.offAndToNamed(AppRoutes.INVENTAIRES);
+      },
+    ),
+    DrawerMenuItem(
+      title: "Entrepôt/Magasin",
+      iconData: Icons.warehouse_rounded,
+      onTap: () {
+        Get.offAndToNamed(AppRoutes.ENTREPOT);
+      },
+    ),
+    DrawerMenuItem(
+      title: "Mode gestion",
+      iconData: Icons.settings_applications,
+      onTap: () {
+        Get.offAndToNamed(AppRoutes.PHARMACIE_USER);
+      },
+    ),
+  ];
+
+
 }

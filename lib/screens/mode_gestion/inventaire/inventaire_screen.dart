@@ -29,12 +29,12 @@ class InventaireScreen extends GetView<InventaireController> {
     return GetBuilder<InventaireController>(
       builder: (controller) => SafeArea(
         child: Scaffold(
-          key: controller.scaffoldKey,
+          key: controller.inventaireScaffoldKey,
           appBar: buildAppBar(
             controller,
             context,
           ),
-          drawer: const AppNavigationDrawer(),
+          drawer: AppNavigationDrawer(children: controller.drawerItems,),
           body: Container(
             padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
             child: Column(

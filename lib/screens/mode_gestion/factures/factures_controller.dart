@@ -1,11 +1,14 @@
 
 // ignore_for_file: avoid_print
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:location/location.dart' as l;
+import 'package:pharmacy_app/core/app_drawer.dart';
 import 'package:pharmacy_app/core/app_state.dart';
 import 'package:pharmacy_app/models/response_data_models/facture_model.dart';
+import 'package:pharmacy_app/router/app_router.dart';
 import 'package:pharmacy_app/services/local_services/authentication/authentification.dart';
 import 'package:pharmacy_app/services/remote_services/facture/facture.dart';
 
@@ -33,10 +36,10 @@ class FactureController extends GetxController {
   bool  is_searching  = false;
   String searchCategory = "Tous";
 
-  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+  GlobalKey<ScaffoldState> facturationScaffoldKey = GlobalKey<ScaffoldState>();
 
   void openDrawer() {
-    scaffoldKey.currentState!.openDrawer();
+    facturationScaffoldKey.currentState!.openDrawer();
   }
 
   @override
@@ -66,6 +69,7 @@ class FactureController extends GetxController {
   void dispose() {
     scrollController.dispose();
     searchController.dispose();
+    facturationScaffoldKey.currentState!.dispose();
     super.dispose();
   }
 
@@ -213,5 +217,66 @@ class FactureController extends GetxController {
       await getFacturesList();
     }
   }
+
+  
+  List<Widget> drawerItems = [
+    DrawerMenuItem(
+      title: "Accueil",
+      iconData: Icons.home_outlined,
+      onTap: () {
+        Get.offAndToNamed(AppRoutes.HOME);
+      },
+    ),
+    DrawerMenuItem(
+      title: "Dashbord",
+      iconData: Icons.dashboard_outlined,
+      onTap: () {
+        Get.offAndToNamed(AppRoutes.DASHBORD);
+      },
+    ),
+    DrawerMenuItem(
+      title: "Stocks",
+      iconData: CupertinoIcons.gift_alt_fill,
+      onTap: () {
+        Get.offAndToNamed(AppRoutes.STOCK);
+      },
+    ),
+    DrawerMenuItem(
+      title: "Mouvements de stock",
+      iconData: CupertinoIcons.gift_alt_fill,
+      onTap: () {
+        Get.offAndToNamed(AppRoutes.MOUVEMENT_STOCK);
+      },
+    ),
+    DrawerMenuItem(
+      title: "Factures",
+      iconData: Icons.dashboard_outlined,
+      onTap: () {
+        Get.offAndToNamed(AppRoutes.FACTURES);
+      },
+    ),
+    DrawerMenuItem(
+      title: "Inventaire",
+      iconData: Icons.dashboard_outlined,
+      onTap: () {
+        Get.offAndToNamed(AppRoutes.INVENTAIRES);
+      },
+    ),
+    DrawerMenuItem(
+      title: "Entrepôt/Magasin",
+      iconData: Icons.warehouse_rounded,
+      onTap: () {
+        Get.offAndToNamed(AppRoutes.ENTREPOT);
+      },
+    ),
+    DrawerMenuItem(
+      title: "Mode gestion",
+      iconData: Icons.settings_applications,
+      onTap: () {
+        Get.offAndToNamed(AppRoutes.PHARMACIE_USER);
+      },
+    ),
+  ];
+
 
 }

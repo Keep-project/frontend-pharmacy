@@ -31,7 +31,7 @@ class StockScreen extends GetView<StockController> {
       
       builder: (controller) => SafeArea(
         child: Scaffold(
-          key: controller.scaffoldKey,
+          key: controller.stockScaffoldKey,
           appBar: buildAppBar(),
           floatingActionButton: FloatingActionButton(
               onPressed: () {
@@ -41,7 +41,7 @@ class StockScreen extends GetView<StockController> {
               },
               backgroundColor: kTextColor2,
               child: const Icon(Icons.add, color: kWhiteColor, size: 36)),
-          drawer: const AppNavigationDrawer(),
+          drawer: AppNavigationDrawer(children: controller.drawerItems,),
           body: Container(
             padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
             child: Column(

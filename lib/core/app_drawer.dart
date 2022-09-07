@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pharmacy_app/core/app_colors.dart';
@@ -7,7 +7,8 @@ import 'package:pharmacy_app/router/app_router.dart';
 import 'package:pharmacy_app/services/local_services/authentication/authentification.dart';
 
 class AppNavigationDrawer extends StatelessWidget {
-  const AppNavigationDrawer({Key? key}) : super(key: key);
+  final List<Widget>? children;
+  const AppNavigationDrawer({Key? key, this.children}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +21,7 @@ class AppNavigationDrawer extends StatelessWidget {
         child: Column(
           children: [
             Container(
-                height: 190,
+                height: 170,
                 decoration: const BoxDecoration(
                   color: kTextColor2,
                   gradient: LinearGradient(
@@ -73,52 +74,10 @@ class AppNavigationDrawer extends StatelessWidget {
             Expanded(
               child: SingleChildScrollView(
                   child: Container(
-                      padding: const EdgeInsets.only(left: kDefaultPadding * 1.5, top: kDefaultPadding*2),
+                      padding: const EdgeInsets.only(left: kDefaultPadding * 1.5, top: kDefaultPadding),
                   child: Column(
                     children: [
-                      DrawerMenuItem(
-                        title: "Accueil",
-                        iconData: Icons.home_outlined,
-                        onTap: () {
-                          Get.toNamed(AppRoutes.HOME);
-                          Get.back();
-                        },
-                      ),
-                      DrawerMenuItem(
-                        title: "Dashbord",
-                        iconData: Icons.dashboard_outlined,
-                        onTap: () {Get.offAndToNamed(AppRoutes.DASHBORD);},
-                      ),
-                      DrawerMenuItem(
-                        title: "Stocks",
-                        iconData: CupertinoIcons.gift_alt_fill,
-                        onTap: () {Get.offAndToNamed(AppRoutes.STOCK);},
-                      ),
-                      DrawerMenuItem(
-                        title: "Mouvements de stock",
-                        iconData: CupertinoIcons.gift_alt_fill,
-                        onTap: () {Get.offAndToNamed(AppRoutes.MOUVEMENT_STOCK);},
-                      ),
-                      DrawerMenuItem(
-                        title: "Factures",
-                        iconData: Icons.dashboard_outlined,
-                        onTap: () {Get.offAndToNamed(AppRoutes.FACTURES);},
-                      ),
-                      DrawerMenuItem(
-                        title: "Inventaire",
-                        iconData: Icons.dashboard_outlined,
-                        onTap: () {Get.offAndToNamed(AppRoutes.INVENTAIRES);},
-                      ),
-                      DrawerMenuItem(
-                        title: "Entrepôt/Magasin",
-                        iconData: Icons.warehouse_rounded,
-                        onTap: () {Get.offAndToNamed(AppRoutes.ENTREPOT);},
-                      ),
-                      DrawerMenuItem(
-                        title: "Mode gestion",
-                        iconData: Icons.settings_applications,
-                        onTap: () {Get.offAndToNamed(AppRoutes.PHARMACIE_USER);},
-                      ),
+                      ...children!,
                       const SizedBox(height: kDefaultPadding * 2),
                       const Padding(
                         padding: EdgeInsets.only(right: kDefaultPadding*2),

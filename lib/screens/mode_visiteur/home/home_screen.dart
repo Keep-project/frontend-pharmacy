@@ -32,7 +32,7 @@ class HomeScreen extends GetView<HomeScreenController> {
     return SafeArea(
       child: GetBuilder<HomeScreenController>(builder: (controller) {
         return Scaffold(
-          key: controller.scaffoldKey,
+          key: controller.homesScaffoldKey,
           appBar: buildAppBar(controller),
           floatingActionButton: FloatingActionButton(
               onPressed: () {
@@ -42,7 +42,7 @@ class HomeScreen extends GetView<HomeScreenController> {
               },
               backgroundColor: kTextColor2,
               child: const Icon(Icons.add, color: kWhiteColor, size: 36)),
-          drawer: const AppNavigationDrawer(),
+          drawer: AppNavigationDrawer(children: controller.drawerItems,),
           body: Container(
             height: Get.height,
             width: Get.width,
@@ -194,7 +194,6 @@ class HomeScreen extends GetView<HomeScreenController> {
         GestureDetector(
           onTap: () {
             controller.openDrawer();
-            // Get.toNamed(AppRoutes.DASHBORD);
           },
           child: Container(
             height: 45,
