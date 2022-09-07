@@ -1,9 +1,12 @@
 // ignore_for_file: avoid_print
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pharmacy_app/core/app_drawer.dart';
 import 'package:pharmacy_app/core/app_state.dart';
 import 'package:pharmacy_app/models/response_data_models/mouvement_stock_model.dart';
+import 'package:pharmacy_app/router/app_router.dart';
 import 'package:pharmacy_app/services/local_services/authentication/authentification.dart';
 import 'package:pharmacy_app/services/remote_services/mouvement_stock/mouvement_stock.dart';
 
@@ -29,6 +32,12 @@ class MouvementStockController extends GetxController {
   bool is_searching = false;
   String searchCategory = "Tous";
 
+   GlobalKey<ScaffoldState> mouvementStockScaffoldKey = GlobalKey<ScaffoldState>();
+
+  void openDrawer() {
+    mouvementStockScaffoldKey.currentState!.openDrawer();
+  }
+
   @override
   void onInit() async {
     await getMouvement();
@@ -40,6 +49,7 @@ class MouvementStockController extends GetxController {
   void dispose() {
     searchController.dispose();
     scrollController.dispose();
+    mouvementStockScaffoldKey.currentState!.dispose();
     super.dispose();
   }
 
@@ -133,4 +143,52 @@ class MouvementStockController extends GetxController {
     print("Vous avez fait la recherche pour :");
     print(searchController.text.trim());
   }
+
+    List<Widget> drawerItems = [
+    DrawerMenuItem(
+      title: "Stock",
+      iconData: Icons.home_outlined,
+      onTap: () {
+        Get.toNamed(AppRoutes.STOCK);
+      },
+    ),
+    DrawerMenuItem(
+      title: "Dashbord",
+      iconData: Icons.dashboard_outlined,
+      onTap: () {
+        Get.offAndToNamed(AppRoutes.DASHBORD);
+      },
+    ),    
+    DrawerMenuItem(
+      title: "Factures",
+      iconData: Icons.dashboard_outlined,
+      onTap: () {
+        Get.offAndToNamed(AppRoutes.FACTURES);
+      },
+    ),
+    DrawerMenuItem(
+      title: "Inventaire",
+      iconData: Icons.dashboard_outlined,
+      onTap: () {
+        Get.offAndToNamed(AppRoutes.INVENTAIRES);
+      },
+    ),
+    DrawerMenuItem(
+      title: "Entrepôt/Magasin",
+      iconData: Icons.warehouse_rounded,
+      onTap: () {
+        Get.offAndToNamed(AppRoutes.ENTREPOT);
+      },
+    ),
+    DrawerMenuItem(
+      title: "Mode visiteur",
+      iconData: Icons.settings_applications,
+      onTap: () {
+        Get.offAllNamed(AppRoutes.HOME);
+      },
+    ),
+   
+  ];
+
+
 }

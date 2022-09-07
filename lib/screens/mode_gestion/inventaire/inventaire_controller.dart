@@ -204,10 +204,10 @@ class InventaireController extends GetxController {
   
   List<Widget> drawerItems = [
     DrawerMenuItem(
-      title: "Accueil",
+      title: "Stocks",
       iconData: Icons.home_outlined,
       onTap: () {
-        Get.offAndToNamed(AppRoutes.HOME);
+        Get.offNamed(AppRoutes.STOCK);
       },
     ),
     DrawerMenuItem(
@@ -215,13 +215,6 @@ class InventaireController extends GetxController {
       iconData: Icons.dashboard_outlined,
       onTap: () {
         Get.offAndToNamed(AppRoutes.DASHBORD);
-      },
-    ),
-    DrawerMenuItem(
-      title: "Stocks",
-      iconData: CupertinoIcons.gift_alt_fill,
-      onTap: () {
-        Get.offAndToNamed(AppRoutes.STOCK);
       },
     ),
     DrawerMenuItem(
@@ -238,13 +231,7 @@ class InventaireController extends GetxController {
         Get.offAndToNamed(AppRoutes.FACTURES);
       },
     ),
-    DrawerMenuItem(
-      title: "Inventaire",
-      iconData: Icons.dashboard_outlined,
-      onTap: () {
-        Get.offAndToNamed(AppRoutes.INVENTAIRES);
-      },
-    ),
+    
     DrawerMenuItem(
       title: "Entrepôt/Magasin",
       iconData: Icons.warehouse_rounded,
@@ -253,12 +240,14 @@ class InventaireController extends GetxController {
       },
     ),
     DrawerMenuItem(
-      title: "Mode gestion",
+      title: "Mode visiteur",
       iconData: Icons.settings_applications,
       onTap: () {
-        Get.offAndToNamed(AppRoutes.PHARMACIE_USER);
+        Get.offAllNamed(AppRoutes.HOME);
       },
     ),
+   
   ];
+
 
 }

@@ -5,9 +5,9 @@ import 'package:get/get.dart';
 import 'package:pharmacy_app/components/card_container.dart';
 import 'package:pharmacy_app/components/title_text.dart';
 import 'package:pharmacy_app/core/app_colors.dart';
+import 'package:pharmacy_app/core/app_drawer.dart';
 import 'package:pharmacy_app/core/app_sizes.dart';
 import 'package:pharmacy_app/core/app_state.dart';
-import 'package:pharmacy_app/router/app_router.dart';
 import 'package:pharmacy_app/screens/mode_gestion/mouvement_stock/mouvement_stock.dart';
 import 'package:pharmacy_app/screens/mode_visiteur/home/components/search_custom_button.dart';
 
@@ -19,7 +19,9 @@ class MouvementStockScreen extends GetView<MouvementStockController> {
     return GetBuilder<MouvementStockController>(
       builder: (controller) => SafeArea(
         child: Scaffold(
-          appBar: buildAppBar(),
+          key: controller.mouvementStockScaffoldKey,
+          appBar: buildAppBar(controller, context),
+          drawer: AppNavigationDrawer(children: controller.drawerItems,),
           body: Container(
             padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
             decoration: const BoxDecoration(),
@@ -192,7 +194,14 @@ class MouvementStockScreen extends GetView<MouvementStockController> {
     );
   }
 
-  AppBar buildAppBar() {
+  AppBar buildAppBar(MouvementStockController controller, BuildContext context) {
+     var currentFocus;
+    void unfocus() {
+      currentFocus = FocusScope.of(context);
+      if (!currentFocus.hasPrimaryFocus) {
+        currentFocus.unfocus();
+      }
+    }
     return AppBar(
       elevation: 0,
       backgroundColor: kTextColor2,
@@ -216,9 +225,10 @@ class MouvementStockScreen extends GetView<MouvementStockController> {
         ),
       ),
       actions: [
-        InkWell(
+        GestureDetector(
           onTap: () {
-            Get.toNamed(AppRoutes.DASHBORD);
+            unfocus();
+            controller.openDrawer();
           },
           child: Container(
             height: 45,
@@ -229,8 +239,7 @@ class MouvementStockScreen extends GetView<MouvementStockController> {
               shape: BoxShape.circle,
             ),
             child: const Center(
-                child: Icon(CupertinoIcons.person_fill,
-                    size: 30, color: kWhiteColor)),
+                child: Icon(Icons.menu, size: 30, color: kWhiteColor)),
           ),
         ),
       ],

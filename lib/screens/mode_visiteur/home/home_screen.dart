@@ -32,7 +32,7 @@ class HomeScreen extends GetView<HomeScreenController> {
     return SafeArea(
       child: GetBuilder<HomeScreenController>(builder: (controller) {
         return Scaffold(
-          key: controller.homesScaffoldKey,
+          key: controller.homeScaffoldKey,
           appBar: buildAppBar(controller),
           floatingActionButton: FloatingActionButton(
               onPressed: () {

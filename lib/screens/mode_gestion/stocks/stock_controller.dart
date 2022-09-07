@@ -219,10 +219,10 @@ class StockController extends GetxController{
 
   List<Widget> drawerItems = [
     DrawerMenuItem(
-      title: "Accueil",
+      title: "Stocks",
       iconData: Icons.home_outlined,
       onTap: () {
-        Get.offAndToNamed(AppRoutes.HOME);
+        Get.back();
       },
     ),
     DrawerMenuItem(
@@ -230,13 +230,6 @@ class StockController extends GetxController{
       iconData: Icons.dashboard_outlined,
       onTap: () {
         Get.offAndToNamed(AppRoutes.DASHBORD);
-      },
-    ),
-    DrawerMenuItem(
-      title: "Stocks",
-      iconData: CupertinoIcons.gift_alt_fill,
-      onTap: () {
-        Get.offAndToNamed(AppRoutes.STOCK);
       },
     ),
     DrawerMenuItem(
@@ -268,12 +261,13 @@ class StockController extends GetxController{
       },
     ),
     DrawerMenuItem(
-      title: "Mode gestion",
+      title: "Mode visiteur",
       iconData: Icons.settings_applications,
       onTap: () {
-        Get.offAndToNamed(AppRoutes.PHARMACIE_USER);
+        Get.offAllNamed(AppRoutes.HOME);
       },
     ),
+   
   ];
 
 

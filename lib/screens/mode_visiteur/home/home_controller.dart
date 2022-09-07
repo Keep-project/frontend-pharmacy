@@ -28,10 +28,10 @@ class HomeScreenController extends GetxController {
   var next, previous;
   bool is_searching = false;
 
-  GlobalKey<ScaffoldState> homesScaffoldKey = GlobalKey<ScaffoldState>();
+  GlobalKey<ScaffoldState> homeScaffoldKey = GlobalKey<ScaffoldState>();
 
   void openDrawer() {
-    homesScaffoldKey.currentState!.openDrawer();
+    homeScaffoldKey.currentState!.openDrawer();
   }
 
   @override
@@ -62,7 +62,7 @@ class HomeScreenController extends GetxController {
   void dispose() {
     scrollController.dispose();
     searchController.dispose();
-    homesScaffoldKey.currentState!.dispose();
+    homeScaffoldKey.currentState!.dispose();
     super.dispose();
   }
 
@@ -213,52 +213,10 @@ class HomeScreenController extends GetxController {
       },
     ),
     DrawerMenuItem(
-      title: "Dashbord",
-      iconData: Icons.dashboard_outlined,
-      onTap: () {
-        Get.offAndToNamed(AppRoutes.DASHBORD);
-      },
-    ),
-    DrawerMenuItem(
-      title: "Stocks",
-      iconData: CupertinoIcons.gift_alt_fill,
-      onTap: () {
-        Get.offAndToNamed(AppRoutes.STOCK);
-      },
-    ),
-    DrawerMenuItem(
-      title: "Mouvements de stock",
-      iconData: CupertinoIcons.gift_alt_fill,
-      onTap: () {
-        Get.offAndToNamed(AppRoutes.MOUVEMENT_STOCK);
-      },
-    ),
-    DrawerMenuItem(
-      title: "Factures",
-      iconData: Icons.dashboard_outlined,
-      onTap: () {
-        Get.offAndToNamed(AppRoutes.FACTURES);
-      },
-    ),
-    DrawerMenuItem(
-      title: "Inventaire",
-      iconData: Icons.dashboard_outlined,
-      onTap: () {
-        Get.offAndToNamed(AppRoutes.INVENTAIRES);
-      },
-    ),
-    DrawerMenuItem(
-      title: "Entrepôt/Magasin",
-      iconData: Icons.warehouse_rounded,
-      onTap: () {
-        Get.offAndToNamed(AppRoutes.ENTREPOT);
-      },
-    ),
-    DrawerMenuItem(
       title: "Mode gestion",
       iconData: Icons.settings_applications,
       onTap: () {
-        Get.offAndToNamed(AppRoutes.PHARMACIE_USER);
+        Get.offAllNamed(AppRoutes.PHARMACIE_USER);
       },
     ),
   ];

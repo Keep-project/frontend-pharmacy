@@ -6,6 +6,7 @@ import 'package:pharmacy_app/components/card_container.dart';
 import 'package:pharmacy_app/components/my_row.dart';
 import 'package:pharmacy_app/components/title_text.dart';
 import 'package:pharmacy_app/core/app_colors.dart';
+import 'package:pharmacy_app/core/app_drawer.dart';
 import 'package:pharmacy_app/core/app_sizes.dart';
 import 'package:pharmacy_app/core/app_state.dart';
 import 'package:pharmacy_app/router/app_router.dart';
@@ -20,7 +21,9 @@ class EntrepotScreen extends GetView<EntrepotController> {
     return GetBuilder<EntrepotController>(
       builder: (controller) => SafeArea(
         child: Scaffold(
-          appBar: buildAppBar(),
+          key: controller.entrepotStockScaffoldKey,
+          appBar: buildAppBar(controller, context),
+          drawer: AppNavigationDrawer(children: controller.drawerItems,),
           body: Container(
             padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
             child: Column(
@@ -186,7 +189,14 @@ class EntrepotScreen extends GetView<EntrepotController> {
     );
   }
 
-  AppBar buildAppBar() {
+  AppBar buildAppBar(EntrepotController controller, BuildContext context) {
+     var currentFocus;
+    void unfocus() {
+      currentFocus = FocusScope.of(context);
+      if (!currentFocus.hasPrimaryFocus) {
+        currentFocus.unfocus();
+      }
+    }
     return AppBar(
       elevation: 0,
       backgroundColor: kTextColor2,
@@ -210,9 +220,10 @@ class EntrepotScreen extends GetView<EntrepotController> {
         ),
       ),
       actions: [
-        InkWell(
+        GestureDetector(
           onTap: () {
-            Get.toNamed(AppRoutes.DASHBORD);
+            unfocus();
+            controller.openDrawer();
           },
           child: Container(
             height: 45,
@@ -223,8 +234,7 @@ class EntrepotScreen extends GetView<EntrepotController> {
               shape: BoxShape.circle,
             ),
             child: const Center(
-                child: Icon(CupertinoIcons.person_fill,
-                    size: 30, color: kWhiteColor)),
+                child: Icon(Icons.menu, size: 30, color: kWhiteColor)),
           ),
         ),
       ],
