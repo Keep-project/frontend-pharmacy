@@ -105,66 +105,72 @@ class DetailInventaireScreen extends GetView<DetailInventaireController> {
                             controller.inventaire.lignesInventaire!.length,
                             (index) => Padding(
                               padding: const EdgeInsets.only(bottom: 16),
-                              child: CardContainer(
-                                header: Row(
-                                  children: [
-                                    Text(controller.inventaire.lignesInventaire![index].productName!.capitalizeFirst!,
-                                      style: TextStyle(
-                                        color: kDarkColor.withOpacity(0.9),
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                body: Column(
-                                  children: [
-                                    const SizedBox(height: 8),
-                                    MyRow(
-                                      title: "Quantité attendue",
-                                      value: controller.inventaire.lignesInventaire![index].quantiteAttendue.toString(),
-                                    ),
-                                    MyRow(
-                                      title: "Quantité réelle",
-                                      value: controller.inventaire.lignesInventaire![index].quantiteReelle.toString(),
-                                      color: kOrangeColor,
-                                    ),
-                                    Row(
-                                      children: [
-                                        const Spacer(),
-                                        Container(
-                                          height: 30,
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: kDefaultPadding / 2,
-                                              vertical: kDefaultPadding / 4),
-                                          decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(
-                                                kDefaultRadius * 3),
-                                            color:
-                                                kTextColor2.withOpacity(0.12),
-                                          ),
-                                          child: Row(
-                                            children: [
-                                              SvgPicture.asset(
-                                                  "assets/icons/Icon map-moving-company.svg",
-                                                  height: 10,
-                                                  width: 10),
-                                              const SizedBox(width: 3),
-                                              const Text(
-                                                "Mouvements",
-                                                style: TextStyle(
-                                                  color: kTextColor2,
-                                                  fontSize: 12,
-                                                  fontWeight: FontWeight.w500,
-                                                ),
-                                              )
-                                            ],
-                                          ),
+                              child: InkWell(
+                                onTap: () { Get.toNamed(AppRoutes.DETAILS_GESTION, arguments: controller.inventaire.lignesInventaire![index].medicament!.toString());},
+                                child: CardContainer(
+                                  header: Row(
+                                    children: [
+                                      Text(controller.inventaire.lignesInventaire![index].productName!.capitalizeFirst!,
+                                        style: TextStyle(
+                                          color: kDarkColor.withOpacity(0.9),
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w600,
                                         ),
-                                      ],
-                                    ),
-                                    const SizedBox(height: kDefaultPadding / 2),
-                                  ],
+                                      ),
+                                    ],
+                                  ),
+                                  body: Column(
+                                    children: [
+                                      const SizedBox(height: 8),
+                                      MyRow(
+                                        title: "Quantité attendue",
+                                        value: controller.inventaire.lignesInventaire![index].quantiteAttendue.toString(),
+                                      ),
+                                      MyRow(
+                                        title: "Quantité réelle",
+                                        value: controller.inventaire.lignesInventaire![index].quantiteReelle.toString(),
+                                        color: kOrangeColor,
+                                      ),
+                                      Row(
+                                        children: [
+                                          const Spacer(),
+                                          InkWell(
+                                             onTap: () { Get.toNamed(AppRoutes.MOUVEMENT_PRODUIT, arguments: {'id': controller.inventaire.lignesInventaire![index].medicament!.toString(), 'productName': controller.inventaire.lignesInventaire![index].productName! } ); },
+                                            child: Container(
+                                              height: 30,
+                                              padding: const EdgeInsets.symmetric(
+                                                  horizontal: kDefaultPadding / 2,
+                                                  vertical: kDefaultPadding / 4),
+                                              decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.circular(
+                                                    kDefaultRadius * 3),
+                                                color:
+                                                    kTextColor2.withOpacity(0.12),
+                                              ),
+                                              child: Row(
+                                                children: [
+                                                  SvgPicture.asset(
+                                                      "assets/icons/Icon map-moving-company.svg",
+                                                      height: 10,
+                                                      width: 10),
+                                                  const SizedBox(width: 3),
+                                                  const Text(
+                                                    "Mouvements",
+                                                    style: TextStyle(
+                                                      color: kTextColor2,
+                                                      fontSize: 12,
+                                                      fontWeight: FontWeight.w500,
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      const SizedBox(height: kDefaultPadding / 2),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),

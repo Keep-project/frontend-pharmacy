@@ -26,11 +26,13 @@ class EntrepotServiceImpl implements EntrepotService {
   }
 
   @override
-  Future findAll(
-      {Function(dynamic data)? onSuccess,
-      Function(dynamic date)? onError}) async {
+  Future findAll({
+    String? url,
+    String? idPharmacie,
+    Function(dynamic data)? onSuccess,
+    Function(dynamic date)? onError}) async {
     ApiRequest(
-      url: "${Constants.API_URL}/entrepot/",
+      url: url ?? "${Constants.API_URL}/entrepot/pharmacy/$idPharmacie",
       data: {},
       token: await _localAuth.getToken(),
     ).get(onSuccess: (data) {

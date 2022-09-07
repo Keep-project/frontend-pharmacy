@@ -49,7 +49,7 @@ class StockController extends GetxController{
   Future listerner() async {
     scrollController.addListener(() async {
       if (scrollController.position.maxScrollExtent == scrollController.offset) {
-        if ( next != null && !is_searching ) {
+        if ( next.length > 0 && !is_searching ) {
           is_searching = true;
           infinityStatus = LoadingStatus.searching;
           update();

@@ -7,6 +7,7 @@ import 'package:pharmacy_app/components/my_row.dart';
 import 'package:pharmacy_app/components/title_text.dart';
 import 'package:pharmacy_app/core/app_colors.dart';
 import 'package:pharmacy_app/core/app_sizes.dart';
+import 'package:pharmacy_app/core/app_state.dart';
 import 'package:pharmacy_app/router/app_router.dart';
 import 'package:pharmacy_app/screens/mode_gestion/entrepot/entrepot.dart';
 import 'package:pharmacy_app/screens/mode_visiteur/home/components/search_custom_button.dart';
@@ -42,92 +43,141 @@ class EntrepotScreen extends GetView<EntrepotController> {
                   ],
                 ),
                 const SizedBox(height: kDefaultMargin * 1.6),
-                Expanded(
-                  child: SingleChildScrollView(
-                    child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          ...List.generate(
-                            10,
-                            (index) => Padding(
-                              padding: const EdgeInsets.only(bottom: 16),
-                              child: CardContainer(
-                                header: Row(
-                                  children: [
-                                    Text(
-                                      "Magasin 0$index",
-                                      style: TextStyle(
-                                        color: kDarkColor.withOpacity(0.9),
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                    ),
-                                    const Spacer(),
-                                    Row(
-                                      children: [
-                                        SvgPicture.asset(
-                                            "assets/icons/warehouse.svg",
-                                            height: 14,
-                                            width: 14),
-                                        const SizedBox(width: 5),
-                                        Text(
-                                          "Ref: ET01",
-                                          style: TextStyle(
-                                            color: kDarkColor.withOpacity(0.9),
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w600,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                                body: Column(
-                                  children: [
-                                    const SizedBox(height: 8),
-                                    const MyRow(
-                                      title: "Valorisation à l'achat (PMP)",
-                                      value: "15000 F",
-                                    ),
-                                    const MyRow(
-                                      title: "Valeur à la vente",
-                                      value: "18000 F",
-                                    ),
-                                    Row(
-                                      children: [
-                                        const Spacer(),
-                                        Container(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: kDefaultPadding *1.4,
-                                              vertical: kDefaultPadding / 3),
-                                          decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(
-                                                kDefaultRadius * 3),
-                                            color:
-                                                kTextColor2.withOpacity(0.12),
-                                          ),
-                                          child: const Text(
-                                            "Ouvert",
+                controller.infinityStatus == LoadingStatus.searching &&
+                        controller.entrepotList.isEmpty
+                    ? const Expanded(
+                        child: Center(
+                          child: CircularProgressIndicator(color: kTextColor),
+                        ),
+                      )
+                    : Expanded(
+                        child: SingleChildScrollView(
+                          controller: controller.scrollController,
+                          child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                ...List.generate(
+                                  controller.entrepotList.length,
+                                  (index) => Padding(
+                                    padding: const EdgeInsets.only(bottom: 16),
+                                    child: CardContainer(
+                                      header: Row(
+                                        children: [
+                                          Text(controller.entrepotList[index].nom!.capitalizeFirst!,
                                             style: TextStyle(
-                                              color: kTextColor2,
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.w500,
+                                              color:
+                                                  kDarkColor.withOpacity(0.9),
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w600,
                                             ),
                                           ),
-                                        ),
-                                      ],
+                                          const Spacer(),
+                                          Row(
+                                            children: [
+                                              SvgPicture.asset(
+                                                  "assets/icons/warehouse.svg",
+                                                  height: 14,
+                                                  width: 14),
+                                              const SizedBox(width: 5),
+                                              Text(
+                                                "Ref: ${controller.entrepotList[index].id!.toString().padLeft(2, '0')}",
+                                                style: TextStyle(
+                                                  color: kDarkColor
+                                                      .withOpacity(0.9),
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.w600,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                      body: Column(
+                                        children: [
+                                          const SizedBox(height: 8),
+                                          const MyRow(
+                                            title:
+                                                "Valorisation à l'achat (PMP)",
+                                            value: "15000 F",
+                                          ),
+                                          const MyRow(
+                                            title: "Valeur à la vente",
+                                            value: "18000 F",
+                                          ),
+                                          Row(
+                                            children: [
+                                              const Spacer(),
+                                              Container(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal:
+                                                            kDefaultPadding *
+                                                                1.4,
+                                                        vertical:
+                                                            kDefaultPadding /
+                                                                3),
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          kDefaultRadius * 3),
+                                                  color: kTextColor2
+                                                      .withOpacity(0.12),
+                                                ),
+                                                child: const Text(
+                                                  "Ouvert",
+                                                  style: TextStyle(
+                                                    color: kTextColor2,
+                                                    fontSize: 12,
+                                                    fontWeight: FontWeight.w500,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          const SizedBox(
+                                              height: kDefaultPadding / 2),
+                                        ],
+                                      ),
                                     ),
-                                    const SizedBox(height: kDefaultPadding / 2),
-                                  ],
+                                  ),
                                 ),
-                              ),
+                                controller.infinityStatus ==
+                                        LoadingStatus.searching
+                                    ? Container(
+                                        padding: const EdgeInsets.all(0),
+                                        height: 220,
+                                        child: const Center(
+                                          child: CircularProgressIndicator(
+                                              color: kOrangeColor),
+                                        ),
+                                      )
+                                    : Container(),
+                                const SizedBox(height: kDefaultMargin * 1.8),
+                              ]),
+                        ),
+                      ),
+                controller.entrepotList.isEmpty &&
+                        controller.infinityStatus == LoadingStatus.completed
+                    ? Expanded(
+                        flex: 3,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: kDefaultPadding * 2),
+                          decoration: const BoxDecoration(),
+                          width: double.infinity,
+                          child: Text(
+                            "Ooops !!!\nVous n'avez encore aucun entrepôt enregistré.",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: kGreyColor.withOpacity(0.7),
+                              fontSize: 18,
+                              fontWeight: FontWeight.w400,
                             ),
                           ),
-                          const SizedBox(height: kDefaultMargin * 1.8),
-                        ]),
-                  ),
-                ),
+                        ),
+                      )
+                    : Container(),
               ],
             ),
           ),
