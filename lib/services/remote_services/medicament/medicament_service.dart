@@ -8,6 +8,13 @@ abstract class MedicamentService {
     Function(dynamic date)? onError,
   });
 
+  Future medicamentsForEntrepot({
+    String? url,
+    String? idEntrepot,
+    Function(dynamic data)? onSuccess,
+    Function(dynamic date)? onError,
+  });
+
   Future filterList({
     dynamic data,
     String? url,

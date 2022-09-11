@@ -64,83 +64,86 @@ class EntrepotScreen extends GetView<EntrepotController> {
                                   controller.entrepotList.length,
                                   (index) => Padding(
                                     padding: const EdgeInsets.only(bottom: 16),
-                                    child: CardContainer(
-                                      header: Row(
-                                        children: [
-                                          Text(controller.entrepotList[index].nom!.capitalizeFirst!,
-                                            style: TextStyle(
-                                              color:
-                                                  kDarkColor.withOpacity(0.9),
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w600,
-                                            ),
-                                          ),
-                                          const Spacer(),
-                                          Row(
-                                            children: [
-                                              SvgPicture.asset(
-                                                  "assets/icons/warehouse.svg",
-                                                  height: 14,
-                                                  width: 14),
-                                              const SizedBox(width: 5),
-                                              Text(
-                                                "Ref: ${controller.entrepotList[index].id!.toString().padLeft(2, '0')}",
-                                                style: TextStyle(
-                                                  color: kDarkColor
-                                                      .withOpacity(0.9),
-                                                  fontSize: 14,
-                                                  fontWeight: FontWeight.w600,
-                                                ),
+                                    child: InkWell(
+                                      onTap: () { Get.toNamed(AppRoutes.DETAIL_ENTREPOT, arguments: controller.entrepotList[index]); },
+                                      child: CardContainer(
+                                        header: Row(
+                                          children: [
+                                            Text(controller.entrepotList[index].nom!.capitalizeFirst!,
+                                              style: TextStyle(
+                                                color:
+                                                    kDarkColor.withOpacity(0.9),
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w600,
                                               ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                      body: Column(
-                                        children: [
-                                          const SizedBox(height: 8),
-                                          const MyRow(
-                                            title:
-                                                "Valorisation à l'achat (PMP)",
-                                            value: "15000 F",
-                                          ),
-                                          const MyRow(
-                                            title: "Valeur à la vente",
-                                            value: "18000 F",
-                                          ),
-                                          Row(
-                                            children: [
-                                              const Spacer(),
-                                              Container(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        horizontal:
-                                                            kDefaultPadding *
-                                                                1.4,
-                                                        vertical:
-                                                            kDefaultPadding /
-                                                                3),
-                                                decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          kDefaultRadius * 3),
-                                                  color: kTextColor2
-                                                      .withOpacity(0.12),
-                                                ),
-                                                child: const Text(
-                                                  "Ouvert",
+                                            ),
+                                            const Spacer(),
+                                            Row(
+                                              children: [
+                                                SvgPicture.asset(
+                                                    "assets/icons/warehouse.svg",
+                                                    height: 14,
+                                                    width: 14),
+                                                const SizedBox(width: 5),
+                                                Text(
+                                                  "Ref: ${controller.entrepotList[index].id!.toString().padLeft(2, '0')}",
                                                   style: TextStyle(
-                                                    color: kTextColor2,
-                                                    fontSize: 12,
-                                                    fontWeight: FontWeight.w500,
+                                                    color: kDarkColor
+                                                        .withOpacity(0.9),
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.w600,
                                                   ),
                                                 ),
-                                              ),
-                                            ],
-                                          ),
-                                          const SizedBox(
-                                              height: kDefaultPadding / 2),
-                                        ],
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                        body: Column(
+                                          children: [
+                                            const SizedBox(height: 8),
+                                            // const MyRow(
+                                            //   title:
+                                            //       "Valorisation à l'achat (PMP)",
+                                            //   value: "15000 F",
+                                            // ),
+                                            MyRow(
+                                              title: "Valeur à la vente",
+                                              value: "${controller.entrepotList[index].valeurVente!} F",
+                                            ),
+                                            Row(
+                                              children: [
+                                                const Spacer(),
+                                                Container(
+                                                  padding:
+                                                      const EdgeInsets.symmetric(
+                                                          horizontal:
+                                                              kDefaultPadding *
+                                                                  1.4,
+                                                          vertical:
+                                                              kDefaultPadding /
+                                                                  3),
+                                                  decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            kDefaultRadius * 3),
+                                                    color: kTextColor2
+                                                        .withOpacity(0.12),
+                                                  ),
+                                                  child: const Text(
+                                                    "Ouvert",
+                                                    style: TextStyle(
+                                                      color: kTextColor2,
+                                                      fontSize: 12,
+                                                      fontWeight: FontWeight.w500,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            const SizedBox(
+                                                height: kDefaultPadding / 2),
+                                          ],
+                                        ),
                                       ),
                                     ),
                                   ),

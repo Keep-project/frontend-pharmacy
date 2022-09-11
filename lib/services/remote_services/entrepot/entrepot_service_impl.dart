@@ -1,5 +1,6 @@
 import 'package:pharmacy_app/core/api_library.dart';
 import 'package:pharmacy_app/core/constants.dart';
+import 'package:pharmacy_app/models/request_data_models/entrepot_model.dart';
 import 'package:pharmacy_app/models/response_data_models/entrepot_model.dart';
 import 'package:pharmacy_app/services/local_services/authentication/authentification.dart';
 import 'package:pharmacy_app/services/remote_services/entrepot/entrepot.dart';
@@ -10,12 +11,13 @@ class EntrepotServiceImpl implements EntrepotService {
 
   @override
   Future<void> add(
-      {EntrepotResponseModel? entrepotModel,
+      {EntrepotRequestModel? entrepotModel,
       Function(dynamic data)? onSuccess,
       Function(dynamic error)? onError}) async {
     ApiRequest(
       url: "${Constants.API_URL}/entrepot/",
-      // data: entrepotModel!.toMap(),
+      data: entrepotModel!.toMap(),
+      token: await _localAuth.getToken(),
     ).post(onSuccess: (data) {
       onSuccess!(data);
     }, onError: (error) {

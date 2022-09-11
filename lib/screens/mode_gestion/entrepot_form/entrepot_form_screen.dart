@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:pharmacy_app/components/custom_text_field2.dart';
 import 'package:pharmacy_app/core/app_colors.dart';
 import 'package:pharmacy_app/core/app_sizes.dart';
+import 'package:pharmacy_app/core/app_state.dart';
 import 'package:pharmacy_app/screens/mode_gestion/entrepot_form/entrepot_form.dart';
 
 class EntrepotFormScreen extends GetView<EntrepotFormController> {
@@ -64,6 +65,7 @@ class EntrepotFormScreen extends GetView<EntrepotFormController> {
                     height: kDefaultPadding * 1.2,
                   ),
                   CustomTextField2(
+                    controller: controller.textEditingNomEntrepot,
                     onChanged: (string) {},
                     title: "Nom de l'entrepôt",
                     hintText: "Ex: Magasin 01",
@@ -73,6 +75,7 @@ class EntrepotFormScreen extends GetView<EntrepotFormController> {
                     children: [
                       Expanded(
                         child: CustomTextField2(
+                          controller: controller.textEditingPays,
                           onChanged: (string) {},
                           title: "Pays",
                           hintText: "Ex: Cameroun",
@@ -81,6 +84,7 @@ class EntrepotFormScreen extends GetView<EntrepotFormController> {
                       const SizedBox(width: kDefaultPadding),
                       Expanded(
                         child: CustomTextField2(
+                          controller: controller.textEditingVille,
                           onChanged: (string) {},
                           title: "Ville",
                           hintText: "Ex: Douala",
@@ -90,12 +94,15 @@ class EntrepotFormScreen extends GetView<EntrepotFormController> {
                   ),
                   const SizedBox(height: kDefaultPadding /2),
                   CustomTextField2(
+                    controller: controller.textEditingTelephone,
+                    textInputType: TextInputType.phone,
                     onChanged: (string) {},
                     title: "Téléphone",
                     hintText: "Ex: +237 670000000",
                   ),
                   const SizedBox(height: kDefaultPadding /2),
                   CustomTextField2(
+                    controller: controller.textEditingDescription,
                     onChanged: (string) {},
                     title: "Description de l'entrepôt",
                     hintText: "Laissez ici une petite description de votre entrepôt...",
@@ -103,15 +110,20 @@ class EntrepotFormScreen extends GetView<EntrepotFormController> {
                   ),
                   const SizedBox(height: kDefaultPadding * 1.5),
                   InkWell(
-                    onTap: () {},
+                    onTap: () async { 
+                      if ( controller.entrepotStatus == LoadingStatus.searching ){ return; }
+                      await controller.saveEntrepot(context);
+                     },
                     child: Container(
                       height: 50,
                       decoration: BoxDecoration(
                         color: kTextColor2,
                         borderRadius: BorderRadius.circular(kDefaultRadius - 2),
                       ),
-                      child: const Center(
-                        child: Text(
+                      child: Center(
+                        child: controller.entrepotStatus == LoadingStatus.searching ?
+                        const CircularProgressIndicator( color: kWhiteColor) :
+                        const Text(
                           "Enregistrer",
                           style: TextStyle(
                             color: kWhiteColor,

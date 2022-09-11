@@ -41,7 +41,7 @@ class Entrepot {
   final String? telephone;
   final String? description;
   final int? pharmacie;
-  final List<Medicament>? medicaments;
+  final int? valeurVente;
   final DateTime? created_at;
   final DateTime? updated_at;
 
@@ -53,7 +53,7 @@ class Entrepot {
       this.telephone,
       this.description,
       this.pharmacie,
-      this.medicaments,
+      this.valeurVente,
       this.created_at,
       this.updated_at});
 
@@ -67,10 +67,7 @@ class Entrepot {
         telephone: json['telephone'] ?? "",
         description: json['description'] ?? "",
         pharmacie: json['pharmacie'] ?? 0,
-        medicaments: json['medicaments'] == null
-            ? []
-            : List<Medicament>.from(
-                json['medicaments'].map((e) => Medicament.fromMap(e))),
+        valeurVente: json['valeurVente'] ?? 0,
         created_at: json['created_at'] == null
             ? null
             : DateTime.parse(json['created_at']),
@@ -87,7 +84,7 @@ class Entrepot {
         "telephone": telephone,
         "description": description,
         "pharmacie": pharmacie,
-        "medicaments": medicaments,
+        'valeurVente': valeurVente,
         "created_at": created_at!.toIso8601String(),
         "updated_at": updated_at!.toIso8601String(),
       };

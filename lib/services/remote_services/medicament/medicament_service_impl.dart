@@ -120,4 +120,23 @@ class MedicamentServiceImpl implements MedicamentService {
       }
     });
   }
+  
+  @override
+  Future medicamentsForEntrepot({
+    String? url,
+    String? idEntrepot,
+    Function(dynamic data)?
+    onSuccess,
+    Function(dynamic date)? onError}) async {
+    ApiRequest(
+      url: url ?? "${Constants.API_URL}/entrepot/medecine/$idEntrepot/list",
+      token: await _localAuth.getToken(),
+    ).get(onSuccess: (data) {
+      onSuccess!(MedicamentResponseModel.fromMap(data));
+    }, onError: (error) {
+      if (error != null) {
+        onError!(error);
+      }
+    });
+  }
 }

@@ -1,5 +1,6 @@
 
 
+import 'package:pharmacy_app/models/request_data_models/entrepot_model.dart';
 import 'package:pharmacy_app/models/response_data_models/entrepot_model.dart';
 
 abstract class EntrepotService {
@@ -23,7 +24,7 @@ abstract class EntrepotService {
   });
 
   Future<void> add({
-    EntrepotResponseModel? entrepotModel,
+    EntrepotRequestModel? entrepotModel,
     Function(dynamic data)? onSuccess,
     Function(dynamic error)? onError,
   });
