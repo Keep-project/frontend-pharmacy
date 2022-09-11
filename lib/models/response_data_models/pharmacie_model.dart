@@ -49,6 +49,7 @@ class Pharmacie {
   final int? stock;
   final double? latitude;
   final double? longitude;
+  final double? distance;
   final String? ouverture;
   final String? fermeture;
   final int? user;
@@ -64,6 +65,7 @@ class Pharmacie {
       this.stock,
       this.latitude,
       this.longitude,
+      this.distance,
       this.ouverture,
       this.fermeture,
       this.user,
@@ -82,6 +84,7 @@ class Pharmacie {
       stock: json['stock'] ?? 0,
       latitude: json['latitude'] ?? "",
       longitude: json['longitude'] ?? "",
+      distance: json['distance'] ?? -1,
       ouverture: json['h_ouverture'] ?? "08:00 AM",
       fermeture: json['h_fermeture'] ?? "20:00 AM",
       user: json['user'] ?? 0,
@@ -102,6 +105,7 @@ class Pharmacie {
       'latitude': latitude,
       'longitude': longitude,
       'ouverture': ouverture,
+      'distance': distance,
       'fermeture': fermeture,
       'user': user,
       'created_at': created_at,

@@ -43,6 +43,23 @@ class EntrepotServiceImpl implements EntrepotService {
       }
     });
   }
+  @override
+  Future getAll({
+    String? idPharmacie,
+    Function(dynamic data)? onSuccess,
+    Function(dynamic date)? onError}) async {
+    ApiRequest(
+      url: "${Constants.API_URL}/entrepot/pharmacy/$idPharmacie/list",
+      data: {},
+      token: await _localAuth.getToken(),
+    ).get(onSuccess: (data) {
+      onSuccess!(data['results']);
+    }, onError: (error) {
+      if (error != null) {
+        onError!(error);
+      }
+    });
+  }
 
   @override
   Future<void> findOne(

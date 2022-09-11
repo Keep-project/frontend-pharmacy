@@ -9,6 +9,13 @@ abstract class EntrepotService {
     Function(dynamic data)? onSuccess,
     Function(dynamic error)? onError,
   });
+
+  Future<void> getAll({
+    String? idPharmacie,
+    Function(dynamic data)? onSuccess,
+    Function(dynamic error)? onError,
+  });
+
   Future<void> findOne({
     String? idEntrepot,
     Function(dynamic data)? onSuccess,

@@ -69,36 +69,36 @@ class MapViewScreen extends GetView<MapViewScreenController> {
                       position: controller.positions[index],
                     ),
                   ),
-                  controller.currentLocation != null
+                    controller.currentLocation != null
                       ? Marker(
                           markerId: const MarkerId("point-id-0"),
                           infoWindow: const InfoWindow(
-                              title: "Current location",
-                              snippet: "Ma position actuelle"),
+                              title: "Localisation actuelle",
+                              snippet: "Ici c'est votre position"),
                           icon: controller.mapMarker.value,
                           position: LatLng(
                               controller.currentLocation!.latitude!,
                               controller.currentLocation!.longitude!),
                         )
+                     : const Marker(
+                          markerId: MarkerId("point-id-2"),
+                        ),
+                  controller.pharmacieDestination != null
+                      ? Marker(
+                          markerId: const MarkerId("point-id-0"),
+                          infoWindow: InfoWindow(
+                              title: controller.pharmacieDestination!.nom!
+                                  .toString(),
+                              snippet:
+                                  "Située à ${controller.pharmacieDestination!.distance!.toStringAsFixed(2)} Km"),
+                          icon: controller.mapMarker.value,
+                          position: LatLng(
+                              controller.pharmacieDestination!.latitude!,
+                              controller.pharmacieDestination!.longitude!),
+                        )
                       : const Marker(
                           markerId: MarkerId("point-id-2"),
                         ),
-                  Marker(
-                    markerId: const MarkerId("point-id-1"),
-                    infoWindow: const InfoWindow(
-                        title: "Localisation de la pharmacie source",
-                        snippet: "Une pharmacie de garde  24h/24"),
-                    icon: controller.mapMarker.value,
-                    position: controller.source,
-                  ),
-                  Marker(
-                    markerId: const MarkerId("point-id-2"),
-                    infoWindow: const InfoWindow(
-                        title: "Localisation de la pharmacie destination",
-                        snippet: "Une pharmacie de garde  24h/24"),
-                    icon: controller.mapMarker.value,
-                    position: controller.destination,
-                  ),
                 },
               ),
               Positioned(
@@ -158,7 +158,7 @@ class MapViewScreen extends GetView<MapViewScreenController> {
                                             color: kTextColor2)),
                                     enabledBorder: InputBorder.none,
                                     focusedBorder: InputBorder.none,
-                                    hintText: "Localisation",
+                                    hintText: "Nom de la pharmacie",
                                     contentPadding: const EdgeInsets.only(
                                         left: 10,
                                         top: 8,
@@ -184,97 +184,101 @@ class MapViewScreen extends GetView<MapViewScreenController> {
                   ),
                 ),
               ),
-              controller.pharmacyStatus == LoadingStatus.searching ? 
-              Positioned(
-                bottom: kDefaultMargin / 2,
-                left: 0,
-                right: 0,
-                child: Container(
-                  height: 140,
-                  margin:
-                      const EdgeInsets.symmetric(horizontal: kDefaultMargin),
-                  decoration: BoxDecoration(
-                    color: kWhiteColor,
-                    borderRadius: BorderRadius.circular(kDefaultRadius)
-                  ),
-                  child: const Center(
-                    child: CircularProgressIndicator(color: kTextColor),
-                  ),
-                ),
-              ) : Container(),
-              controller.pharmaciesList.isEmpty && controller.pharmacyStatus != LoadingStatus.searching ? Positioned(
-                bottom: kDefaultMargin / 2,
-                left: 0,
-                right: 0,
-                child: Container(
-                  height: 140,
-                  margin:
-                      const EdgeInsets.symmetric(horizontal: kDefaultMargin),
-                  decoration: BoxDecoration(
-                    color: kWhiteColor,
-                    borderRadius: BorderRadius.circular(kDefaultRadius)
-                  ),
-                  child: const Center(
-                    child: Text("Aucune pharmacie trouvée !!!",
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w400,
+              controller.pharmacyStatus == LoadingStatus.searching
+                  ? Positioned(
+                      bottom: kDefaultMargin / 2,
+                      left: 0,
+                      right: 0,
+                      child: Container(
+                        height: 140,
+                        margin: const EdgeInsets.symmetric(
+                            horizontal: kDefaultMargin),
+                        decoration: BoxDecoration(
+                            color: kWhiteColor,
+                            borderRadius:
+                                BorderRadius.circular(kDefaultRadius)),
+                        child: const Center(
+                          child: CircularProgressIndicator(color: kTextColor),
+                        ),
                       ),
-                    ),
-                  ),
-                ),
-              )
-              // controller.predictions.isNotEmpty
-              //     ? Positioned(
-              //         top: 60,
-              //         left: 20,
-              //         right: 20,
-              //         child: Container(
-              //             width: double.maxFinite,
-              //             decoration: BoxDecoration(
-              //               color: Colors.white,
-              //               borderRadius: BorderRadius.circular(10),
-              //             ),
-              //             child: ListView.builder(
-              //                 shrinkWrap: true,
-              //                 itemCount: controller.predictions.length,
-              //                 itemBuilder: (controll, ip) {
-              //                   return InkWell(
-              //                     onTap: () async {
-              //                       unfocus();
-              //                       await controller.onSelectPlace(ip);
-              //                     },
-              //                     child: Container(
-              //                       decoration: const BoxDecoration(),
-              //                       child: Column(
-              //                         mainAxisAlignment:
-              //                             MainAxisAlignment.center,
-              //                         children: [
-              //                           ListTile(
-              //                               horizontalTitleGap: 0,
-              //                               leading: const Icon(Icons.room,
-              //                                   color: kOrangeColor,
-              //                                   size: kDefaultPadding),
-              //                               title: Text(
-              //                                   '${controller.predictions[ip].description}',
-              //                                   overflow: TextOverflow.ellipsis,
-              //                                   maxLines: 2,
-              //                                   style: const TextStyle(
-              //                                       color: kDarkColor,
-              //                                       fontSize: 15,
-              //                                       fontWeight:
-              //                                           FontWeight.bold))),
-              //                           controller.predictions.length - 1 != ip
-              //                               ? const Divider(
-              //                                   thickness: 2,
-              //                                 )
-              //                               : const Text(""),
-              //                         ],
-              //                       ),
-              //                     ),
-              //                   );
-              //                 })),
-              //       )
+                    )
+                  : Container(),
+              controller.pharmaciesList.isEmpty &&
+                      controller.pharmacyStatus != LoadingStatus.searching
+                  ? Positioned(
+                      bottom: kDefaultMargin / 2,
+                      left: 0,
+                      right: 0,
+                      child: Container(
+                        height: 140,
+                        margin: const EdgeInsets.symmetric(
+                            horizontal: kDefaultMargin),
+                        decoration: BoxDecoration(
+                            color: kWhiteColor,
+                            borderRadius:
+                                BorderRadius.circular(kDefaultRadius)),
+                        child: const Center(
+                          child: Text(
+                            "Aucune pharmacie trouvée !!!",
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                        ),
+                      ),
+                    )
+                  // controller.predictions.isNotEmpty
+                  //     ? Positioned(
+                  //         top: 60,
+                  //         left: 20,
+                  //         right: 20,
+                  //         child: Container(
+                  //             width: double.maxFinite,
+                  //             decoration: BoxDecoration(
+                  //               color: Colors.white,
+                  //               borderRadius: BorderRadius.circular(10),
+                  //             ),
+                  //             child: ListView.builder(
+                  //                 shrinkWrap: true,
+                  //                 itemCount: controller.predictions.length,
+                  //                 itemBuilder: (controll, ip) {
+                  //                   return InkWell(
+                  //                     onTap: () async {
+                  //                       unfocus();
+                  //                       await controller.onSelectPlace(ip);
+                  //                     },
+                  //                     child: Container(
+                  //                       decoration: const BoxDecoration(),
+                  //                       child: Column(
+                  //                         mainAxisAlignment:
+                  //                             MainAxisAlignment.center,
+                  //                         children: [
+                  //                           ListTile(
+                  //                               horizontalTitleGap: 0,
+                  //                               leading: const Icon(Icons.room,
+                  //                                   color: kOrangeColor,
+                  //                                   size: kDefaultPadding),
+                  //                               title: Text(
+                  //                                   '${controller.predictions[ip].description}',
+                  //                                   overflow: TextOverflow.ellipsis,
+                  //                                   maxLines: 2,
+                  //                                   style: const TextStyle(
+                  //                                       color: kDarkColor,
+                  //                                       fontSize: 15,
+                  //                                       fontWeight:
+                  //                                           FontWeight.bold))),
+                  //                           controller.predictions.length - 1 != ip
+                  //                               ? const Divider(
+                  //                                   thickness: 2,
+                  //                                 )
+                  //                               : const Text(""),
+                  //                         ],
+                  //                       ),
+                  //                     ),
+                  //                   );
+                  //                 })),
+                  //       )
                   : Positioned(
                       bottom: kDefaultMargin / 2,
                       left: 0,
@@ -379,31 +383,11 @@ class MapViewScreen extends GetView<MapViewScreenController> {
                                       ),
                                     ),
                                     const Spacer(),
-                                    Text(
-                                      ((DateTime.now().hour >=
-                                                      (int.parse(controller
-                                                          .pharmaciesList[index]
-                                                          .ouverture!
-                                                          .split(":")[0]))) &&
-                                                  controller.pharmaciesList[index].ouverture!
-                                                      .endsWith("AM")) &&
-                                              ((DateTime.now().hour <=
-                                                      (int.parse(controller
-                                                              .pharmaciesList[
-                                                                  index]
-                                                              .fermeture!
-                                                              .split(":")[0])) +
-                                                          12) &&
-                                                  controller
-                                                      .pharmaciesList[index]
-                                                      .fermeture!
-                                                      .endsWith("PM"))
-                                          ? "Ouverte"
-                                          : "Fermée",
+                                    Text( "Située à ${controller.pharmaciesList[index].distance!.toStringAsFixed(2)} Km de votre position",
                                       style: const TextStyle(
                                         color: kOrangeColor,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w600,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w400,
                                         height: 1.3,
                                       ),
                                     ),

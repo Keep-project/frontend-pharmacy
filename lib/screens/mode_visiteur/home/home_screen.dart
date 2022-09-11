@@ -34,14 +34,6 @@ class HomeScreen extends GetView<HomeScreenController> {
         return Scaffold(
           key: controller.homeScaffoldKey,
           appBar: buildAppBar(controller),
-          floatingActionButton: FloatingActionButton(
-              onPressed: () {
-                showDialog(
-                    context: context,
-                    builder: (context) => const ActionsDialog());
-              },
-              backgroundColor: kTextColor2,
-              child: const Icon(Icons.add, color: kWhiteColor, size: 36)),
           drawer: AppNavigationDrawer(children: controller.drawerItems,),
           body: Container(
             height: Get.height,

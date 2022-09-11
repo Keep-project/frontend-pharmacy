@@ -18,6 +18,7 @@ class MapViewScreenController extends GetxController {
   LoadingStatus pharmacyStatus = LoadingStatus.initial;
   final PharmacieService _pharmacieService = PharmacieServiceImpl();
   List<Pharmacie> pharmaciesList = <Pharmacie>[];
+  Pharmacie? pharmacieDestination;
 
   TextEditingController textEditingControllerLocalisation =
       TextEditingController();
@@ -40,10 +41,10 @@ class MapViewScreenController extends GetxController {
 
   CameraPosition? newCameraPosition;
 
-  final LatLng source = const LatLng(3.866667, 11.516667);
-  //final LatLng source = const LatLng(37.4219983, -122.084);
-  final LatLng destination = const LatLng(4.05, 9.7);
-  //final LatLng destination = const LatLng(3.97806, 11.5931);
+  LatLng source = const LatLng(3.866667, 11.516667);
+  LatLng destination = const LatLng(4.05, 9.7);
+  LatLng newdestination = const LatLng(0, -0);
+  double km = 0;
 
   List<LatLng> polylineCoordinates = <LatLng>[];
 
@@ -60,8 +61,8 @@ class MapViewScreenController extends GetxController {
   @override
   void onInit() async {
     googlePlace = GooglePlace(apiKey);
-    await getPolyPoints();
     await getCurrentLocation();
+    //await getPolyPoints();
     super.onInit();
   }
 
@@ -88,11 +89,31 @@ class MapViewScreenController extends GetxController {
       longitude: currentLocation!.longitude ?? 11.516667,
       latitude: currentLocation!.latitude ?? 3.866667,
       distance: distance ,
-      onSuccess: (data) {
+      onSuccess: (data) async {
         pharmaciesList.addAll(data.results!);
+        if (pharmaciesList.isNotEmpty){
+          km = pharmaciesList[0].distance!;
+        }
         for (Pharmacie p in data.results!) {
           positions.add(LatLng(p.latitude!, p.longitude!));
+          /*if ( p.distance! < km && p.distance! >= 0 ) {
+            km = p.distance!;
+            pharmacieDestination = p;
+            newdestination = LatLng(p.latitude!, p.longitude!);
+          }*/
         }
+        // destination = newdestination;
+        ///////////////////
+        /// Test
+        print("============================");
+        print(source);
+        print("============================");
+        // source = LatLng(currentLocation!.latitude!, currentLocation!.longitude!);
+        /// destination = LatLng(pharmaciesList[1].latitude!, pharmaciesList[1].longitude!);
+        //update();
+        ///////////////////
+        await getPolyPoints();
+        
       pharmacyStatus = LoadingStatus.completed;
       update();
     },
@@ -118,6 +139,7 @@ class MapViewScreenController extends GetxController {
         for (Pharmacie p in data.results!) {
           positions.add(LatLng(p.latitude!, p.longitude!));
         }
+    
         pharmacyStatus = LoadingStatus.completed;
         update();
     }, onError: (error) {
@@ -156,6 +178,11 @@ class MapViewScreenController extends GetxController {
     update();
     l.Location location = l.Location();
     currentLocation = await location.getLocation();
+
+    /*if ( currentLocation !=  null ) {
+      source = LatLng(currentLocation!.latitude!, currentLocation!.longitude!);
+      update();
+    }*/
 
     bool _serviceEnabled;
     l.PermissionStatus _permissionGranted;

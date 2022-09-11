@@ -12,6 +12,7 @@ import 'package:pharmacy_app/core/app_snackbar.dart';
 import 'package:location/location.dart' as l;
 import 'package:pharmacy_app/core/app_state.dart';
 import 'package:pharmacy_app/models/request_data_models/pharmacie_model.dart';
+import 'package:pharmacy_app/router/app_router.dart';
 import 'package:pharmacy_app/screens/mode_gestion/pharmacie_form/pages/page_one.dart';
 import 'package:pharmacy_app/screens/mode_gestion/pharmacie_form/pages/page_two.dart';
 import 'package:pharmacy_app/services/remote_services/pharmacie/pharmacie.dart';
@@ -204,6 +205,7 @@ final Completer<GoogleMapController> mapController = Completer();
         CustomSnacbar.showMessage(
             context, "Pharmacie créée avec succès !");
         pharmacieStatus = LoadingStatus.completed;
+        Get.offAndToNamed(AppRoutes.PHARMACIE_USER);
         update();
       },
       onError: (error) {
