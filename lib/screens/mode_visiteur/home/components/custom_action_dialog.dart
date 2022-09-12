@@ -126,6 +126,36 @@ class ActionsDialog extends StatelessWidget {
                 ],
               ),
             ),
+            const SizedBox(height: kDefaultMargin * 1.5),
+            GestureDetector(
+              onTap: () {
+                Get.back();
+                Get.toNamed(AppRoutes.FACTURES_FORM);
+              },
+              child: Row(
+                children: [
+                  const Text(
+                    "Ajouter une facture",
+                    style: TextStyle(
+                      color: kTextColor2,
+                      fontSize: 16,
+                    ),
+                  ),
+                  const Spacer(),
+                  Container(
+                    height: 30,
+                    width: 30,
+                    decoration: const BoxDecoration(
+                      color: kTextColor2,
+                      shape: BoxShape.circle,
+                    ),
+                    child: const Center(
+                      child: Icon(Icons.add, color: kWhiteColor, size: 26),
+                    ),
+                  ),
+                ],
+              ),
+            ),
             const SizedBox(height: kDefaultMargin),
           ],
         ),

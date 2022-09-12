@@ -18,7 +18,7 @@ class MapViewScreenController extends GetxController {
   LoadingStatus pharmacyStatus = LoadingStatus.initial;
   final PharmacieService _pharmacieService = PharmacieServiceImpl();
   List<Pharmacie> pharmaciesList = <Pharmacie>[];
-  Pharmacie? pharmacieDestination;
+  Rx<Pharmacie>? pharmacieDestination;
 
   TextEditingController textEditingControllerLocalisation =
       TextEditingController();
@@ -29,9 +29,12 @@ class MapViewScreenController extends GetxController {
   Rx<BitmapDescriptor> mapMarker =
       BitmapDescriptor.defaultMarkerWithHue(0.0).obs;
 
+  Rx<BitmapDescriptor> sourceMapMarker =
+      BitmapDescriptor.defaultMarkerWithHue(240.0).obs;
+
   List<LatLng> positions = <LatLng>[];
 
-  int distance = 5; // initialisation du rayon de recherche à 5 KM par défaut
+  int distance = 25000; // initialisation du rayon de recherche à 5 KM par défaut
 
   CameraPosition _kLake = const CameraPosition(
       bearing: 192.8334901395799,
@@ -41,10 +44,9 @@ class MapViewScreenController extends GetxController {
 
   CameraPosition? newCameraPosition;
 
-  LatLng source = const LatLng(3.866667, 11.516667);
-  LatLng destination = const LatLng(4.05, 9.7);
+  Rx<LatLng> source = const LatLng(3.866667, 11.516667).obs;
+  Rx<LatLng> destination = const LatLng(4.05, 9.7).obs;
   LatLng newdestination = const LatLng(0, -0);
-  double km = 0;
 
   List<LatLng> polylineCoordinates = <LatLng>[];
 
@@ -62,7 +64,6 @@ class MapViewScreenController extends GetxController {
   void onInit() async {
     googlePlace = GooglePlace(apiKey);
     await getCurrentLocation();
-    //await getPolyPoints();
     super.onInit();
   }
 
@@ -83,47 +84,33 @@ class MapViewScreenController extends GetxController {
     pharmacyStatus = LoadingStatus.searching;
     pharmaciesList.clear();
     positions.clear();
-    
+
     update();
     await _pharmacieService.findAll(
-      longitude: currentLocation!.longitude ?? 11.516667,
-      latitude: currentLocation!.latitude ?? 3.866667,
-      distance: distance ,
-      onSuccess: (data) async {
-        pharmaciesList.addAll(data.results!);
-        if (pharmaciesList.isNotEmpty){
-          km = pharmaciesList[0].distance!;
-        }
-        for (Pharmacie p in data.results!) {
-          positions.add(LatLng(p.latitude!, p.longitude!));
-          /*if ( p.distance! < km && p.distance! >= 0 ) {
-            km = p.distance!;
-            pharmacieDestination = p;
-            newdestination = LatLng(p.latitude!, p.longitude!);
-          }*/
-        }
-        // destination = newdestination;
-        ///////////////////
-        /// Test
-        print("============================");
-        print(source);
-        print("============================");
-        // source = LatLng(currentLocation!.latitude!, currentLocation!.longitude!);
-        /// destination = LatLng(pharmaciesList[1].latitude!, pharmaciesList[1].longitude!);
-        //update();
-        ///////////////////
-        await getPolyPoints();
-        
-      pharmacyStatus = LoadingStatus.completed;
-      update();
-    },
-    onError: (error) {
-      print("============================");
-      print(error);
-      print("============================");
-      pharmacyStatus = LoadingStatus.failed;
-      update();
-    });
+        longitude: currentLocation!.longitude ?? 11.516667,
+        latitude: currentLocation!.latitude ?? 3.866667,
+        distance: distance,
+        onSuccess: (data) async {
+          pharmaciesList.addAll(data.results!);
+          pharmaciesList.sort((a, b) => a.distance!.compareTo(b.distance!));
+          for (Pharmacie p in pharmaciesList) {
+            positions.add(LatLng(p.latitude!, p.longitude!));
+          }
+          if (pharmaciesList.isNotEmpty) {
+            pharmacieDestination?.value = pharmaciesList[0];
+            destination.value = LatLng(pharmaciesList[0].latitude!, pharmaciesList[0].longitude!);
+          }
+          await getPolyPoints();
+          pharmacyStatus = LoadingStatus.completed;
+          update();
+        },
+        onError: (error) {
+          print("============================");
+          print(error);
+          print("============================");
+          pharmacyStatus = LoadingStatus.failed;
+          update();
+        });
   }
 
   Future filterPharmacies() async {
@@ -132,46 +119,48 @@ class MapViewScreenController extends GetxController {
     positions.clear();
     update();
     await _pharmacieService.filter(
-      search: textEditingControllerLocalisation.text.trim(),
-      onSuccess: (data) {
-        
-        pharmaciesList.addAll(data.results!);
-        for (Pharmacie p in data.results!) {
-          positions.add(LatLng(p.latitude!, p.longitude!));
-        }
-    
-        pharmacyStatus = LoadingStatus.completed;
-        update();
-    }, onError: (error) {
-      print("============================");
-      print(error);
-      print("============================");
-      pharmacyStatus = LoadingStatus.failed;
-      update();
-    });
+        search: textEditingControllerLocalisation.text.trim(),
+        onSuccess: (data) {
+          pharmaciesList.addAll(data.results!);
+          pharmaciesList.sort((a, b) => a.distance!.compareTo(b.distance!),);
+          for (Pharmacie p in pharmaciesList) {
+            positions.add(LatLng(p.latitude!, p.longitude!));
+          }
+          pharmacyStatus = LoadingStatus.completed;
+          update();
+        },
+        onError: (error) {
+          print("============================");
+          print(error);
+          print("============================");
+          pharmacyStatus = LoadingStatus.failed;
+          update();
+        });
   }
 
   CameraPosition kGooglePlex = const CameraPosition(
-    target: LatLng(3.866667, 11.516667), // Initialisation de la position sur Yaoundé
+    target: LatLng(
+        3.866667, 11.516667), // Initialisation de la position sur Yaoundé
     //target: LatLng(37.4219983, -122.084),
     zoom: 10.4746,
   );
 
   Future getPolyPoints() async {
+    update();
     PolylinePoints polyPoints = PolylinePoints();
 
     PolylineResult result = await polyPoints.getRouteBetweenCoordinates(
         apiKey,
-        PointLatLng(source.latitude, source.longitude),
-        PointLatLng(destination.latitude, destination.longitude));
+        PointLatLng(source.value.latitude, source.value.longitude),
+        PointLatLng(destination.value.latitude, destination.value.longitude));
 
     if (result.points.isNotEmpty) {
+      polylineCoordinates.clear();
       result.points.forEach((PointLatLng point) =>
           polylineCoordinates.add(LatLng(point.latitude, point.longitude)));
       update();
     }
   }
-
 
   Future getCurrentLocation() async {
     pharmacyStatus = LoadingStatus.searching;
@@ -179,10 +168,11 @@ class MapViewScreenController extends GetxController {
     l.Location location = l.Location();
     currentLocation = await location.getLocation();
 
-    /*if ( currentLocation !=  null ) {
-      source = LatLng(currentLocation!.latitude!, currentLocation!.longitude!);
+    if (currentLocation != null) {
+      source.value =
+          LatLng(currentLocation!.latitude!, currentLocation!.longitude!);
       update();
-    }*/
+    }
 
     bool _serviceEnabled;
     l.PermissionStatus _permissionGranted;
@@ -209,10 +199,12 @@ class MapViewScreenController extends GetxController {
     }
 
     location.onLocationChanged.listen((l.LocationData newLocation) {
-       currentLocation = newLocation;
+      currentLocation = newLocation;
+      source.value =
+          LatLng(currentLocation!.latitude!, currentLocation!.longitude!);
     });
     update();
-   
+
     kGooglePlex = CameraPosition(
       target: LatLng(
           currentLocation!.latitude!,
@@ -224,10 +216,8 @@ class MapViewScreenController extends GetxController {
     control.animateCamera(CameraUpdate.newCameraPosition(kGooglePlex));
     await getPharmacies();
 
-
     update();
   }
-
 
   // Auto completion
   void autoCompleteSearch(String string) async {
@@ -282,8 +272,7 @@ class MapViewScreenController extends GetxController {
     //when map drag stops
     List<Placemark> placemarks = await placemarkFromCoordinates(
         newCameraPosition!.target.latitude,
-        newCameraPosition!.target.longitude
-    );
+        newCameraPosition!.target.longitude);
     localisationInformations = placemarks.first;
 
     update();

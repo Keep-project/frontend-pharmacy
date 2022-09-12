@@ -28,6 +28,7 @@ class MapViewScreen extends GetView<MapViewScreenController> {
         child: Scaffold(
           body: Stack(
             children: [
+              Obx(() =>
               GoogleMap(
                 zoomControlsEnabled: false,
                 mapType: MapType.normal,
@@ -46,7 +47,7 @@ class MapViewScreen extends GetView<MapViewScreenController> {
                   Polyline(
                     polylineId: const PolylineId("route"),
                     points: controller.polylineCoordinates,
-                    color: kTextColor,
+                    color: Colors.blue,
                     width: 6,
                   )
                 },
@@ -75,7 +76,7 @@ class MapViewScreen extends GetView<MapViewScreenController> {
                           infoWindow: const InfoWindow(
                               title: "Localisation actuelle",
                               snippet: "Ici c'est votre position"),
-                          icon: controller.mapMarker.value,
+                          icon: controller.sourceMapMarker.value,
                           position: LatLng(
                               controller.currentLocation!.latitude!,
                               controller.currentLocation!.longitude!),
@@ -84,22 +85,24 @@ class MapViewScreen extends GetView<MapViewScreenController> {
                           markerId: MarkerId("point-id-2"),
                         ),
                   controller.pharmacieDestination != null
-                      ? Marker(
+                      ?
+                       Marker(
                           markerId: const MarkerId("point-id-0"),
                           infoWindow: InfoWindow(
-                              title: controller.pharmacieDestination!.nom!
+                              title: controller.pharmacieDestination?.value.nom!
                                   .toString(),
                               snippet:
-                                  "Située à ${controller.pharmacieDestination!.distance!.toStringAsFixed(2)} Km"),
+                                  "Située à ${controller.pharmacieDestination?.value.distance!.toStringAsFixed(2)} Km"),
                           icon: controller.mapMarker.value,
                           position: LatLng(
-                              controller.pharmacieDestination!.latitude!,
-                              controller.pharmacieDestination!.longitude!),
+                              controller.pharmacieDestination!.value.latitude!,
+                              controller.pharmacieDestination!.value.longitude!),
                         )
                       : const Marker(
                           markerId: MarkerId("point-id-2"),
                         ),
                 },
+              ),
               ),
               Positioned(
                 child: Container(
