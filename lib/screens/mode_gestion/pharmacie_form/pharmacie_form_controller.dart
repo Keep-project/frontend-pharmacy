@@ -189,7 +189,7 @@ final Completer<GoogleMapController> mapController = Completer();
 
     PharmacieRequestModel pharmacieModel = PharmacieRequestModel(
       nom: textEditingNom.text.trim(),
-      localisation: "${textEditingPays.text.trim()}-${textEditingVille.text.trim()}-${textEditingQuartier.text.trim()}",
+      localisation: "${textEditingPays.text.trim()};${textEditingVille.text.trim()};${textEditingQuartier.text.trim()}",
       phone: textEditingPhone.text.trim(),
       email: textEditingEmail.text.trim(),
       latitude: position.latitude,

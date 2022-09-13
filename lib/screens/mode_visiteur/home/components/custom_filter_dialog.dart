@@ -21,12 +21,13 @@ class FilterDialog extends StatelessWidget {
       child: Dialog(
         backgroundColor: kWhiteColor,
         shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(kDefaultRadius)),
+            borderRadius: BorderRadius.circular(0)),
         alignment: Alignment.center,
+        insetPadding: const EdgeInsets.all(0),
         child: Container(
-          height: 540,
-          width: 400,
-          padding: const EdgeInsets.all(kDefaultPadding),
+          height: Get.height,  // 540,
+          width: Get.width,  // 400,
+          padding: const EdgeInsets.all(kDefaultPadding-4),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

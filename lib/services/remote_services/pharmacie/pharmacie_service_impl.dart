@@ -35,11 +35,22 @@ class PharmacieServiceImpl implements PharmacieService {
       {double? longitude,
       double? latitude,
       int? distance,
+      String? search,
+      String? pays,
+      String? ville,
+      String? quartier,
       Function(dynamic data)? onSuccess,
       Function(dynamic date)? onError}) async {
     ApiRequest(
       url: "${Constants.API_URL}/pharmacie/proche/$distance",
-      data: {"longitude": longitude, "latitude": latitude},
+      data: {
+        "longitude": longitude,
+        "latitude": latitude,
+        "search": search,
+        "pays": pays,
+        "ville": ville,
+        "quartier": quartier,
+      },
       token: await _localAuth.getToken(),
     ).post(onSuccess: (data) {
       onSuccess!(PharmacieResponseModel.fromMap(data));

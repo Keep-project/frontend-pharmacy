@@ -28,7 +28,6 @@ class MapViewScreen extends GetView<MapViewScreenController> {
         child: Scaffold(
           body: Stack(
             children: [
-              Obx(() =>
               GoogleMap(
                 zoomControlsEnabled: false,
                 mapType: MapType.normal,
@@ -70,7 +69,7 @@ class MapViewScreen extends GetView<MapViewScreenController> {
                       position: controller.positions[index],
                     ),
                   ),
-                    controller.currentLocation != null
+                  controller.currentLocation != null
                       ? Marker(
                           markerId: const MarkerId("point-id-0"),
                           infoWindow: const InfoWindow(
@@ -81,12 +80,11 @@ class MapViewScreen extends GetView<MapViewScreenController> {
                               controller.currentLocation!.latitude!,
                               controller.currentLocation!.longitude!),
                         )
-                     : const Marker(
+                      : const Marker(
                           markerId: MarkerId("point-id-2"),
                         ),
                   controller.pharmacieDestination != null
-                      ?
-                       Marker(
+                      ? Marker(
                           markerId: const MarkerId("point-id-0"),
                           infoWindow: InfoWindow(
                               title: controller.pharmacieDestination?.value.nom!
@@ -96,13 +94,13 @@ class MapViewScreen extends GetView<MapViewScreenController> {
                           icon: controller.mapMarker.value,
                           position: LatLng(
                               controller.pharmacieDestination!.value.latitude!,
-                              controller.pharmacieDestination!.value.longitude!),
+                              controller
+                                  .pharmacieDestination!.value.longitude!),
                         )
                       : const Marker(
                           markerId: MarkerId("point-id-2"),
                         ),
                 },
-              ),
               ),
               Positioned(
                 child: Container(
@@ -143,7 +141,8 @@ class MapViewScreen extends GetView<MapViewScreenController> {
                                     .textEditingControllerLocalisation,
                                 onChanged: (String value) async {
                                   if (value.toString().isNotEmpty) {
-                                    await controller.filterPharmacies();
+                                    controller.pharmaciesList.clear();
+                                    await controller.getPharmacies(context:context);
                                   } else {
                                     controller.predictions = [];
                                     controller.update();
@@ -386,7 +385,8 @@ class MapViewScreen extends GetView<MapViewScreenController> {
                                       ),
                                     ),
                                     const Spacer(),
-                                    Text( "Située à ${controller.pharmaciesList[index].distance!.toStringAsFixed(2)} Km de votre position",
+                                    Text(
+                                      "Située à ${controller.pharmaciesList[index].distance!.toStringAsFixed(2)} Km de votre position",
                                       style: const TextStyle(
                                         color: kOrangeColor,
                                         fontSize: 14,
@@ -421,97 +421,215 @@ class Options extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      backgroundColor: kWhiteColor,
-      shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(kDefaultRadius)),
-      alignment: Alignment.center,
-      child: Container(
-        height: 228,
-        padding: const EdgeInsets.all(kDefaultPadding),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              "Saisisez le rayon de recherche",
-              style: TextStyle(
-                fontSize: 18,
-                color: kTextColor2,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-            Text(
-              "en K.M",
-              style: TextStyle(
-                color: kDarkColor.withOpacity(0.6),
-                fontWeight: FontWeight.w400,
-              ),
-            ),
-            const SizedBox(height: kDefaultMargin / 2),
-            const Divider(
-              thickness: 1.5,
-            ),
-            const SizedBox(height: kDefaultMargin * 1.5),
-            Container(
-              height: 45,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                border: Border.all(
-                  width: 1.5,
-                  color: kTextColor2,
-                ),
-                borderRadius: BorderRadius.circular(kDefaultRadius / 2),
-              ),
-              child: TextField(
-                onChanged: (String value) async {
-                  if (value.toString().isNotEmpty) {
-                    controller.distance = int.parse(value.trim());
-                  }
-                },
-                keyboardType: TextInputType.number,
-                decoration: const InputDecoration(
-                    enabledBorder: InputBorder.none,
-                    focusedBorder: InputBorder.none,
-                    hintText: "rayon de recherche",
-                    contentPadding: EdgeInsets.only(
-                        left: 10, top: 3, bottom: 8, right: 10)),
-              ),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
+        backgroundColor: kWhiteColor,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
+        alignment: Alignment.center,
+        insetPadding: const EdgeInsets.all(0),
+        child: Obx(
+          () => Container(
+            height: Get.height,
+            padding: const EdgeInsets.all(kDefaultPadding),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                InkWell(
-                  onTap: () async {
-                    Get.back();
-                    await controller.getPharmacies();
-                  },
-                  child: Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: kDefaultPadding),
-                    height: 45,
-                    decoration: BoxDecoration(
-                      color: kTextColor,
-                      borderRadius: BorderRadius.circular(8),
+                const SizedBox(height: kDefaultPadding * 2),
+                !controller.searchForSomeBody.value ? Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                  const Text(
+                    "Saisisez le rayon de recherche",
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: kTextColor2,
+                      fontWeight: FontWeight.w600,
                     ),
-                    child: const Center(
-                        child: Text(
-                      "Rechercher",
-                      style: TextStyle(
-                        color: kWhiteColor,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    )),
                   ),
+                  Text(
+                    "en K.M",
+                    style: TextStyle(
+                      color: kDarkColor.withOpacity(0.6),
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                  const SizedBox(height: kDefaultMargin / 2),
+                  const Divider(
+                    thickness: 1.5,
+                  ),
+                  const SizedBox(height: kDefaultMargin * 1.5),
+                  Container(
+                    height: 42,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      border: Border.all(
+                        width: 1.5,
+                        color: kTextColor2,
+                      ),
+                      borderRadius: BorderRadius.circular(kDefaultRadius / 2),
+                    ),
+                    child: TextField(
+                      onChanged: (String value) async {
+                        if (value.toString().isNotEmpty) {
+                          controller.distance = int.parse(value.trim());
+                        }
+                      },
+                      keyboardType: TextInputType.number,
+                      decoration: const InputDecoration(
+                          enabledBorder: InputBorder.none,
+                          focusedBorder: InputBorder.none,
+                          hintText: "Rayon de recherche",
+                          contentPadding: EdgeInsets.only(
+                              left: 10, top: 3, bottom: 8, right: 10)),
+                    ),
+                  ),
+                ]): Container(),
+                const SizedBox(height: kDefaultPadding),
+                Row(children: [
+                  Checkbox(
+                      side: const BorderSide(width: 1, color: kTextColor2),
+                      activeColor: kTextColor2,
+                      value: controller.searchForSomeBody.value,
+                      onChanged: (bool? val) {
+                        controller.changeValue(val!);
+                      }),
+                  Text("Rechercher pour un proche ?",
+                      style: TextStyle(
+                          fontSize: 16, color: kDarkColor.withOpacity(.7))),
+                ]),
+                controller.searchForSomeBody.value == true
+                    ? Column(children: [
+                        const Divider(
+                          thickness: 1.5,
+                        ),
+                        const SizedBox(height: kDefaultPadding),
+                        Container(
+                          height: 42,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            border: Border.all(
+                              width: 1.5,
+                              color: kTextColor2,
+                            ),
+                            borderRadius:
+                                BorderRadius.circular(kDefaultRadius / 2),
+                          ),
+                          child: TextField(
+                            onChanged: (String value) async {
+                              if (value.toString().isNotEmpty) {
+                                controller.textPays = value.trim();
+                              }
+                            },
+                            decoration: const InputDecoration(
+                                enabledBorder: InputBorder.none,
+                                focusedBorder: InputBorder.none,
+                                hintText: "Entrez le pays",
+                                contentPadding: EdgeInsets.only(
+                                    left: 10, top: 3, bottom: 8, right: 10)),
+                          ),
+                        ),
+                        const SizedBox(height: kDefaultPadding),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Container(
+                                height: 42,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  border: Border.all(
+                                    width: 1.5,
+                                    color: kTextColor2,
+                                  ),
+                                  borderRadius:
+                                      BorderRadius.circular(kDefaultRadius / 2),
+                                ),
+                                child: TextField(
+                                  onChanged: (String value) async {
+                                    if (value.toString().isNotEmpty) {
+                                      controller.textVille = value.trim();
+                                    }
+                                  },
+                                  decoration: const InputDecoration(
+                                      enabledBorder: InputBorder.none,
+                                      focusedBorder: InputBorder.none,
+                                      hintText: "Entrez le ville",
+                                      contentPadding: EdgeInsets.only(
+                                          left: 10,
+                                          top: 3,
+                                          bottom: 8,
+                                          right: 10)),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: kDefaultPadding),
+                            Expanded(
+                              child: Container(
+                                height: 42,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  border: Border.all(
+                                    width: 1.5,
+                                    color: kTextColor2,
+                                  ),
+                                  borderRadius:
+                                      BorderRadius.circular(kDefaultRadius / 2),
+                                ),
+                                child: TextField(
+                                  onChanged: (String value) async {
+                                    if (value.toString().isNotEmpty) {
+                                      controller.textQuartier = value.trim();
+                                    }
+                                  },
+                                  decoration: const InputDecoration(
+                                      enabledBorder: InputBorder.none,
+                                      focusedBorder: InputBorder.none,
+                                      hintText: "Entrez le quartier",
+                                      contentPadding: EdgeInsets.only(
+                                          left: 10,
+                                          top: 3,
+                                          bottom: 8,
+                                          right: 10)),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                      ])
+                    : Container(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    InkWell(
+                      onTap: () async {
+                        Get.back();
+                        await controller.getPharmacies(context:context);
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: kDefaultPadding),
+                        height: 40,
+                        decoration: BoxDecoration(
+                          color: kTextColor,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: const Center(
+                            child: Text(
+                          "Rechercher",
+                          style: TextStyle(
+                            color: kWhiteColor,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        )),
+                      ),
+                    ),
+                  ],
                 ),
+                const SizedBox(height: kDefaultMargin / 2),
               ],
             ),
-            const SizedBox(height: kDefaultMargin / 2),
-          ],
-        ),
-      ),
-    );
+          ),
+        ));
   }
 }

@@ -10,6 +10,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_place/google_place.dart';
 import 'package:location/location.dart' as l;
 import 'package:pharmacy_app/core/api_key.dart';
+import 'package:pharmacy_app/core/app_snackbar.dart';
 import 'package:pharmacy_app/core/app_state.dart';
 import 'package:pharmacy_app/models/response_data_models/pharmacie_model.dart';
 import 'package:pharmacy_app/services/remote_services/pharmacie/pharmacie.dart';
@@ -34,7 +35,11 @@ class MapViewScreenController extends GetxController {
 
   List<LatLng> positions = <LatLng>[];
 
-  int distance = 25000; // initialisation du rayon de recherche à 5 KM par défaut
+  int distance = 5; // initialisation du rayon de recherche à 5 KM par défaut
+  String textPays = "";
+  String textVille = "";
+  String textQuartier = "";
+  RxBool searchForSomeBody = false.obs;
 
   CameraPosition _kLake = const CameraPosition(
       bearing: 192.8334901395799,
@@ -46,7 +51,6 @@ class MapViewScreenController extends GetxController {
 
   Rx<LatLng> source = const LatLng(3.866667, 11.516667).obs;
   Rx<LatLng> destination = const LatLng(4.05, 9.7).obs;
-  LatLng newdestination = const LatLng(0, -0);
 
   List<LatLng> polylineCoordinates = <LatLng>[];
 
@@ -62,6 +66,8 @@ class MapViewScreenController extends GetxController {
 
   @override
   void onInit() async {
+    sourceMapMarker.value = await BitmapDescriptor.fromAssetImage(
+    const ImageConfiguration(), "assets/images/bonhomme3.png");
     googlePlace = GooglePlace(apiKey);
     await getCurrentLocation();
     super.onInit();
@@ -80,19 +86,41 @@ class MapViewScreenController extends GetxController {
     update();
   }
 
-  Future getPharmacies() async {
+
+  void changeValue(bool value) {
+    searchForSomeBody.value = value;
+    update();
+  }
+
+
+  Future getPharmacies({BuildContext? context}) async {
     pharmacyStatus = LoadingStatus.searching;
     pharmaciesList.clear();
     positions.clear();
 
+    if ( searchForSomeBody.value ){
+      if ( textPays.trim().isEmpty){
+        CustomSnacbar.showMessage(context!, "Veuillez renseigner le pays pour la recherche !");
+      }
+      if ( textVille.trim().isEmpty){
+        CustomSnacbar.showMessage(context!, "Veuillez renseigner la ville pour la recherche !");
+      }
+    }
+
     update();
     await _pharmacieService.findAll(
-        longitude: currentLocation!.longitude ?? 11.516667,
-        latitude: currentLocation!.latitude ?? 3.866667,
+        longitude: currentLocation!.longitude ?? 0,
+        latitude: currentLocation!.latitude ?? 0,
         distance: distance,
+        search: textEditingControllerLocalisation.text.trim(),
+        pays: textPays.trim(),
+        ville: textVille.trim(),
+        quartier: textQuartier.trim(),
         onSuccess: (data) async {
           pharmaciesList.addAll(data.results!);
-          pharmaciesList.sort((a, b) => a.distance!.compareTo(b.distance!));
+          if (currentLocation!.longitude! != 0 && currentLocation!.latitude! != 0){
+            pharmaciesList.sort((a, b) => a.distance!.compareTo(b.distance!));
+          }
           for (Pharmacie p in pharmaciesList) {
             positions.add(LatLng(p.latitude!, p.longitude!));
           }
@@ -120,12 +148,17 @@ class MapViewScreenController extends GetxController {
     update();
     await _pharmacieService.filter(
         search: textEditingControllerLocalisation.text.trim(),
-        onSuccess: (data) {
+        onSuccess: (data) async {
           pharmaciesList.addAll(data.results!);
-          pharmaciesList.sort((a, b) => a.distance!.compareTo(b.distance!),);
+          pharmaciesList.sort((a, b) => a.distance!.compareTo(b.distance!));
           for (Pharmacie p in pharmaciesList) {
             positions.add(LatLng(p.latitude!, p.longitude!));
           }
+          if (pharmaciesList.isNotEmpty) {
+            pharmacieDestination?.value = pharmaciesList[0];
+            destination.value = LatLng(pharmaciesList[0].latitude!, pharmaciesList[0].longitude!);
+          }
+          await getPolyPoints();
           pharmacyStatus = LoadingStatus.completed;
           update();
         },

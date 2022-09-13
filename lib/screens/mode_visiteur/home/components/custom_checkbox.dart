@@ -19,7 +19,7 @@ class CheckBoxComponent extends StatelessWidget {
     return 
     Obx(() => 
       Container(
-        width: Get.width / 3.2,
+        width: Get.width / 2 - 26,
         height: 40,
         decoration: const BoxDecoration(),
         child: Row(children: [

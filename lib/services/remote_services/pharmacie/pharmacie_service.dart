@@ -5,6 +5,10 @@ abstract class PharmacieService {
     double? longitude,
     double? latitude,
     int? distance,
+    String? search,
+    String? pays,
+    String? ville,
+    String? quartier,
     Function(dynamic data)? onSuccess,
     Function(dynamic error)? onError,
   });
