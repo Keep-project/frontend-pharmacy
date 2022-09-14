@@ -12,12 +12,19 @@ import 'package:pharmacy_app/core/app_colors.dart';
 import 'package:pharmacy_app/core/app_sizes.dart';
 import 'package:pharmacy_app/screens/mode_gestion/facture_form/facture_form.dart';
 
-
 class FactureFormScreen extends GetView<FactureFormController> {
   const FactureFormScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    var currentFocus;
+    void unfocus() {
+      currentFocus = FocusScope.of(context);
+      if (!currentFocus.hasPrimaryFocus) {
+        currentFocus.unfocus();
+      }
+    }
+
     return SafeArea(
       child: GetBuilder<FactureFormController>(builder: (controller) {
         return Scaffold(
@@ -58,7 +65,7 @@ class FactureFormScreen extends GetView<FactureFormController> {
                   ),
                   const SizedBox(height: kDefaultPadding * 1.2),
                   Text(
-                    "Ici vous enregistrer une nouvelle facture pour une nouvelle commande passée",
+                    "Ici vous enregistrez une nouvelle facture pour une nouvelle commande passée",
                     textAlign: TextAlign.left,
                     style: TextStyle(
                       color: kDarkColor.withOpacity(0.6),
@@ -86,9 +93,26 @@ class FactureFormScreen extends GetView<FactureFormController> {
                             ),
                             const SizedBox(height: 5),
                             CustomIconButton(
-                              title: "10/02/2010",
+                              title: controller.dateFacturationToString,
                               iconData: Icons.calendar_month,
-                              onTap: () {},
+                              onTap: () async {
+                                DateTime? newdate = await showDatePicker(
+                                  context: context,
+                                  initialDate: controller.dateFacturation,
+                                  firstDate: DateTime(
+                                      controller.dateFacturation.year - 10),
+                                  lastDate: DateTime(
+                                      controller.dateFacturation.year + 10),
+                                );
+                                if (newdate == null) {
+                                  return;
+                                }
+                                controller.dateFacturationToString =
+                                    "${newdate.day.toString().padLeft(2, '0')}/${newdate.month.toString().padLeft(2, '0')}/${newdate.year}";
+                                controller.dateFacturation = newdate;
+
+                                controller.update();
+                              },
                             ),
                           ],
                         ),
@@ -105,7 +129,7 @@ class FactureFormScreen extends GetView<FactureFormController> {
                   ),
                   const SizedBox(height: kDefaultPadding),
                   ...List.generate(
-                    2,
+                    1,
                     (index) => Padding(
                       padding: const EdgeInsets.only(bottom: 10.0),
                       child: CardContainer(
@@ -252,7 +276,10 @@ class FactureFormScreen extends GetView<FactureFormController> {
                   ),
                   const SizedBox(height: kDefaultPadding / 2),
                   CustomTextField2(
-                    onChanged: (string) {},
+                    controller: controller.searchController,
+                    onChanged: (data) async {
+                      await controller.searchData(data);
+                    },
                     title: "Produit",
                     hintText: "Rechercher le produit...",
                     suffixIcon: InkWell(
@@ -261,6 +288,35 @@ class FactureFormScreen extends GetView<FactureFormController> {
                         },
                         child: Icon(Icons.search,
                             color: kDarkColor.withOpacity(0.4), size: 26)),
+                  ),
+                  controller.medicamentsList.isEmpty ? Container() : Container(
+                    height: 40 * controller.medicamentsList.length.toDouble(),
+                    width: Get.width,
+                    margin: const EdgeInsets.only(bottom: 10),
+                    padding: const EdgeInsets.only(left: 8, bottom: 8),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.8),
+                    ),
+                    child: SingleChildScrollView(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          ...List.generate(
+                            controller.medicamentsList.length,
+                            (index) => TextButton(
+                              onPressed: () {},
+                              child: Text(controller.medicamentsList[index].nom!
+                                  .capitalizeFirst!, style: const TextStyle(
+                                    color: kDarkColor,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500,
+                                  )),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
                   const SizedBox(height: kDefaultPadding / 2),
                   Row(

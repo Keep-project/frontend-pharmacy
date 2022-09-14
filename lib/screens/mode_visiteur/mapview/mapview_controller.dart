@@ -67,6 +67,7 @@ class MapViewScreenController extends GetxController {
 
   @override
   void onInit() async {
+    textEditingDistance.text = '5';
     sourceMapMarker.value = await BitmapDescriptor.fromAssetImage(
     const ImageConfiguration(), "assets/images/bonhomme3.png");
     googlePlace = GooglePlace(apiKey);
