@@ -315,16 +315,28 @@ class MapViewScreen extends GetView<MapViewScreenController> {
                                     decoration:
                                         const BoxDecoration(color: kTextColor),
                                     child: Row(children: [
-                                      Text(
-                                        controller.pharmaciesList[index].nom!
-                                            .toString()
-                                            .capitalize!,
-                                        style: const TextStyle(
-                                          color: kWhiteColor,
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.w600,
-                                          height: 1.3,
-                                        ),
+                                      Column(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            controller.pharmaciesList[index].nom!
+                                                .toString()
+                                                .capitalize!,
+                                            style: const TextStyle(
+                                              color: kWhiteColor,
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.w600,
+                                              height: 1.3,
+                                            ),
+                                          ),
+                                          index == 0 && !controller.searchForSomeBody.value ? const Text("(Plus près de vous)",
+                                            style: TextStyle(
+                                              color: kWhiteColor,
+                                              fontSize: 12,
+                                            ),
+                                          ) : Container(),
+                                        ],
                                       ),
                                       const Spacer(),
                                       InkWell(
@@ -385,8 +397,8 @@ class MapViewScreen extends GetView<MapViewScreenController> {
                                       ),
                                     ),
                                     const Spacer(),
-                                    Text(
-                                      "Située à ${controller.pharmaciesList[index].distance!.toStringAsFixed(2)} Km de votre position",
+                                    Text(controller.pharmaciesList[index].distance! >= 0 ?
+                                      "Située à ${controller.pharmaciesList[index].distance!.toStringAsFixed(2)} Km de votre position" : "",
                                       style: const TextStyle(
                                         color: kOrangeColor,
                                         fontSize: 14,
@@ -467,11 +479,7 @@ class Options extends StatelessWidget {
                       borderRadius: BorderRadius.circular(kDefaultRadius / 2),
                     ),
                     child: TextField(
-                      onChanged: (String value) async {
-                        if (value.toString().isNotEmpty) {
-                          controller.distance = int.parse(value.trim());
-                        }
-                      },
+                      controller: controller.textEditingDistance,
                       keyboardType: TextInputType.number,
                       decoration: const InputDecoration(
                           enabledBorder: InputBorder.none,
@@ -513,11 +521,7 @@ class Options extends StatelessWidget {
                                 BorderRadius.circular(kDefaultRadius / 2),
                           ),
                           child: TextField(
-                            onChanged: (String value) async {
-                              if (value.toString().isNotEmpty) {
-                                controller.textPays = value.trim();
-                              }
-                            },
+                            controller: controller.textEditingPays,
                             decoration: const InputDecoration(
                                 enabledBorder: InputBorder.none,
                                 focusedBorder: InputBorder.none,
@@ -542,11 +546,7 @@ class Options extends StatelessWidget {
                                       BorderRadius.circular(kDefaultRadius / 2),
                                 ),
                                 child: TextField(
-                                  onChanged: (String value) async {
-                                    if (value.toString().isNotEmpty) {
-                                      controller.textVille = value.trim();
-                                    }
-                                  },
+                                  controller: controller.textEditingVille,
                                   decoration: const InputDecoration(
                                       enabledBorder: InputBorder.none,
                                       focusedBorder: InputBorder.none,
@@ -573,11 +573,7 @@ class Options extends StatelessWidget {
                                       BorderRadius.circular(kDefaultRadius / 2),
                                 ),
                                 child: TextField(
-                                  onChanged: (String value) async {
-                                    if (value.toString().isNotEmpty) {
-                                      controller.textQuartier = value.trim();
-                                    }
-                                  },
+                                  controller: controller.textEditingQuartier,
                                   decoration: const InputDecoration(
                                       enabledBorder: InputBorder.none,
                                       focusedBorder: InputBorder.none,

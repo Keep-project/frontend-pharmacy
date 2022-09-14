@@ -35,11 +35,12 @@ class MapViewScreenController extends GetxController {
 
   List<LatLng> positions = <LatLng>[];
 
-  int distance = 5; // initialisation du rayon de recherche à 5 KM par défaut
-  String textPays = "";
-  String textVille = "";
-  String textQuartier = "";
   RxBool searchForSomeBody = false.obs;
+
+  TextEditingController textEditingDistance = TextEditingController();
+  TextEditingController textEditingPays = TextEditingController();
+  TextEditingController textEditingVille = TextEditingController();
+  TextEditingController textEditingQuartier = TextEditingController();
 
   CameraPosition _kLake = const CameraPosition(
       bearing: 192.8334901395799,
@@ -99,10 +100,10 @@ class MapViewScreenController extends GetxController {
     positions.clear();
 
     if ( searchForSomeBody.value ){
-      if ( textPays.trim().isEmpty){
+      if ( textEditingPays.text.trim().isEmpty){
         CustomSnacbar.showMessage(context!, "Veuillez renseigner le pays pour la recherche !");
       }
-      if ( textVille.trim().isEmpty){
+      if ( textEditingVille.text.trim().isEmpty){
         CustomSnacbar.showMessage(context!, "Veuillez renseigner la ville pour la recherche !");
       }
     }
@@ -111,11 +112,11 @@ class MapViewScreenController extends GetxController {
     await _pharmacieService.findAll(
         longitude: currentLocation!.longitude ?? 0,
         latitude: currentLocation!.latitude ?? 0,
-        distance: distance,
+        distance: int.parse(textEditingDistance.text.trim()),
         search: textEditingControllerLocalisation.text.trim(),
-        pays: textPays.trim(),
-        ville: textVille.trim(),
-        quartier: textQuartier.trim(),
+        pays: textEditingPays.text.trim(),
+        ville: textEditingVille.text.trim(),
+        quartier: textEditingQuartier.text.trim(),
         onSuccess: (data) async {
           pharmaciesList.addAll(data.results!);
           if (currentLocation!.longitude! != 0 && currentLocation!.latitude! != 0){
@@ -128,7 +129,10 @@ class MapViewScreenController extends GetxController {
             pharmacieDestination?.value = pharmaciesList[0];
             destination.value = LatLng(pharmaciesList[0].latitude!, pharmaciesList[0].longitude!);
           }
-          await getPolyPoints();
+          if ( !searchForSomeBody.value){
+            await getPolyPoints();
+          }
+          
           pharmacyStatus = LoadingStatus.completed;
           update();
         },
