@@ -10,12 +10,15 @@ import 'package:pharmacy_app/core/constants.dart';
 
 import 'package:path_provider/path_provider.dart' as p;
 import 'package:permission_handler/permission_handler.dart';
+import 'package:pharmacy_app/models/response_data_models/facture_model.dart';
 
 class PdfApi {
-  static Future<File> generatePdf(String text) async {
+  static Future<File> generatePdf(String text, Facture facture) async {
     final pdf = Document();
-    final customFont = Font.ttf(await rootBundle.load("assets/fonts/Poppins-Regular.ttf"));
-    // final logoImage = (await rootBundle.load("assets/images/logo.png")).buffer.asUnit8List();
+    final customFont =
+        Font.ttf(await rootBundle.load("assets/fonts/Poppins-Regular.ttf"));
+    final logoImage =
+        (await rootBundle.load("assets/images/logo.png")).buffer.asUint8List();
 
     pdf.addPage(MultiPage(
         pageFormat: PdfPageFormat.a4,
@@ -28,35 +31,241 @@ class PdfApi {
                 ),
                 child: Row(
                   children: <Widget>[
-                    //AssetImage("assets/images/logo.png"),
-                    PdfLogo(),
+                    Image(MemoryImage(logoImage),
+                        width: 50, height: 50, fit: BoxFit.fill),
                     SizedBox(width: 0.5 * PdfPageFormat.cm),
-                    Text("Créer ton pdf ",
-                        style: const TextStyle(
+                    Text("Pocket Pharma",
+                        style: TextStyle(
                           color: PdfColors.black,
-                          fontSize: 16,
+                          fontSize: 17,
+                          fontWeight: FontWeight.bold,
                         )),
+                    Spacer(),
+                    PdfLogo(),
                   ],
                 ),
               ),
-              SizedBox(height: kDefaultPadding),
+              SizedBox(height: kDefaultPadding*1.5),
               buildCustomHeader(text),
-              buildLink(),
-              SizedBox(height: kDefaultPadding / 2),
-              Paragraph(text: LoremText().paragraph(60)),
-              Paragraph(text: LoremText().paragraph(800)),
-              Paragraph(text: LoremText().paragraph(20)),
-              Paragraph(text: LoremText().paragraph(6000),
-                style: TextStyle(font: customFont),
+              SizedBox(height: kDefaultPadding),
+              buildLink(facture),
+              SizedBox(height: kDefaultPadding*1.5),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 5),
+                child: Row(children: <Widget>[
+                  Expanded(
+                    flex: 2,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8.0, vertical: 3),
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: PdfColors.black,
+                          width: 0.9,
+                        ),
+                      ),
+                      child: Text("Nom du produit",
+                          style: TextStyle(
+                            color: PdfColors.black,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          )),
+                    ),
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8.0, vertical: 3),
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: PdfColors.black,
+                          width: 0.9,
+                        ),
+                      ),
+                      child: Text("Quantité",
+                          style: TextStyle(
+                            color: PdfColors.black,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          )),
+                    ),
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8.0, vertical: 3),
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: PdfColors.black,
+                          width: 0.9,
+                        ),
+                      ),
+                      child: Text("Prix",
+                          style: TextStyle(
+                            color: PdfColors.black,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          )),
+                    ),
+                  ),
+                ]),
               ),
-              Paragraph(text: LoremText().paragraph(230)),
+              ...List.generate(
+                facture.produits!.length,
+                (index) => Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 5),
+                  child: Row(children: <Widget>[
+                    Expanded(
+                      flex: 2,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 8.0, vertical: 3),
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: PdfColors.black,
+                            width: 0.9,
+                          ),
+                        ),
+                        child: Text(facture.produits![index].productName!,
+                            style: const TextStyle(
+                              color: PdfColors.black,
+                              fontSize: 16,
+                            )),
+                      ),
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: Container(
+                        alignment: Alignment.centerRight,
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 8.0, vertical: 3),
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: PdfColors.black,
+                            width: 0.9,
+                          ),
+                        ),
+                        child:
+                            Text(facture.produits![index].quantite!.toString(),
+                                style: const TextStyle(
+                                  color: PdfColors.black,
+                                  fontSize: 16,
+                                )),
+                      ),
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: Container(
+                        alignment: Alignment.centerRight,
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 8.0, vertical: 3),
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: PdfColors.black,
+                            width: 0.9,
+                          ),
+                        ),
+                        child: Text(
+                            "${facture.produits![index].montant! * facture.produits![index].quantite!} F",
+                            style: const TextStyle(
+                              color: PdfColors.black,
+                              fontSize: 16,
+                            )),
+                      ),
+                    ),
+                  ]),
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 5),
+                child: Row(children: <Widget>[
+                  Expanded(
+                    flex: 2,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8.0, vertical: 3),
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: PdfColors.black,
+                          width: 0.9,
+                        ),
+                      ),
+                      child: Text("Total",
+                          style: TextStyle(
+                            color: PdfColors.black,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          )),
+                    ),
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: Container(
+                      alignment: Alignment.centerRight,
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8.0, vertical: 3),
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: PdfColors.black,
+                          width: 0.9,
+                        ),
+                      ),
+                      child: Text(facture.quantiteTotal.toString(),
+                          style: TextStyle(
+                            color: PdfColors.black,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          )),
+                    ),
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: Container(
+                      alignment: Alignment.centerRight,
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8.0, vertical: 3),
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: PdfColors.black,
+                          width: 0.9,
+                        ),
+                      ),
+                      child: Text("${facture.montantTotal!} F",
+                          style: TextStyle(
+                            color: PdfColors.black,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          )),
+                    ),
+                  ),
+                ]),
+              ),
+              SizedBox(height: kDefaultPadding * 2),
+              Paragraph(
+                text: "NB: ${facture.note!.toString()}",
+                style: TextStyle(font: customFont, fontSize: 16),
+              ),
+              SizedBox(height: kDefaultPadding / 2),
+              Row(children: <Widget>[
+                Spacer(),
+                Paragraph(
+                  text:
+                      "Etablie par: ${facture.username!.toString().toUpperCase()}",
+                  style: TextStyle(font: customFont, fontSize: 16),
+                ),
+              ]),
             ],
         footer: (context) {
           String text = "Page ${context.pageNumber} sur ${context.pagesCount}";
           return buildFooter(text);
         }));
 
-    return saveDocument(filename: 'Exemple.pdf', pdf: pdf);
+    return saveDocument(
+        filename:
+            'Facture-PP-${facture.id!.toString().padLeft(2, '0')}-du-${facture.createdToString()}.pdf',
+        pdf: pdf);
   }
 
   static Container buildFooter(String text) {
@@ -68,20 +277,21 @@ class PdfApi {
         ),
         child: Text(text,
             style: TextStyle(
-              fontSize: 16,
+              fontSize: 14,
               color: PdfColors.black,
               fontWeight: FontWeight.bold,
             )));
   }
 
-  static Future<File> saveDocument({required String filename, required Document pdf}) async {
+  static Future<File> saveDocument(
+      {required String filename, required Document pdf}) async {
     final bytes = await pdf.save();
     File? file;
 
-    Directory? directory; 
+    Directory? directory;
     try {
       if (Platform.isAndroid) {
-        if ( await _requestPermission(Permission.storage)) {
+        if (await _requestPermission(Permission.storage)) {
           directory = await p.getExternalStorageDirectory();
           String newPath = "";
 
@@ -91,26 +301,23 @@ class PdfApi {
             String folder = folders[x];
             if (folder != "Android") {
               newPath += "/$folder";
-            }
-            else {
+            } else {
               break;
             }
           }
           newPath = "$newPath/Download";
           directory = Directory(newPath);
 
-          if ( !await directory.exists() ) {
-            await directory.create( recursive: true );
+          if (!await directory.exists()) {
+            await directory.create(recursive: true);
           }
-          if ( await directory.exists() ) {
+          if (await directory.exists()) {
             file = File("${directory.path}/$filename");
             await file.writeAsBytes(bytes);
           }
         }
-
       }
-    }
-    catch (e) {
+    } catch (e) {
       print(e);
     }
     return file!;
@@ -121,41 +328,51 @@ class PdfApi {
     await OpenFile.open(url);
   }
 
-  static Widget buildLink() => UrlLink(
+  static Widget buildLink(
+    Facture facture,
+  ) =>
+      UrlLink(
         destination: '${Constants.API_URL}/utilisateurs/pdf/',
-        child: Text('Obtenir le pdf',
-            style: const TextStyle(
-              color: PdfColors.blue,
-              fontSize: 16,
-              decoration: TextDecoration.underline,
-            )),
+        child:
+            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+          Text(
+              'Facture code:${facture.id!.toString().padLeft(2, '0')}',
+              style: const TextStyle(
+                color: PdfColors.blue,
+                fontSize: 16,
+                decoration: TextDecoration.underline,
+              )),
+          Text('Le: ${facture.createdToString()} à ${facture.hourToString()}',
+              style: const TextStyle(
+                color: PdfColors.blue,
+                fontSize: 16,
+                decoration: TextDecoration.underline,
+              ))
+        ]),
       );
 
   static Widget buildCustomHeader(String title) => Header(
+          child: Container(
+        padding: const EdgeInsets.all(8.0),
         child: Text(title,
             style: TextStyle(
               color: PdfColors.white,
-              fontSize: 24,
+              fontSize: 20,
               fontWeight: FontWeight.bold,
-              // decoration: TextDecoration.underline,
             )),
-        padding: const EdgeInsets.all(4),
         decoration: const BoxDecoration(
           color: PdfColors.black,
         ),
-      );
-
+      ));
 
   static Future<bool> _requestPermission(Permission permission) async {
     if (await permission.isGranted) {
       return true;
-    }
-    else {
+    } else {
       var result = await permission.request();
       if (result == PermissionStatus.granted) {
         return true;
-      }
-      else {
+      } else {
         return false;
       }
     }

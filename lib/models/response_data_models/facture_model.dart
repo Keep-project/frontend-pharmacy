@@ -93,7 +93,7 @@ class Facture {
 
   String toJson() => json.encode(toMap());
 
-  String createdToString() => "${created_at!.year.toString().padLeft(4, '0')}/${created_at!.month.toString().padLeft(2, '0')}/${created_at!.day.toString().padLeft(2, '0')}";
+  String createdToString() => "${created_at!.year.toString().padLeft(4, '0')}-${created_at!.month.toString().padLeft(2, '0')}-${created_at!.day.toString().padLeft(2, '0')}";
   String updatedToString() => "${updated_at!.year.toString().padLeft(4, '0')}/${updated_at!.month.toString().padLeft(2, '0')}/${updated_at!.day.toString().padLeft(2, '0')}";
   String hourToString() => "${updated_at!.hour.toString().padLeft(2, '0')}h${updated_at!.minute.toString().padLeft(2, '0')}";
 

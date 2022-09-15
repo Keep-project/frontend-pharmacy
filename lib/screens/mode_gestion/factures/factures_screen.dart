@@ -91,35 +91,37 @@ class FactureScreen extends GetView<FactureController> {
                                       child: CardContainer(
                                         header: Row(
                                           children: [
-                                            Row(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              children: [
-                                                SvgPicture.asset(
-                                                    "assets/icons/Icon feather-download.svg",
-                                                    height: 18,
-                                                    width: 18),
-                                                const SizedBox(width: 5),
-                                                
-                                                InkWell(
-                                                  onTap: () async {
-                                                    print("Télécharger une facture");
-                                                    final pdfFile = await PdfApi.generatePdf("Bienvenu dans votre pharmacie virtuelle Pocket Pharma");
-                                                    PdfApi.openFile(pdfFile);
-                                                    //launchUrl(Uri.parse("http://192.168.220.1:8000/media/pdfs/2022-9-15-7-38-19-Liste_des_users.pdf"));
-                                                  },
-                                                  child: Text("CODE-FAC: ${controller.facturesList[index].id.toString().padLeft(2, '0')}",
-                                                    style: TextStyle(
-                                                      color: kDarkColor
-                                                          .withOpacity(0.9),
-                                                      fontSize: 16,
-                                                      fontWeight: FontWeight.w600,
+                                            Padding(
+                                              padding: const EdgeInsets.all(8.0),
+                                              child: Row(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                children: [
+                                                  SvgPicture.asset(
+                                                      "assets/icons/Icon feather-download.svg",
+                                                      height: 18,
+                                                      width: 18),
+                                                  const SizedBox(width: 5),
+                                                  
+                                                  InkWell(
+                                                    onTap: () async {
+                                                      final pdfFile = await PdfApi.generatePdf("Bienvenu dans votre pharmacie virtuelle Pocket Pharma", controller.facturesList[index]);
+                                                      PdfApi.openFile(pdfFile);
+                                                      //launchUrl(Uri.parse("http://192.168.220.1:8000/media/pdfs/2022-9-15-7-38-19-Liste_des_users.pdf"));
+                                                    },
+                                                    child: Text("CODE-FAC: ${controller.facturesList[index].id.toString().padLeft(2, '0')}",
+                                                      style: TextStyle(
+                                                        color: kDarkColor
+                                                            .withOpacity(0.9),
+                                                        fontSize: 16,
+                                                        fontWeight: FontWeight.w600,
+                                                      ),
                                                     ),
                                                   ),
-                                                ),
-                                              ],
+                                                ],
+                                              ),
                                             ),
                                             const Spacer(),
                                             Column(
