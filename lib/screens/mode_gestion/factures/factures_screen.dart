@@ -1,7 +1,10 @@
+// ignore_for_file: avoid_print
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:pdf/widgets.dart' as pw;
 import 'package:pharmacy_app/components/card_container.dart';
 import 'package:pharmacy_app/components/my_row.dart';
 import 'package:pharmacy_app/components/title_text.dart';
@@ -9,9 +12,12 @@ import 'package:pharmacy_app/core/app_colors.dart';
 import 'package:pharmacy_app/core/app_drawer.dart';
 import 'package:pharmacy_app/core/app_sizes.dart';
 import 'package:pharmacy_app/core/app_state.dart';
+import 'package:pharmacy_app/core/pdf_generator.dart';
 import 'package:pharmacy_app/router/app_router.dart';
 import 'package:pharmacy_app/screens/mode_gestion/factures/factures.dart';
 import 'package:pharmacy_app/screens/mode_visiteur/home/components/search_custom_button.dart';
+
+
 
 class FactureScreen extends GetView<FactureController> {
   const FactureScreen({Key? key}) : super(key: key);
@@ -96,12 +102,21 @@ class FactureScreen extends GetView<FactureController> {
                                                     height: 18,
                                                     width: 18),
                                                 const SizedBox(width: 5),
-                                                Text("CODE-FAC: ${controller.facturesList[index].id.toString().padLeft(2, '0')}",
-                                                  style: TextStyle(
-                                                    color: kDarkColor
-                                                        .withOpacity(0.9),
-                                                    fontSize: 16,
-                                                    fontWeight: FontWeight.w600,
+                                                
+                                                InkWell(
+                                                  onTap: () async {
+                                                    print("Télécharger une facture");
+                                                    final pdfFile = await PdfApi.generatePdf("Bienvenu dans votre pharmacie virtuelle Pocket Pharma");
+                                                    PdfApi.openFile(pdfFile);
+                                                    //launchUrl(Uri.parse("http://192.168.220.1:8000/media/pdfs/2022-9-15-7-38-19-Liste_des_users.pdf"));
+                                                  },
+                                                  child: Text("CODE-FAC: ${controller.facturesList[index].id.toString().padLeft(2, '0')}",
+                                                    style: TextStyle(
+                                                      color: kDarkColor
+                                                          .withOpacity(0.9),
+                                                      fontSize: 16,
+                                                      fontWeight: FontWeight.w600,
+                                                    ),
                                                   ),
                                                 ),
                                               ],
@@ -112,7 +127,7 @@ class FactureScreen extends GetView<FactureController> {
                                                   CrossAxisAlignment.start,
                                               children: [
                                                 Text(
-                                                  "Créee le ${controller.facturesList[index].createdToString()}}",
+                                                  "Créee le ${controller.facturesList[index].createdToString()}",
                                                   style: TextStyle(
                                                     color: kDarkColor
                                                         .withOpacity(0.9),

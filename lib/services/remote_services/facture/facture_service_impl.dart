@@ -10,12 +10,13 @@ class FactureServiceImpl implements FactureService {
 
   @override
   Future<void> add(
-      {FactureResponseModel? factureModel,
+      {dynamic data,
       Function(dynamic data)? onSuccess,
       Function(dynamic error)? onError}) async {
     ApiRequest(
       url: "${Constants.API_URL}/facture/",
-      data: factureModel!.toMap(),
+      data: data!,
+      token: await _localAuth.getToken(),
     ).post(onSuccess: (data) {
       onSuccess!(data);
     }, onError: (error) {

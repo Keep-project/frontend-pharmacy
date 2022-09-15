@@ -16,7 +16,7 @@ abstract class FactureService {
   });
 
   Future<void> add({
-    FactureResponseModel? factureModel,
+    dynamic data,
     Function(dynamic data)? onSuccess,
     Function(dynamic error)? onError,
   });
