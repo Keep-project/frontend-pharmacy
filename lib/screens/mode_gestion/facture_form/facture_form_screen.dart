@@ -209,6 +209,8 @@ class FactureFormScreen extends GetView<FactureFormController> {
                                                 .lignesProduits[index].stock! ==
                                             controller.lignesProduits[index]
                                                 .quantite!) {
+                                          controller.showMessage(context, controller
+                                                .lignesProduits[index].nom!);
                                           return;
                                         }
                                         controller.lignesProduits[index]
@@ -435,6 +437,12 @@ class FactureFormScreen extends GetView<FactureFormController> {
                                       CircularButton(
                                         text: '+',
                                         onTap: () {
+                                          if (controller.selectedMedoc!.stock! ==
+                                            controller.selectedMedoc!
+                                                .quantite!) {
+                                          controller.showMessage(context, controller.selectedMedoc!.nom!);
+                                          return;
+                                        }
                                           controller.selectedMedoc!.quantite =
                                               controller.selectedMedoc!
                                                       .quantite! +

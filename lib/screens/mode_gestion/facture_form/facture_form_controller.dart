@@ -39,6 +39,13 @@ class FactureFormController extends GetxController {
   String dateFacturationToString =
       '${DateTime.now().year}-${DateTime.now().month.toString().padLeft(2, '0')}-${DateTime.now().day.toString().padLeft(2, '0')}';
 
+
+  @override
+  void onInit() async {
+    textEditingReduction.text = '0';
+    super.onInit();
+  }
+
   Future searchData(String data) async {
     if (data.trim().length > 1) {
       next = null;
@@ -71,12 +78,13 @@ class FactureFormController extends GetxController {
       },
       onError: (error){
         print("===============================================");
-        if (error.response!.statusCode) {
+        if (error.response!.statusCode == 401) {
           Get.offAllNamed(AppRoutes.LOGIN);
         }else {
           CustomSnacbar.showMessage(context, "Une erreur est survenue veuillez recommencer svp !");
         }
         print("===============================================");
+        print(error.response);
         factureStatus = LoadingStatus.failed;
         update();
       },
@@ -150,6 +158,10 @@ class FactureFormController extends GetxController {
       quantite += medoc.quantite!;
     }
     return quantite;
+  }
+
+  void showMessage(BuildContext context, String nom) {
+    CustomSnacbar.showMessage(context, "Vous venez de prendre tous $nom qu'il y avait en stock !");
   }
 }
 

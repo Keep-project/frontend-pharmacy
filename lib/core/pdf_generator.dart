@@ -41,7 +41,7 @@ class PdfApi {
                           fontWeight: FontWeight.bold,
                         )),
                     Spacer(),
-                    PdfLogo(),
+                    PdfLogo(fit: BoxFit.fill),
                   ],
                 ),
               ),
@@ -50,198 +50,12 @@ class PdfApi {
               SizedBox(height: kDefaultPadding),
               buildLink(facture),
               SizedBox(height: kDefaultPadding*1.5),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 5),
-                child: Row(children: <Widget>[
-                  Expanded(
-                    flex: 2,
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 8.0, vertical: 3),
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: PdfColors.black,
-                          width: 0.9,
-                        ),
-                      ),
-                      child: Text("Nom du produit",
-                          style: TextStyle(
-                            color: PdfColors.black,
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          )),
-                    ),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 8.0, vertical: 3),
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: PdfColors.black,
-                          width: 0.9,
-                        ),
-                      ),
-                      child: Text("Quantité",
-                          style: TextStyle(
-                            color: PdfColors.black,
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          )),
-                    ),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 8.0, vertical: 3),
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: PdfColors.black,
-                          width: 0.9,
-                        ),
-                      ),
-                      child: Text("Prix",
-                          style: TextStyle(
-                            color: PdfColors.black,
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          )),
-                    ),
-                  ),
-                ]),
-              ),
+              buildTableHeader(),
               ...List.generate(
                 facture.produits!.length,
-                (index) => Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 5),
-                  child: Row(children: <Widget>[
-                    Expanded(
-                      flex: 2,
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 8.0, vertical: 3),
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: PdfColors.black,
-                            width: 0.9,
-                          ),
-                        ),
-                        child: Text(facture.produits![index].productName!,
-                            style: const TextStyle(
-                              color: PdfColors.black,
-                              fontSize: 16,
-                            )),
-                      ),
-                    ),
-                    Expanded(
-                      flex: 1,
-                      child: Container(
-                        alignment: Alignment.centerRight,
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 8.0, vertical: 3),
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: PdfColors.black,
-                            width: 0.9,
-                          ),
-                        ),
-                        child:
-                            Text(facture.produits![index].quantite!.toString(),
-                                style: const TextStyle(
-                                  color: PdfColors.black,
-                                  fontSize: 16,
-                                )),
-                      ),
-                    ),
-                    Expanded(
-                      flex: 1,
-                      child: Container(
-                        alignment: Alignment.centerRight,
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 8.0, vertical: 3),
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: PdfColors.black,
-                            width: 0.9,
-                          ),
-                        ),
-                        child: Text(
-                            "${facture.produits![index].montant! * facture.produits![index].quantite!} F",
-                            style: const TextStyle(
-                              color: PdfColors.black,
-                              fontSize: 16,
-                            )),
-                      ),
-                    ),
-                  ]),
-                ),
+                (index) => buildTableRow(facture, index),
               ),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 5),
-                child: Row(children: <Widget>[
-                  Expanded(
-                    flex: 2,
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 8.0, vertical: 3),
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: PdfColors.black,
-                          width: 0.9,
-                        ),
-                      ),
-                      child: Text("Total",
-                          style: TextStyle(
-                            color: PdfColors.black,
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          )),
-                    ),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: Container(
-                      alignment: Alignment.centerRight,
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 8.0, vertical: 3),
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: PdfColors.black,
-                          width: 0.9,
-                        ),
-                      ),
-                      child: Text(facture.quantiteTotal.toString(),
-                          style: TextStyle(
-                            color: PdfColors.black,
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          )),
-                    ),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: Container(
-                      alignment: Alignment.centerRight,
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 8.0, vertical: 3),
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: PdfColors.black,
-                          width: 0.9,
-                        ),
-                      ),
-                      child: Text("${facture.montantTotal!} F",
-                          style: TextStyle(
-                            color: PdfColors.black,
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          )),
-                    ),
-                  ),
-                ]),
-              ),
+              buildTableFooter(facture),
               SizedBox(height: kDefaultPadding * 2),
               Paragraph(
                 text: "NB: ${facture.note!.toString()}",
@@ -266,6 +80,204 @@ class PdfApi {
         filename:
             'Facture-PP-${facture.id!.toString().padLeft(2, '0')}-du-${facture.createdToString()}.pdf',
         pdf: pdf);
+  }
+
+  static Container buildTableFooter(Facture facture) {
+    return Container(
+              padding: const EdgeInsets.symmetric(horizontal: 5),
+              child: Row(children: <Widget>[
+                Expanded(
+                  flex: 2,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 8.0, vertical: 3),
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: PdfColors.black,
+                        width: 0.9,
+                      ),
+                    ),
+                    child: Text("Total",
+                        style: TextStyle(
+                          color: PdfColors.black,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        )),
+                  ),
+                ),
+                Expanded(
+                  flex: 1,
+                  child: Container(
+                    alignment: Alignment.centerRight,
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 8.0, vertical: 3),
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: PdfColors.black,
+                        width: 0.9,
+                      ),
+                    ),
+                    child: Text(facture.quantiteTotal.toString(),
+                        style: TextStyle(
+                          color: PdfColors.black,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        )),
+                  ),
+                ),
+                Expanded(
+                  flex: 1,
+                  child: Container(
+                    alignment: Alignment.centerRight,
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 8.0, vertical: 3),
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: PdfColors.black,
+                        width: 0.9,
+                      ),
+                    ),
+                    child: Text("${facture.montantTotal!} F",
+                        style: TextStyle(
+                          color: PdfColors.black,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        )),
+                  ),
+                ),
+              ]),
+            );
+  }
+
+  static Container buildTableRow(Facture facture, int index) {
+    return Container(
+                padding: const EdgeInsets.symmetric(horizontal: 5),
+                child: Row(children: <Widget>[
+                  Expanded(
+                    flex: 2,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8.0, vertical: 3),
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: PdfColors.black,
+                          width: 0.9,
+                        ),
+                      ),
+                      child: Text(facture.produits![index].productName!,
+                          style: const TextStyle(
+                            color: PdfColors.black,
+                            fontSize: 16,
+                          )),
+                    ),
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: Container(
+                      alignment: Alignment.centerRight,
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8.0, vertical: 3),
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: PdfColors.black,
+                          width: 0.9,
+                        ),
+                      ),
+                      child:
+                          Text(facture.produits![index].quantite!.toString(),
+                              style: const TextStyle(
+                                color: PdfColors.black,
+                                fontSize: 16,
+                              )),
+                    ),
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: Container(
+                      alignment: Alignment.centerRight,
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8.0, vertical: 3),
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: PdfColors.black,
+                          width: 0.9,
+                        ),
+                      ),
+                      child: Text(
+                          "${facture.produits![index].montant! * facture.produits![index].quantite!} F",
+                          style: const TextStyle(
+                            color: PdfColors.black,
+                            fontSize: 16,
+                          )),
+                    ),
+                  ),
+                ]),
+              );
+  }
+
+  static Container buildTableHeader() {
+    return Container(
+              padding: const EdgeInsets.symmetric(horizontal: 5),
+              child: Row(children: <Widget>[
+                Expanded(
+                  flex: 2,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 8.0, vertical: 3),
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: PdfColors.black,
+                        width: 0.9,
+                      ),
+                    ),
+                    child: Text("Nom du produit",
+                        style: TextStyle(
+                          color: PdfColors.black,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        )),
+                  ),
+                ),
+                Expanded(
+                  flex: 1,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 8.0, vertical: 3),
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: PdfColors.black,
+                        width: 0.9,
+                      ),
+                    ),
+                    child: Text("Quantité",
+                        style: TextStyle(
+                          color: PdfColors.black,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        )),
+                  ),
+                ),
+                Expanded(
+                  flex: 1,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 8.0, vertical: 3),
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: PdfColors.black,
+                        width: 0.9,
+                      ),
+                    ),
+                    child: Text("Prix",
+                        style: TextStyle(
+                          color: PdfColors.black,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        )),
+                  ),
+                ),
+              ]),
+            );
   }
 
   static Container buildFooter(String text) {
