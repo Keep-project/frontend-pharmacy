@@ -16,7 +16,7 @@ abstract class InventaireService {
   });
 
   Future<void> add({
-    InventaireResponseModel? inventaireModel,
+    dynamic data,
     Function(dynamic data)? onSuccess,
     Function(dynamic error)? onError,
   });

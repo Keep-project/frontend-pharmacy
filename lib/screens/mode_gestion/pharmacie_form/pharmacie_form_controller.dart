@@ -14,6 +14,7 @@ import 'package:pharmacy_app/core/app_state.dart';
 import 'package:pharmacy_app/models/request_data_models/pharmacie_model.dart';
 import 'package:pharmacy_app/router/app_router.dart';
 import 'package:pharmacy_app/screens/mode_gestion/pharmacie_form/pages/page_one.dart';
+import 'package:pharmacy_app/screens/mode_gestion/pharmacie_form/pages/page_three.dart';
 import 'package:pharmacy_app/screens/mode_gestion/pharmacie_form/pages/page_two.dart';
 import 'package:pharmacy_app/services/remote_services/pharmacie/pharmacie.dart';
 
@@ -140,7 +141,7 @@ final Completer<GoogleMapController> mapController = Completer();
   }
 
 
-  final List<Widget> pages = const <Widget>[PageOne(), PageTwo()];
+  final List<Widget> pages = const <Widget>[PageOne(), PageTwo(), PageThree()];
 
   void jumpToStepTwo(BuildContext context) {
 
@@ -166,6 +167,13 @@ final Completer<GoogleMapController> mapController = Completer();
     update();
   }
 
+
+  void nextPage() {
+    pageController.nextPage(
+        duration: const Duration(milliseconds: 300), curve: Curves.ease);
+    step = 3;
+    update();
+  }
 
   void previousPage() {
     pageController.previousPage(

@@ -15,8 +15,8 @@ import 'package:pharmacy_app/models/response_data_models/facture_model.dart';
 class PdfApi {
   static Future<File> generatePdf(String text, Facture facture) async {
     final pdf = Document();
-    final customFont =
-        Font.ttf(await rootBundle.load("assets/fonts/Poppins-Regular.ttf"));
+    final customFont = Font.ttf(await rootBundle.load("assets/fonts/Poppins-Regular.ttf"));
+    
     final logoImage =
         (await rootBundle.load("assets/images/logo.png")).buffer.asUint8List();
 
@@ -36,8 +36,9 @@ class PdfApi {
                     SizedBox(width: 0.5 * PdfPageFormat.cm),
                     Text("Pocket Pharma",
                         style: TextStyle(
+                          //font: customFont,
                           color: PdfColors.black,
-                          fontSize: 17,
+                          fontSize: 18,
                           fontWeight: FontWeight.bold,
                         )),
                     Spacer(),
@@ -46,16 +47,16 @@ class PdfApi {
                 ),
               ),
               SizedBox(height: kDefaultPadding*1.5),
-              buildCustomHeader(text),
+              buildCustomHeader(text, customFont),
               SizedBox(height: kDefaultPadding),
-              buildLink(facture),
+              buildLink(facture, customFont),
               SizedBox(height: kDefaultPadding*1.5),
               buildTableHeader(),
               ...List.generate(
                 facture.produits!.length,
-                (index) => buildTableRow(facture, index),
+                (index) => buildTableRow(facture, index, customFont),
               ),
-              buildTableFooter(facture),
+              buildTableFooter(facture, customFont),
               SizedBox(height: kDefaultPadding * 2),
               Paragraph(
                 text: "NB: ${facture.note!.toString()}",
@@ -78,11 +79,11 @@ class PdfApi {
 
     return saveDocument(
         filename:
-            'Facture-PP-${facture.id!.toString().padLeft(2, '0')}-du-${facture.createdToString()}.pdf',
+            'Facture-PP-${facture.id!.toString().padLeft(2, '0')}-du-${facture.createdToString()}-${facture.hourToString()}.pdf',
         pdf: pdf);
   }
 
-  static Container buildTableFooter(Facture facture) {
+  static Container buildTableFooter(Facture facture, Font font) {
     return Container(
               padding: const EdgeInsets.symmetric(horizontal: 5),
               child: Row(children: <Widget>[
@@ -99,6 +100,7 @@ class PdfApi {
                     ),
                     child: Text("Total",
                         style: TextStyle(
+                          // font: font,
                           color: PdfColors.black,
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
@@ -121,6 +123,7 @@ class PdfApi {
                         style: TextStyle(
                           color: PdfColors.black,
                           fontSize: 18,
+                          // font: font,
                           fontWeight: FontWeight.bold,
                         )),
                   ),
@@ -141,6 +144,7 @@ class PdfApi {
                         style: TextStyle(
                           color: PdfColors.black,
                           fontSize: 18,
+                          // font: font,
                           fontWeight: FontWeight.bold,
                         )),
                   ),
@@ -149,7 +153,7 @@ class PdfApi {
             );
   }
 
-  static Container buildTableRow(Facture facture, int index) {
+  static Container buildTableRow(Facture facture, int index, Font font) {
     return Container(
                 padding: const EdgeInsets.symmetric(horizontal: 5),
                 child: Row(children: <Widget>[
@@ -165,9 +169,10 @@ class PdfApi {
                         ),
                       ),
                       child: Text(facture.produits![index].productName!,
-                          style: const TextStyle(
+                          style: TextStyle(
                             color: PdfColors.black,
                             fontSize: 16,
+                            font: font,
                           )),
                     ),
                   ),
@@ -185,9 +190,10 @@ class PdfApi {
                       ),
                       child:
                           Text(facture.produits![index].quantite!.toString(),
-                              style: const TextStyle(
+                              style: TextStyle(
                                 color: PdfColors.black,
                                 fontSize: 16,
+                                font: font,
                               )),
                     ),
                   ),
@@ -205,9 +211,10 @@ class PdfApi {
                       ),
                       child: Text(
                           "${facture.produits![index].montant! * facture.produits![index].quantite!} F",
-                          style: const TextStyle(
+                          style: TextStyle(
                             color: PdfColors.black,
                             fontSize: 16,
+                            font: font,
                           )),
                     ),
                   ),
@@ -342,6 +349,7 @@ class PdfApi {
 
   static Widget buildLink(
     Facture facture,
+    Font font,
   ) =>
       UrlLink(
         destination: '${Constants.API_URL}/utilisateurs/pdf/',
@@ -349,27 +357,31 @@ class PdfApi {
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
           Text(
               'Facture code:${facture.id!.toString().padLeft(2, '0')}',
-              style: const TextStyle(
+              style: TextStyle(
                 color: PdfColors.blue,
                 fontSize: 16,
+                font: font,
                 decoration: TextDecoration.underline,
               )),
           Text('Le: ${facture.createdToString()} à ${facture.hourToString()}',
-              style: const TextStyle(
+              style: TextStyle(
                 color: PdfColors.blue,
                 fontSize: 16,
+                font: font,
                 decoration: TextDecoration.underline,
               ))
         ]),
       );
 
-  static Widget buildCustomHeader(String title) => Header(
+  static Widget buildCustomHeader(String title, Font font) => Header(
           child: Container(
         padding: const EdgeInsets.all(8.0),
         child: Text(title,
+        textAlign: TextAlign.center,
             style: TextStyle(
               color: PdfColors.white,
               fontSize: 20,
+              font: font,
               fontWeight: FontWeight.bold,
             )),
         decoration: const BoxDecoration(

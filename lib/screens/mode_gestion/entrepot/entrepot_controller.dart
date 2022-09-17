@@ -76,14 +76,6 @@ class EntrepotController extends GetxController {
     update();
     
     await _entrepotService.findAll(
-        url: next,
-        // data: {
-        //     "query": [
-        //       {"categorie": categories[selectedCategorieIndex.value]['libelle'] },
-        //       {"voix": selectedVoix },
-        //       {"search": searchController.text.trim() },
-        //     ]
-        //   },
         idPharmacie: await _localAuth.getPharmacyId(),
         onSuccess: (data) async {
           _count = data.count!;
@@ -96,7 +88,7 @@ class EntrepotController extends GetxController {
         },
         onError: (error) {
           print("=============== Inventaire error ================");
-          print("Last url : $next b");
+          print("Last url : $next");
           print(error);
           print("==========================================");
           infinityStatus = LoadingStatus.failed;

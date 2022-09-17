@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -24,10 +26,12 @@ class PageTwo extends GetView<PharmacieFormScreenController> {
         builder: (controller) => Column(
               children: [
                 Stack(
+                  clipBehavior: Clip.antiAlias,
                   children: [
                     Container(
-                      height: Get.height * 0.55,
-                      width: double.infinity,
+                      height: Get.height-24,
+                      width: Get.width,
+                      clipBehavior: Clip.antiAlias,
                       decoration: const BoxDecoration(),
                       child: GoogleMap(
                         zoomControlsEnabled: false,
@@ -41,7 +45,12 @@ class PageTwo extends GetView<PharmacieFormScreenController> {
                           controller.update();
                         },
                         onCameraIdle: () async {
-                          await controller.onCameraIdle();
+                          try{
+                            await controller.onCameraIdle();
+                          }
+                          catch(e){
+                            print(e);
+                          }
                         },
                         markers: {
                           Marker(
@@ -54,6 +63,42 @@ class PageTwo extends GetView<PharmacieFormScreenController> {
                                 controller.position.longitude),
                           )
                         },
+                      ),
+                    ),
+                    Positioned(
+                      bottom: kDefaultPadding,
+                      left: kDefaultPadding,
+                      right: kDefaultPadding,
+                      child: Container(
+                        width: Get.width,
+                        decoration: const BoxDecoration(),
+                        child: Row(
+                          children: [
+                            InkWell(
+                              onTap: () {controller.previousPage();},
+                              child: Container(
+                                height: 45,
+                                width: 45,
+                                decoration: const BoxDecoration(
+                                  color: kWhiteColor,
+                                  shape: BoxShape.circle,
+                                ),
+                                child: const Icon(Icons.arrow_left, color: kDarkColor, size: 36 )),
+                            ),
+                              const Spacer(),
+                              InkWell(
+                                onTap: () { controller.nextPage(); },
+                                child: Container(
+                                height: 45,
+                                width: 45,
+                                decoration: const BoxDecoration(
+                                  color: kWhiteColor,
+                                  shape: BoxShape.circle,
+                                ),
+                                child: const Icon(Icons.arrow_right, color: kDarkColor, size: 36 )),
+                              ),
+                            ],
+                        ),
                       ),
                     ),
                     Positioned(
@@ -163,113 +208,6 @@ class PageTwo extends GetView<PharmacieFormScreenController> {
                           )
                         : Container(),
                   ],
-                ),
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: kDefaultPadding),
-                  child: Column(children: [
-                    const SizedBox(height: kDefaultPadding / 2),
-                    CustomTextField2(
-                      onChanged: (string) {},
-                      controller: controller.textEditingPays,
-                      title: "Pays",
-                      hintText: "Ex: Cameroun",
-                    ),
-                    const SizedBox(height: kDefaultPadding / 1.4),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: CustomTextField2(
-                            onChanged: (string) {},
-                            controller: controller.textEditingVille,
-                            title: "Ville",
-                            hintText: "Ex: Yaoundé",
-                          ),
-                        ),
-                        const SizedBox(
-                          width: kDefaultPadding,
-                        ),
-                        Expanded(
-                          child: CustomTextField2(
-                            onChanged: (string) {},
-                            controller: controller.textEditingQuartier,
-                            title: "Quartier",
-                            hintText: "Ex: Mvan",
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: kDefaultPadding * 1.5),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: InkWell(
-                            onTap: () {
-                              controller.previousPage();
-                            },
-                            child: Container(
-                              height: 50,
-                              decoration: BoxDecoration(
-                                color: kWhiteColor,
-                                border: Border.all(
-                                  width: 1,
-                                  color: kTextColor2,
-                                ),
-                                borderRadius:
-                                    BorderRadius.circular(kDefaultRadius - 2),
-                              ),
-                              child: const Center(
-                                child: Text(
-                                  "Retour",
-                                  style: TextStyle(
-                                    color: kTextColor2,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: kDefaultPadding),
-                        Expanded(
-                          child: InkWell(
-                            onTap: () async {
-                              if (controller.step == 2) {
-                                await controller.addPharmacy(context);
-                              }
-                            },
-                            child: Container(
-                              height: 50,
-                              decoration: BoxDecoration(
-                                color: kTextColor2,
-                                borderRadius:
-                                    BorderRadius.circular(kDefaultRadius - 2),
-                              ),
-                              child: Center(
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: const [
-                                    Text(
-                                      "Enregistrer",
-                                      style: TextStyle(
-                                        color: kWhiteColor,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                    ),
-                                    SizedBox(width: kDefaultPadding),
-                                    Icon(CupertinoIcons.arrow_right,
-                                        color: kWhiteColor, size: 26),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                  ]),
                 ),
               ],
             ));

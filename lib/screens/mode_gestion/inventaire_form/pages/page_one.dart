@@ -21,6 +21,7 @@ class PageOne extends GetView<InventaireFormController> {
                     onChanged: (string) {},
                     title: "Libelle de l'inventaire",
                     hintText: "Ex: Inventaire sur Doliprane 200mg",
+                    controller: controller.textEditingLibelle,
                   ),
                   const SizedBox(height: kDefaultPadding * 1.2),
                   CustomDropDown(

@@ -11,12 +11,13 @@ class InventaireServiceImpl implements InventaireService {
 
   @override
   Future<void> add(
-      {InventaireResponseModel? inventaireModel,
+      {dynamic data,
       Function(dynamic data)? onSuccess,
       Function(dynamic error)? onError}) async {
     ApiRequest(
       url: "${Constants.API_URL}/inventaire/",
-      // data: entrepotModel!.toMap(),
+      token: await _localAuth.getToken(),
+      data: data!,
     ).post(onSuccess: (data) {
       onSuccess!(data);
     }, onError: (error) {

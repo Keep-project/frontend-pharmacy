@@ -17,7 +17,7 @@ class ActionsDialog extends StatelessWidget {
           borderRadius: BorderRadius.circular(kDefaultRadius * 1.3)),
       alignment: Alignment.center,
       child: Container(
-        height: 300,
+        height: 340,
         width: 200,
         padding: const EdgeInsets.all(kDefaultPadding),
         child: Column(
@@ -136,6 +136,36 @@ class ActionsDialog extends StatelessWidget {
                 children: [
                   const Text(
                     "Ajouter une facture",
+                    style: TextStyle(
+                      color: kTextColor2,
+                      fontSize: 16,
+                    ),
+                  ),
+                  const Spacer(),
+                  Container(
+                    height: 30,
+                    width: 30,
+                    decoration: const BoxDecoration(
+                      color: kTextColor2,
+                      shape: BoxShape.circle,
+                    ),
+                    child: const Center(
+                      child: Icon(Icons.add, color: kWhiteColor, size: 26),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+             const SizedBox(height: kDefaultMargin * 1.5),
+            GestureDetector(
+              onTap: () {
+                Get.back();
+                Get.toNamed(AppRoutes.INVENTAIRES_FORM);
+              },
+              child: Row(
+                children: [
+                  const Text(
+                    "Ajouter un inventaire",
                     style: TextStyle(
                       color: kTextColor2,
                       fontSize: 16,
