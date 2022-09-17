@@ -83,18 +83,36 @@ class DetailGestionScreen extends GetView<DetailScreenController> {
                         ),
                       ),
                     ),
-                    Positioned(
-                      left: kDefaultPadding,
-                      top: kDefaultPadding,
-                      child: GestureDetector(
-                        onTap: () {
-                          Get.back();
-                        },
-                        child: Container(
-                          padding: const EdgeInsets.all(0),
-                          child: const Icon(CupertinoIcons.arrow_left,
-                              color: kDarkColor, size: 30),
-                        ),
+                    Container(
+                      margin: const EdgeInsets.only(left: kDefaultPadding, right: kDefaultPadding, top: kDefaultPadding/1.8),
+                      child: Row(
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              Get.back();
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.all(0),
+                              child: const Icon(CupertinoIcons.arrow_left,
+                                  color: kDarkColor, size: 30),
+                            ),
+                          ),
+                          const Spacer(),
+                          InkWell(
+                            onTap: () { Get.offAndToNamed(AppRoutes.MEDICAMENTSFORM, arguments: controller.medicament!);},
+                            child: Container(
+                              height: 40,
+                              width: 40,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: kTextColor2.withOpacity(0.2)
+                              ),
+                              child: const Center(
+                                child: Icon(Icons.edit, size: 20)
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                     Positioned(

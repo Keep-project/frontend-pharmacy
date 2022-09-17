@@ -132,17 +132,33 @@ class PharmacieScreen extends GetView<PharmacieScreenController> {
                                       ),
                                       child: Container(
                                         padding: const EdgeInsets.all(
-                                            kDefaultPadding),
+                                            kDefaultPadding/2),
                                         decoration: const BoxDecoration(),
                                         child: Column(
                                           children: [
-                                            const Spacer(flex: 2),
+                                            const SizedBox(height: 10),
+                                            Container(
+                                              height: 60,
+                                              width: 50,
+                                              clipBehavior: Clip.antiAlias,
+                                              decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.circular(5),
+                                              ),
+                                              child: Image.asset(
+                                                "assets/images/pharmacy_two.png",
+                                                fit: BoxFit.fill,
+                                                
+                                              ),
+                                            ),
+                                            const SizedBox(height: 3),
                                             Text(
                                               controller
                                                   .pharmaciesList[index].nom!
                                                   .toString()
                                                   .capitalizeFirst!,
                                               textAlign: TextAlign.left,
+                                              maxLines: 2,
+                                              overflow: TextOverflow.ellipsis,
                                               style: TextStyle(
                                                 color: kTextColor2
                                                     .withOpacity(0.7),

@@ -10,6 +10,7 @@ import 'package:pharmacy_app/core/app_snackbar.dart';
 import 'package:pharmacy_app/core/app_state.dart';
 import 'package:pharmacy_app/models/request_data_models/medicament_model.dart';
 import 'package:pharmacy_app/models/response_data_models/entrepot_model.dart';
+import 'package:pharmacy_app/models/response_data_models/medicament_model.dart';
 import 'package:pharmacy_app/router/app_router.dart';
 import 'package:pharmacy_app/screens/mode_gestion/medicament_form/pages/page_one.dart';
 import 'package:pharmacy_app/screens/mode_gestion/medicament_form/pages/page_three.dart';
@@ -41,6 +42,8 @@ class MedicamentFormController extends GetxController {
   final PageController pageController = PageController();
   int step = 1;
 
+  Medicament? medicament;
+
   DateTime datePremption = DateTime.now();
   String datePremptionToString = '09/05/2007';
 
@@ -50,10 +53,23 @@ class MedicamentFormController extends GetxController {
   String imageName = "Aucune image choisie";
 
   List<Map<String, dynamic>> categories = [
-    {"id": 1, "libelle": "Enfant"},
-    {"id": 2, "libelle": "Adolescent"},
-    {"id": 3, "libelle": "Adulte"},
-    {"id": 4, "libelle": "Tous"},
+
+    {
+            "id": 4,
+            "libelle": "Tous"
+        },
+        {
+            "id": 3,
+            "libelle": "Enfants"
+        },
+        {
+            "id": 2,
+            "libelle": "Adolescents"
+        },
+        {
+            "id": 1,
+            "libelle": "Adultes"
+        }
   ];
 
   List<Map<String, dynamic>> entrepots = [
@@ -76,7 +92,7 @@ class MedicamentFormController extends GetxController {
     {"id": 2, "libelle": "TTC"},
   ];
 
-  String selectedCategorie = "Enfant";
+  String selectedCategorie = "Enfants";
   String selectedTva = "19.25%";
   String selectedBasePrix = "HT";
   String selectedVoix = "Orale";
@@ -84,9 +100,14 @@ class MedicamentFormController extends GetxController {
 
   @override
   void onInit() async {
+    if ( Get.arguments != null) {
+      medicament = Get.arguments;
+      loadForm();
+    }
     await getEntrepot();
     super.onInit();
   }
+
 
   @override
   void dispose() {
@@ -100,6 +121,26 @@ class MedicamentFormController extends GetxController {
     textEditingDescription.dispose();
     textEditingPosologie.dispose();
     super.dispose();
+  }
+
+
+  void loadForm() {
+    textEditingNom.text = medicament!.nom!;
+    textEditingPrixVente.text = medicament!.prix!.toString();
+    textEditingMarque.text = medicament!.marque!;
+    textEditingMasseUnite.text = medicament!.masse!;
+    textEditingStock.text = medicament!.stock!.toString();
+    textEditingStockAlert.text = medicament!.stockAlert!.toString();
+    textEditingStockOptimal.text = medicament!.stockOptimal!.toString();
+    textEditingDescription.text = medicament!.description!;
+    textEditingPosologie.text = medicament!.posologie!;
+
+    categories.map((e){
+      if (e['id'] == medicament!.id!){
+        onChangeCategorie(e['libelle']);
+        return;
+      }
+    });
   }
 
   Future chooseImage(ImageSource source) async {
@@ -188,7 +229,7 @@ class MedicamentFormController extends GetxController {
       return;
     }
 
-    if (imageFile == null) {
+    if (imageFile == null&& medicament == null) {
       CustomSnacbar.showMessage(
           context, "Veuillez renseigner une image du médicment !");
       return;
@@ -207,7 +248,33 @@ class MedicamentFormController extends GetxController {
     update();
   }
 
+  Future<void> updateMedecine(MedicamentRequestModel newMedecine, BuildContext context) async {
+   await _medicamentService.update(
+      data: newMedecine.toMap(),
+      idMedicament: medicament!.id!.toString(),
+      onSuccess: (data) {
+        CustomSnacbar.showMessage(context, "Médicament mis à jour avec succès !");
+        Get.offAndToNamed(AppRoutes.DETAILS_GESTION, arguments: medicament!.id!.toString());
+        medicamentStatus = LoadingStatus.completed;
+        update();
+      },
+      onError: (error) {
+        print("============ update medecine form / error ===========");
+        print(error.response!);
+        if (error.response!.statusCode == 400) {
+          CustomSnacbar.showMessage(
+              context, "${error.response!.data['message']}");
+        }
+        print("=================================");
+        medicamentStatus = LoadingStatus.failed;
+        update();
+      },
+    );
+  }
+
   Future addMedecine(BuildContext context) async {
+
+    
     if (textEditingDescription.text.trim().isEmpty) {
       CustomSnacbar.showMessage(context,
           "Veuillez renseigner une petite description pour le médicament !");
@@ -234,12 +301,8 @@ class MedicamentFormController extends GetxController {
       stockOptimal: int.parse(textEditingStockOptimal.text.trim()),
       tva: selectedTva == "19.25%"
           ? 19.25
-          : 0.0, // tvas.firstWhere((c) => c['libelle'] == selectedTva)['id'],
+          : 0.0,
       basePrix: selectedBasePrix,
-          // ? "1"
-          // : baseprix
-              // .firstWhere((c) => c['libelle'] == selectedBasePrix)['id']
-              // .toString(),
       date_exp: datePremption,
       image: photo,
       description: textEditingDescription.text.trim(),
@@ -250,8 +313,13 @@ class MedicamentFormController extends GetxController {
           entrepots.firstWhere((c) => c['libelle'] == selectedEntrepot)['id'],
     );
 
-    // medicamentStatus = LoadingStatus.searching;
+    medicamentStatus = LoadingStatus.searching;
     update();
+    if ( medicament != null) {
+      await updateMedecine(new_medecine, context);
+      return;
+    }
+
     await _medicamentService.add(
       medicamentModel: new_medecine,
       onSuccess: (data) {
@@ -287,7 +355,6 @@ class MedicamentFormController extends GetxController {
             entrepots.removeAt(0);
             update();
           }
-          print(entrepots);
           update();
         },
         onError: (error) {
