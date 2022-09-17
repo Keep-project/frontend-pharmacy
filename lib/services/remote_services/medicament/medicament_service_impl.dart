@@ -66,12 +66,12 @@ class MedicamentServiceImpl implements MedicamentService {
   @override
   Future<void> update(
       {String? idMedicament,
-      MedicamentRequestModel? medicamentModel,
+      dynamic data,
       Function(dynamic data)? onSuccess,
       Function(dynamic error)? onError}) async {
     ApiRequest(
-      url: "${Constants.API_URL}/pharmacie/$idMedicament",
-      data: medicamentModel!.toMap(),
+      url: "${Constants.API_URL}/medicament/$idMedicament",
+      data: data!,
       token: await _localAuth.getToken(),
     ).put(onSuccess: (data) {
       onSuccess!(data);

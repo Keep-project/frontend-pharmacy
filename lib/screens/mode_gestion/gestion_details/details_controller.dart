@@ -1,8 +1,8 @@
-
-
 // ignore_for_file: avoid_print
 
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pharmacy_app/core/app_snackbar.dart';
 import 'package:pharmacy_app/core/app_state.dart';
 import 'package:pharmacy_app/models/response_data_models/facture_model.dart';
 import 'package:pharmacy_app/models/response_data_models/medicament_model.dart';
@@ -19,6 +19,8 @@ class DetailScreenController extends GetxController {
   int quantiteTotalFacture = 0;
 
   RxInt selectedIndex = 0.obs;
+
+  TextEditingController textEditingPrixVente = TextEditingController();
 
   @override
   void onInit() async {
@@ -55,6 +57,45 @@ class DetailScreenController extends GetxController {
   RxString selectedEntrepotSource = "Magasin 1".obs;
   RxString selectedEntrepotDestination = "Magasin 2".obs;
 
+  Future updateMedecine(BuildContext context) async {
+    medicamentStatus = LoadingStatus.searching;
+    update();
+    var data = {
+      'id': medicament!.id!,
+      'nom': medicament!.nom!,
+      'prix': int.parse(textEditingPrixVente.text.trim()),
+      'marque': medicament!.marque!,
+      'date_exp': medicament!.date_exp!.toIso8601String(),
+      'masse': medicament!.masse!,
+      'qte_stock': medicament!.stock!,
+      'stockAlert': medicament!.stockAlert!,
+      'stockOptimal': medicament!.stockOptimal!,
+      'description': medicament!.description!,
+      'posologie': medicament!.posologie!,
+      'categorie': medicament!.categorie!,
+      'pharmacie': medicament!.pharmacie,
+      'entrepot': medicament!.entrepot,
+      'voix': medicament!.voix!
+    };
+    await _medicamentService.update(
+        idMedicament: medicament!.id!.toString(),
+        data: data,
+        onSuccess: (data) {
+          Get.back();
+          CustomSnacbar.showMessage(context, data['message']);
+          medicament!.stock = data['results']['prix'];
+          medicamentStatus = LoadingStatus.completed;
+          update();
+        },
+        onError: (error) {
+          print("=======================================");
+          print(error);
+          print("=======================================");
+          medicamentStatus = LoadingStatus.failed;
+          update();
+        });
+  }
+
   Future getMedicamentsById() async {
     medicamentStatus = LoadingStatus.searching;
     update();
@@ -62,9 +103,10 @@ class DetailScreenController extends GetxController {
         idMedicament: Get.arguments,
         onSuccess: (data) {
           medicament = data;
+          textEditingPrixVente.text = medicament!.prix!.toString();
           factures = data!.references!;
-          factures.forEach((element){ 
-            montantFactures += element.montantTotal!; 
+          factures.forEach((element) {
+            montantFactures += element.montantTotal!;
             element.produits!.forEach((item) {
               if (item.medicament! == medicament!.id!) {
                 quantiteTotalFacture += item.quantite!;

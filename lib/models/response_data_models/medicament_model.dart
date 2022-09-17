@@ -42,12 +42,12 @@ class MedicamentResponseModel {
 class Medicament {
   final int? id;
   final String? nom;
-  final int? prix;
+ int? prix;
   final String? masse;
   final String? marque;
   final DateTime? date_exp;
   final String? photo;
-  final int? stock;
+   int? stock;
   final int? stockAlert;
   final int? stockOptimal;
   final String? description;

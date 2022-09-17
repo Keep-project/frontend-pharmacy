@@ -142,7 +142,8 @@ class MapViewScreen extends GetView<MapViewScreenController> {
                                 onChanged: (String value) async {
                                   if (value.toString().isNotEmpty) {
                                     controller.pharmaciesList.clear();
-                                    await controller.getPharmacies(context:context);
+                                    await controller.getPharmacies(
+                                        context: context);
                                   } else {
                                     controller.predictions = [];
                                     controller.update();
@@ -316,11 +317,14 @@ class MapViewScreen extends GetView<MapViewScreenController> {
                                         const BoxDecoration(color: kTextColor),
                                     child: Row(children: [
                                       Column(
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            controller.pharmaciesList[index].nom!
+                                            controller
+                                                .pharmaciesList[index].nom!
                                                 .toString()
                                                 .capitalize!,
                                             style: const TextStyle(
@@ -330,12 +334,17 @@ class MapViewScreen extends GetView<MapViewScreenController> {
                                               height: 1.3,
                                             ),
                                           ),
-                                          index == 0 && !controller.searchForSomeBody.value ? const Text("(Plus près de vous)",
-                                            style: TextStyle(
-                                              color: kWhiteColor,
-                                              fontSize: 12,
-                                            ),
-                                          ) : Container(),
+                                          index == 0 &&
+                                                  !controller
+                                                      .searchForSomeBody.value
+                                              ? const Text(
+                                                  "(Plus près de vous)",
+                                                  style: TextStyle(
+                                                    color: kWhiteColor,
+                                                    fontSize: 12,
+                                                  ),
+                                                )
+                                              : Container(),
                                         ],
                                       ),
                                       const Spacer(),
@@ -352,8 +361,14 @@ class MapViewScreen extends GetView<MapViewScreenController> {
                                   const Spacer(),
                                   Row(children: [
                                     const SizedBox(width: kDefaultPadding),
-                                    const Icon(CupertinoIcons.gift_fill,
-                                        size: 46, color: kTextColor),
+                                    Image.asset(
+                                      "assets/images/pharmacy_two.png",
+                                      fit: BoxFit.fill,
+                                      height: 60,
+                                      width: 50,
+                                    ),
+                                    /*const Icon(CupertinoIcons.gift_fill,
+                                        size: 46, color: kTextColor),*/
                                     const SizedBox(width: kDefaultPadding / 2),
                                     Column(
                                       crossAxisAlignment:
@@ -397,8 +412,12 @@ class MapViewScreen extends GetView<MapViewScreenController> {
                                       ),
                                     ),
                                     const Spacer(),
-                                    Text(controller.pharmaciesList[index].distance! >= 0 ?
-                                      "Située à ${controller.pharmaciesList[index].distance!.toStringAsFixed(2)} Km de votre position" : "",
+                                    Text(
+                                      controller.pharmaciesList[index]
+                                                  .distance! >=
+                                              0
+                                          ? "Située à ${controller.pharmaciesList[index].distance!.toStringAsFixed(2)} Km de votre position"
+                                          : "",
                                       style: const TextStyle(
                                         color: kOrangeColor,
                                         fontSize: 14,
@@ -445,51 +464,57 @@ class Options extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SizedBox(height: kDefaultPadding * 2),
-                !controller.searchForSomeBody.value ? Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                  const Text(
-                    "Saisisez le rayon de recherche",
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: kTextColor2,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  Text(
-                    "en K.M",
-                    style: TextStyle(
-                      color: kDarkColor.withOpacity(0.6),
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
-                  const SizedBox(height: kDefaultMargin / 2),
-                  const Divider(
-                    thickness: 1.5,
-                  ),
-                  const SizedBox(height: kDefaultMargin * 1.5),
-                  Container(
-                    height: 42,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      border: Border.all(
-                        width: 1.5,
-                        color: kTextColor2,
-                      ),
-                      borderRadius: BorderRadius.circular(kDefaultRadius / 2),
-                    ),
-                    child: TextField(
-                      controller: controller.textEditingDistance,
-                      keyboardType: TextInputType.number,
-                      decoration: const InputDecoration(
-                          enabledBorder: InputBorder.none,
-                          focusedBorder: InputBorder.none,
-                          hintText: "Rayon de recherche",
-                          contentPadding: EdgeInsets.only(
-                              left: 10, top: 3, bottom: 8, right: 10)),
-                    ),
-                  ),
-                ]): Container(),
+                !controller.searchForSomeBody.value
+                    ? Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                            const Text(
+                              "Saisisez le rayon de recherche",
+                              style: TextStyle(
+                                fontSize: 18,
+                                color: kTextColor2,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            Text(
+                              "en K.M",
+                              style: TextStyle(
+                                color: kDarkColor.withOpacity(0.6),
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                            const SizedBox(height: kDefaultMargin / 2),
+                            const Divider(
+                              thickness: 1.5,
+                            ),
+                            const SizedBox(height: kDefaultMargin * 1.5),
+                            Container(
+                              height: 42,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                border: Border.all(
+                                  width: 1.5,
+                                  color: kTextColor2,
+                                ),
+                                borderRadius:
+                                    BorderRadius.circular(kDefaultRadius / 2),
+                              ),
+                              child: TextField(
+                                controller: controller.textEditingDistance,
+                                keyboardType: TextInputType.number,
+                                decoration: const InputDecoration(
+                                    enabledBorder: InputBorder.none,
+                                    focusedBorder: InputBorder.none,
+                                    hintText: "Rayon de recherche",
+                                    contentPadding: EdgeInsets.only(
+                                        left: 10,
+                                        top: 3,
+                                        bottom: 8,
+                                        right: 10)),
+                              ),
+                            ),
+                          ])
+                    : Container(),
                 const SizedBox(height: kDefaultPadding),
                 Row(children: [
                   Checkbox(
@@ -599,7 +624,7 @@ class Options extends StatelessWidget {
                     InkWell(
                       onTap: () async {
                         Get.back();
-                        await controller.getPharmacies(context:context);
+                        await controller.getPharmacies(context: context);
                       },
                       child: Container(
                         padding: const EdgeInsets.symmetric(

@@ -69,8 +69,6 @@ class InventaireFormController extends GetxController {
       "entrepot": entrepots.firstWhere((element) => element['libelle'] == selectedEntrepot)['id'],
       "medicaments": produits,
     };
-    print(data);
-
     await _inventaireService.add(
       data: data,
       onSuccess: (data){

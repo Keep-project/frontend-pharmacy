@@ -398,15 +398,15 @@ class DetailGestionScreen extends GetView<DetailScreenController> {
                                                             borderRadius:
                                                                 BorderRadius
                                                                     .only(
-                                                      topRight:
+                                                      /*topRight:
                                                           Radius.circular(20),
                                                       topLeft:
-                                                          Radius.circular(20),
+                                                          Radius.circular(20),*/
                                                     )),
                                                     builder: (context) {
                                                       return ChangePrice(
                                                           controller:
-                                                              controller);
+                                                              controller, context: context);
                                                     });
                                               },
                                             ),

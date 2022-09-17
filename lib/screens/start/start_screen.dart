@@ -72,8 +72,8 @@ class StartScreen extends GetView<StartScreenController> {
                                     width: Get.width / 2 - 30,
                                     decoration: BoxDecoration(
                                       color: kTextColor2.withOpacity(.08),
-                                      borderRadius:
-                                          BorderRadius.circular(kDefaultPadding),
+                                      borderRadius: BorderRadius.circular(
+                                          kDefaultPadding),
                                     ),
                                     child: Container(
                                       padding:
@@ -81,16 +81,31 @@ class StartScreen extends GetView<StartScreenController> {
                                       decoration: const BoxDecoration(),
                                       child: Column(
                                         children: [
-                                          const Spacer(flex: 2),
+                                          const SizedBox(
+                                              height: kDefaultPadding / 4 - 1),
+                                          Container(
+                                              height: 80,
+                                              width: 90,
+                                              clipBehavior: Clip.antiAlias,
+                                              decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          kDefaultRadius)),
+                                              child: Image.asset(
+                                                "assets/images/pharmacy_one.jpg",
+                                                fit: BoxFit.fill,
+                                              )),
+                                          const SizedBox(
+                                              height: kDefaultPadding / 4),
                                           Text(
                                             "Rechercher une Pharmacie",
                                             style: TextStyle(
-                                              color: kTextColor2.withOpacity(0.7),
+                                              color: kTextColor2.withOpacity(1),
                                               fontSize: 16,
-                                              fontWeight: FontWeight.w600,
+                                              fontWeight: FontWeight.w500,
                                             ),
                                           ),
-                                          const Spacer(),
+                                          const SizedBox(height: 4),
                                           Row(children: [
                                             const Spacer(),
                                             Icon(CupertinoIcons.arrow_right,
@@ -98,9 +113,7 @@ class StartScreen extends GetView<StartScreenController> {
                                                 color:
                                                     kDarkColor.withOpacity(.7)),
                                           ]),
-                                          const Spacer(
-                                            flex: 2,
-                                          ),
+                                          const SizedBox(height: 3)
                                         ],
                                       ),
                                     )),
@@ -114,8 +127,8 @@ class StartScreen extends GetView<StartScreenController> {
                                     width: Get.width / 2 - 30,
                                     decoration: BoxDecoration(
                                       color: kTextColor2.withOpacity(.08),
-                                      borderRadius:
-                                          BorderRadius.circular(kDefaultPadding),
+                                      borderRadius: BorderRadius.circular(
+                                          kDefaultPadding),
                                     ),
                                     child: Container(
                                       padding:
@@ -123,16 +136,31 @@ class StartScreen extends GetView<StartScreenController> {
                                       decoration: const BoxDecoration(),
                                       child: Column(
                                         children: [
-                                          const Spacer(flex: 2),
+                                          const SizedBox(
+                                              height: kDefaultPadding / 4 - 1),
+                                          Container(
+                                              height: 80,
+                                              width: 90,
+                                              clipBehavior: Clip.antiAlias,
+                                              decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          kDefaultRadius)),
+                                              child: Image.asset(
+                                                "assets/images/medecine_three.jfif",
+                                                fit: BoxFit.fill,
+                                              )),
+                                          const SizedBox(
+                                              height: kDefaultPadding / 4),
                                           Text(
                                             "Rechercher des médicaments",
                                             style: TextStyle(
-                                              color: kTextColor2.withOpacity(0.7),
+                                              color: kTextColor2.withOpacity(1),
                                               fontSize: 16,
-                                              fontWeight: FontWeight.w600,
+                                              fontWeight: FontWeight.w500,
                                             ),
                                           ),
-                                          const Spacer(),
+                                          const SizedBox(height: 4),
                                           Row(children: [
                                             const Spacer(),
                                             Icon(CupertinoIcons.arrow_right,
@@ -140,9 +168,7 @@ class StartScreen extends GetView<StartScreenController> {
                                                 color:
                                                     kDarkColor.withOpacity(.7)),
                                           ]),
-                                          const Spacer(
-                                            flex: 2,
-                                          ),
+                                          const SizedBox(height: 3)
                                         ],
                                       ),
                                     )),
@@ -150,9 +176,10 @@ class StartScreen extends GetView<StartScreenController> {
                             ],
                           ),
                         ),
-                        const SizedBox( height: kDefaultPadding),
+                        const SizedBox(height: kDefaultPadding),
                         Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: kDefaultPadding),
                           child: Container(
                               height: 220,
                               width: double.infinity,
@@ -168,16 +195,16 @@ class StartScreen extends GetView<StartScreenController> {
                                   children: [
                                     Image.asset("assets/images/amico-care.png"),
                                     const Positioned(
-                                      top: 10,
-                                      right: 0,
-                                      child: Text("Préconsultation", 
-                                        style: TextStyle(
-                                          color: kTextColor2,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                      )
-                                    ),
+                                        top: 10,
+                                        right: 0,
+                                        child: Text(
+                                          "Préconsultation",
+                                          style: TextStyle(
+                                            color: kTextColor2,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        )),
                                     Positioned(
                                       top: 40,
                                       right: 0,
@@ -198,38 +225,43 @@ class StartScreen extends GetView<StartScreenController> {
                                       bottom: 0,
                                       right: 0,
                                       child: GestureDetector(
-                                        onTap: () {Get.toNamed(AppRoutes.RENDEZVOUS);},
+                                        onTap: () {
+                                          Get.toNamed(AppRoutes.RENDEZVOUS);
+                                        },
                                         child: Container(
-                                          height: 35,
-                                          padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
-                                          decoration: BoxDecoration(
-                                            color: kTextColor.withOpacity(.08),
-                                            borderRadius: BorderRadius.circular(kDefaultRadius*2),
-                                            boxShadow: [
-                                              BoxShadow(
-                                                offset: const Offset( 0, 10),
-                                                blurRadius: 30,
-                                                color: kTextColor.withOpacity(0.15)
-                                              ),
-                                            ],
-                                          ),
-                                          child: const Center(
-                                            child: Text("Consultez-vous en ligne", 
-                                            style: TextStyle(
-                                              color: kTextColor,
-                                              fontWeight: FontWeight.w600,
-                                              fontSize: 11,
-                                            )
-                                        ),
-                                          )
-                                        ),
+                                            height: 35,
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: kDefaultPadding),
+                                            decoration: BoxDecoration(
+                                              color:
+                                                  kTextColor.withOpacity(.08),
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                      kDefaultRadius * 2),
+                                              boxShadow: [
+                                                BoxShadow(
+                                                    offset: const Offset(0, 10),
+                                                    blurRadius: 30,
+                                                    color: kTextColor
+                                                        .withOpacity(0.15)),
+                                              ],
+                                            ),
+                                            child: const Center(
+                                              child: Text(
+                                                  "Consultez-vous en ligne",
+                                                  style: TextStyle(
+                                                    color: kTextColor,
+                                                    fontWeight: FontWeight.w600,
+                                                    fontSize: 11,
+                                                  )),
+                                            )),
                                       ),
                                     ),
                                   ],
                                 ),
                               )),
                         ),
-                        const SizedBox( height: kDefaultPadding*3),
+                        const SizedBox(height: kDefaultPadding * 3),
                       ],
                     ),
                   ),

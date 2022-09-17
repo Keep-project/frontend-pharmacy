@@ -81,8 +81,9 @@ class MedicamentCard extends StatelessWidget {
                     bottom: 0,
                     child: Container(
                         padding: const EdgeInsets.all(3),
-                        decoration: const BoxDecoration(
-                          color: Color.fromARGB(45, 0, 0, 0),
+                        decoration: BoxDecoration(
+                          // color: Color.fromARGB(45, 0, 0, 0),
+                          color: kDarkColor.withOpacity(0.7),
                         ),
                         child: Row(
                           children: const [
@@ -92,6 +93,7 @@ class MedicamentCard extends StatelessWidget {
                               style: TextStyle(
                                 color: kWhiteColor,
                                 fontSize: 11,
+                                fontWeight: FontWeight.w500,
                               ),
                             ),
                           ],

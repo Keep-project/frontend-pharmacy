@@ -44,7 +44,7 @@ abstract class MedicamentService {
 
   Future<void> update({
     String? idMedicament,
-    MedicamentRequestModel? medicamentModel,
+    dynamic data,
     Function(dynamic data)? onSuccess,
     Function(dynamic error)? onError,
   });
