@@ -21,9 +21,11 @@ class DetailScreenController extends GetxController {
   RxInt selectedIndex = 0.obs;
 
   TextEditingController textEditingPrixVente = TextEditingController();
+  TextEditingController textEditingNewStock = TextEditingController();
 
   @override
   void onInit() async {
+    textEditingNewStock.text = '0';
     await getMedicamentsById();
     super.onInit();
   }
@@ -56,6 +58,19 @@ class DetailScreenController extends GetxController {
   RxString selectedAction = "Ajouter".obs;
   RxString selectedEntrepotSource = "Magasin 1".obs;
   RxString selectedEntrepotDestination = "Magasin 2".obs;
+
+  Future<void> updateStock(BuildContext context) async {
+    print(textEditingPrixVente.text.trim());
+    if ( selectedAction.value == "Ajouter"){
+      medicament!.stock = medicament!.stock! + int.parse(textEditingNewStock.text.trim());
+    }
+    if ( selectedAction.value == "Supprimer" ){
+      medicament!.stock = medicament!.stock! - int.parse(textEditingNewStock.text.trim());
+    }
+    update();
+    print(medicament!.stock!);
+    await updateMedecine(context);
+  }
 
   Future updateMedecine(BuildContext context) async {
     medicamentStatus = LoadingStatus.searching;
@@ -143,6 +158,7 @@ class DetailScreenController extends GetxController {
 
   void onChangeAction(dynamic data) {
     selectedAction.value = data;
+    print(data);
   }
 
   void onChangeEntrepotSource(dynamic data) {

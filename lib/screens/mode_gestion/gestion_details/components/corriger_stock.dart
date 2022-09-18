@@ -6,6 +6,7 @@ import 'package:pharmacy_app/components/custom_text_field2.dart';
 import 'package:pharmacy_app/components/title_text.dart';
 import 'package:pharmacy_app/core/app_colors.dart';
 import 'package:pharmacy_app/core/app_sizes.dart';
+import 'package:pharmacy_app/core/app_state.dart';
 
 class CorrigerStock extends StatelessWidget {
   final dynamic controller;
@@ -28,6 +29,7 @@ class CorrigerStock extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          const SizedBox(height: kDefaultPadding *1.5),
           Row(
             children: [
               const TitleText(
@@ -45,8 +47,16 @@ class CorrigerStock extends StatelessWidget {
           const Divider(
             thickness: 1.2,
           ),
-          const SizedBox(height: kDefaultPadding / 2),
-          Obx(
+          const SizedBox(height: kDefaultPadding),
+          Text("Entrez la quantite la quantité que vous désirez augmenter ou diminuer de votre stock et choisir l'action correspondante.",
+            style: TextStyle(
+              height: 1.5,
+              fontSize: 16,
+              color: Colors.grey.withOpacity(0.8),
+            ),
+          ),
+          const SizedBox(height: kDefaultPadding),
+          /*Obx(
             () => CustomDropDown(
               helpText: "Entrepôt",
               controller: controller,
@@ -57,7 +67,7 @@ class CorrigerStock extends StatelessWidget {
               },
             ),
           ),
-          const SizedBox(height: kDefaultPadding / 2),
+          const SizedBox(height: kDefaultPadding / 2),*/
           Row(
             children: [
               Expanded(
@@ -66,6 +76,7 @@ class CorrigerStock extends StatelessWidget {
                   title: "Nombre de pièces",
                   hintText: "Ex: 200",
                   textInputType: TextInputType.number,
+                  controller: controller.textEditingNewStock,
                 ),
               ),
               const SizedBox(
@@ -86,7 +97,7 @@ class CorrigerStock extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: 8),
+          /*const SizedBox(height: 8),
           CustomTextField2(
             onChanged: (string) {},
             title: "Prix unitaire de vente en fcfa",
@@ -99,8 +110,8 @@ class CorrigerStock extends StatelessWidget {
             title: "Libellé du mouvement",
             hintText: "Correction du stock du produit: Paracétamol 200mg",
             maxLines: 3,
-          ),
-          const SizedBox(height: kDefaultPadding / 2),
+          ),*/
+          const SizedBox(height: kDefaultPadding *3),
           Row(
             children: [
               TextButton(
@@ -115,10 +126,21 @@ class CorrigerStock extends StatelessWidget {
                 ),
               ),
               const Spacer(),
-              CustomButton(
-                title: "Enregistrer",
-                onTap: () {},
-              ),
+             controller.medicamentStatus == LoadingStatus.searching ?
+                Container(
+                  height: 40,
+                  width: 150,
+                  decoration: const BoxDecoration(
+                    color: kTextColor2,
+                  ),
+                  child: const Center(
+                    child: CircularProgressIndicator(color: kWhiteColor)
+                  ),
+                ) :
+                CustomButton(
+                  title: "Enregistrer",
+                  onTap: () async { await controller.updateStock(context); },
+                ),
             ],
           ),
         ],

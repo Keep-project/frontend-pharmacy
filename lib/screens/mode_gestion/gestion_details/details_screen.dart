@@ -587,7 +587,7 @@ class DetailGestionScreen extends GetView<DetailScreenController> {
                                             ),
                                             const Spacer(),
                                             TextButton(
-                                              onPressed: () {},
+                                              onPressed: () { Get.toNamed(AppRoutes.MOUVEMENT_PRODUIT, arguments: {'id': controller.medicament!.id!.toString(), 'productName': controller.medicament!.nom! } ); },
                                               child: const Text(
                                                 "Liste des mouvements",
                                                 style: TextStyle(
