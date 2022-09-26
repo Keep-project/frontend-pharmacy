@@ -68,13 +68,13 @@ class DetailScreenController extends GetxController {
       medicament!.stock = medicament!.stock! - int.parse(textEditingNewStock.text.trim());
     }
     update();
-    print(medicament!.stock!);
     await updateMedecine(context);
   }
 
   Future updateMedecine(BuildContext context) async {
     medicamentStatus = LoadingStatus.searching;
     update();
+    
     var data = {
       'id': medicament!.id!,
       'nom': medicament!.nom!,
@@ -92,13 +92,15 @@ class DetailScreenController extends GetxController {
       'entrepot': medicament!.entrepot,
       'voix': medicament!.voix!
     };
+
     await _medicamentService.update(
         idMedicament: medicament!.id!.toString(),
         data: data,
         onSuccess: (data) {
           Get.back();
           CustomSnacbar.showMessage(context, data['message']);
-          medicament!.stock = data['results']['prix'];
+          medicament!.stock = data['results']['qte_stock'];
+          medicament!.prix = data['results']['prix'];
           medicamentStatus = LoadingStatus.completed;
           update();
         },

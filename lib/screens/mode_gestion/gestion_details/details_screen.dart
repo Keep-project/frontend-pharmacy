@@ -64,7 +64,8 @@ class DetailGestionScreen extends GetView<DetailScreenController> {
                         text: TextSpan(
                           children: [
                             TextSpan(
-                              text: "${controller.medicament!.nom!.capitalizeFirst}\n",
+                              text:
+                                  "${controller.medicament!.nom!.capitalizeFirst}\n",
                               style: const TextStyle(
                                 color: kDarkColor,
                                 fontSize: 22,
@@ -84,7 +85,10 @@ class DetailGestionScreen extends GetView<DetailScreenController> {
                       ),
                     ),
                     Container(
-                      margin: const EdgeInsets.only(left: kDefaultPadding, right: kDefaultPadding, top: kDefaultPadding/1.8),
+                      margin: const EdgeInsets.only(
+                          left: kDefaultPadding,
+                          right: kDefaultPadding,
+                          top: kDefaultPadding / 1.8),
                       child: Row(
                         children: [
                           GestureDetector(
@@ -99,17 +103,18 @@ class DetailGestionScreen extends GetView<DetailScreenController> {
                           ),
                           const Spacer(),
                           InkWell(
-                            onTap: () { Get.offAndToNamed(AppRoutes.MEDICAMENTSFORM, arguments: controller.medicament!);},
+                            onTap: () {
+                              Get.offAndToNamed(AppRoutes.MEDICAMENTSFORM,
+                                  arguments: controller.medicament!);
+                            },
                             child: Container(
                               height: 40,
                               width: 40,
                               decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: kTextColor2.withOpacity(0.2)
-                              ),
+                                  shape: BoxShape.circle,
+                                  color: kTextColor2.withOpacity(0.2)),
                               child: const Center(
-                                child: Icon(Icons.edit, size: 20)
-                              ),
+                                  child: Icon(Icons.edit, size: 20)),
                             ),
                           ),
                         ],
@@ -188,7 +193,7 @@ class DetailGestionScreen extends GetView<DetailScreenController> {
                                         ),
                                       ),
                                       Text(
-                                        "Stock: ${controller.medicament!.stock!}",
+                                        "Stock: ${controller.medicament!.stock!.toString()}",
                                         style: const TextStyle(
                                           color: kDarkColor,
                                         ),
@@ -354,7 +359,10 @@ class DetailGestionScreen extends GetView<DetailScreenController> {
                                             controller
                                                 .medicament!.pharmacies!.length,
                                             (index) => InkWell(
-                                              onTap: () async { launchUrl(Uri.parse("tel://${controller.medicament!.pharmacies![index].phone!}")); },
+                                              onTap: () async {
+                                                launchUrl(Uri.parse(
+                                                    "tel://${controller.medicament!.pharmacies![index].phone!}"));
+                                              },
                                               child: PharmacyCard(
                                                 name: controller.medicament!
                                                     .pharmacies![index].nom!
@@ -364,9 +372,24 @@ class DetailGestionScreen extends GetView<DetailScreenController> {
                                                     "Tel: ${controller.medicament!.pharmacies![index].phone!.toString()}",
                                                 stock: controller.medicament!
                                                     .pharmacies![index].stock!,
-                                                status: ( ((DateTime.now().hour >= (int.parse(controller.medicament!.pharmacies![index].ouverture!.split(":")[0]))) && controller.medicament!.pharmacies![index].ouverture!.endsWith("AM"))
-                                                &&
-                                                ((DateTime.now().hour <= (int.parse(controller.medicament!.pharmacies![index].fermeture!.split(":")[0])) + 12) && controller.medicament!.pharmacies![index].fermeture!.endsWith("PM")))
+                                                status: (((DateTime.now().hour >=
+                                                                (int.parse(controller.medicament!.pharmacies![index].ouverture!.split(":")[
+                                                                    0]))) &&
+                                                            controller
+                                                                .medicament!
+                                                                .pharmacies![
+                                                                    index]
+                                                                .ouverture!
+                                                                .endsWith(
+                                                                    "AM")) &&
+                                                        ((DateTime.now().hour <=
+                                                                (int.parse(controller.medicament!.pharmacies![index].fermeture!.split(":")[0])) +
+                                                                    12) &&
+                                                            controller
+                                                                .medicament!
+                                                                .pharmacies![index]
+                                                                .fermeture!
+                                                                .endsWith("PM")))
                                                     ? "Ouverte"
                                                     : 'Fermée',
                                               ),
@@ -414,17 +437,17 @@ class DetailGestionScreen extends GetView<DetailScreenController> {
                                                     shape:
                                                         const RoundedRectangleBorder(
                                                             borderRadius:
-                                                                BorderRadius
-                                                                    .only(
-                                                      /*topRight:
+                                                                BorderRadius.only(
+                                                                    /*topRight:
                                                           Radius.circular(20),
                                                       topLeft:
                                                           Radius.circular(20),*/
-                                                    )),
+                                                                    )),
                                                     builder: (context) {
                                                       return ChangePrice(
                                                           controller:
-                                                              controller, context: context);
+                                                              controller,
+                                                          context: context);
                                                     });
                                               },
                                             ),
@@ -449,88 +472,106 @@ class DetailGestionScreen extends GetView<DetailScreenController> {
                                         ),
                                         const SizedBox(
                                             height: kDefaultPadding - 4),
-                                        ...List.generate(controller.medicament!.historiques!.length, (index) => 
-                                          Padding(
-                                          padding: const EdgeInsets.only(bottom: kDefaultPadding/1.5),
-                                          child: CardContainer(
-                                            header: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.spaceBetween,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text(
-                                                      "Pratiqué à partir du",
-                                                      style: TextStyle(
-                                                        fontSize: 14,
-                                                        color: kDarkColor
-                                                            .withOpacity(0.7),
-                                                        fontWeight:
-                                                            FontWeight.w600,
+                                        ...List.generate(
+                                          controller
+                                              .medicament!.historiques!.length,
+                                          (index) => Padding(
+                                            padding: const EdgeInsets.only(
+                                                bottom: kDefaultPadding / 1.5),
+                                            child: CardContainer(
+                                              header: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Text(
+                                                        "Pratiqué à partir du",
+                                                        style: TextStyle(
+                                                          fontSize: 14,
+                                                          color: kDarkColor
+                                                              .withOpacity(0.7),
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                        ),
                                                       ),
-                                                    ),
-                                                    Text(
-                                                      "Modifié par: ${controller.medicament!.createur!.username.toString().capitalize}",
-                                                      style: TextStyle(
-                                                        fontSize: 14,
-                                                        color: Colors.grey
-                                                            .withOpacity(0.7),
+                                                      Text(
+                                                        "Modifié par: ${controller.medicament!.createur!.username.toString().capitalize}",
+                                                        style: TextStyle(
+                                                          fontSize: 14,
+                                                          color: Colors.grey
+                                                              .withOpacity(0.7),
+                                                        ),
                                                       ),
-                                                    ),
-                                                  ],
-                                                ),
-                                                Text(controller.medicament!.historiques![index].createdToString(),
-                                                  style: TextStyle(
-                                                    fontSize: 14,
-                                                    color: kDarkColor
-                                                        .withOpacity(0.7),
-                                                    fontWeight: FontWeight.w400,
+                                                    ],
                                                   ),
-                                                ),
-                                              ],
-                                            ),
-                                            body: Column(
-                                              children: [
-                                                const SizedBox(
-                                                    height: kDefaultPadding / 2),
-                                                MyRow(
-                                                  title: "Base de prix",
-                                                  value: controller.medicament!.historiques![index].basePrix,
-                                                ),
-                                                MyRow(
-                                                  title:
-                                                      "Taux de taxe par défaut",
-                                                  value: "${controller.medicament!.historiques![index].tva}%",
-                                                ),
-                                                MyRow(
-                                                  title: "Montant HT",
-                                                  value: "${controller.medicament!.historiques![index].prixVente} F",
-                                                ),
-                                                MyRow(
-                                                  title: "Montant TTC",
-                                                  value: "${controller.medicament!.historiques![index].prixVente! + (controller.medicament!.historiques![index].prixVente! * controller.medicament!.historiques![index].tva!)/100 } F",
-                                                ),
-                                                MyRow(
-                                                  title: "Prix de vente HT",
-                                                  value: "${controller.medicament!.historiques![index].prixVente} F",
-                                                ),
-                                                MyRow(
-                                                  title: "Prix de vente TTC",
-                                                  value: "${controller.medicament!.historiques![index].prixVente! + (controller.medicament!.historiques![index].prixVente! * controller.medicament!.historiques![index].tva!)/100 } F",
-                                                  color: kOrangeColor,
-                                                ),
-                                                Container(),
-                                              ],
+                                                  Text(
+                                                    controller.medicament!
+                                                        .historiques![index]
+                                                        .createdToString(),
+                                                    style: TextStyle(
+                                                      fontSize: 14,
+                                                      color: kDarkColor
+                                                          .withOpacity(0.7),
+                                                      fontWeight:
+                                                          FontWeight.w400,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              body: Column(
+                                                children: [
+                                                  const SizedBox(
+                                                      height:
+                                                          kDefaultPadding / 2),
+                                                  MyRow(
+                                                    title: "Base de prix",
+                                                    value: controller
+                                                        .medicament!
+                                                        .historiques![index]
+                                                        .basePrix,
+                                                  ),
+                                                  MyRow(
+                                                    title:
+                                                        "Taux de taxe par défaut",
+                                                    value:
+                                                        "${controller.medicament!.historiques![index].tva}%",
+                                                  ),
+                                                  MyRow(
+                                                    title: "Montant HT",
+                                                    value:
+                                                        "${controller.medicament!.historiques![index].prixVente} F",
+                                                  ),
+                                                  MyRow(
+                                                    title: "Montant TTC",
+                                                    value:
+                                                        "${controller.medicament!.historiques![index].prixVente! + (controller.medicament!.historiques![index].prixVente! * controller.medicament!.historiques![index].tva!) / 100} F",
+                                                  ),
+                                                  MyRow(
+                                                    title: "Prix de vente HT",
+                                                    value:
+                                                        "${controller.medicament!.historiques![index].prixVente} F",
+                                                  ),
+                                                  MyRow(
+                                                    title: "Prix de vente TTC",
+                                                    value:
+                                                        "${controller.medicament!.historiques![index].prixVente! + (controller.medicament!.historiques![index].prixVente! * controller.medicament!.historiques![index].tva!) / 100} F",
+                                                    color: kOrangeColor,
+                                                  ),
+                                                  Container(),
+                                                ],
+                                              ),
                                             ),
                                           ),
                                         ),
-                                        ),
-                                        const SizedBox(height: kDefaultPadding/2),
-                                        
+                                        const SizedBox(
+                                            height: kDefaultPadding / 2),
                                       ],
                                     )
                                   : Container(),
@@ -541,20 +582,24 @@ class DetailGestionScreen extends GetView<DetailScreenController> {
                                             height: kDefaultMargin * 3),
                                         MyRow(
                                           title: "Prix moyen pondéré (PMP)",
-                                          value: "${controller.medicament!.prix} F",
+                                          value:
+                                              "${controller.medicament!.prix} F",
                                           onPressed: () {},
                                         ),
                                         MyRow(
                                           title: "Limite stock pour alerte",
-                                          value: "${controller.medicament!.stockAlert}",
+                                          value:
+                                              "${controller.medicament!.stockAlert}",
                                         ),
                                         MyRow(
                                           title: "Stock désiré optimal",
-                                          value: "${controller.medicament!.stockOptimal}",
+                                          value:
+                                              "${controller.medicament!.stockOptimal}",
                                         ),
                                         MyRow(
                                           title: "Stock physique",
-                                          value: "${controller.medicament!.stock}",
+                                          value:
+                                              "${controller.medicament!.stock}",
                                         ),
                                         const SizedBox(height: 8),
                                         Row(
@@ -587,7 +632,17 @@ class DetailGestionScreen extends GetView<DetailScreenController> {
                                             ),
                                             const Spacer(),
                                             TextButton(
-                                              onPressed: () { Get.toNamed(AppRoutes.MOUVEMENT_PRODUIT, arguments: {'id': controller.medicament!.id!.toString(), 'productName': controller.medicament!.nom! } ); },
+                                              onPressed: () {
+                                                Get.toNamed(
+                                                    AppRoutes.MOUVEMENT_PRODUIT,
+                                                    arguments: {
+                                                      'id': controller
+                                                          .medicament!.id!
+                                                          .toString(),
+                                                      'productName': controller
+                                                          .medicament!.nom!
+                                                    });
+                                              },
                                               child: const Text(
                                                 "Liste des mouvements",
                                                 style: TextStyle(
@@ -642,13 +697,12 @@ class DetailGestionScreen extends GetView<DetailScreenController> {
                                                     shape:
                                                         const RoundedRectangleBorder(
                                                             borderRadius:
-                                                                BorderRadius
-                                                                    .only(
-                                                      topRight:
+                                                                BorderRadius.only(
+                                                                    /*topRight:
                                                           Radius.circular(20),
                                                       topLeft:
-                                                          Radius.circular(20),
-                                                    )),
+                                                          Radius.circular(20),*/
+                                                                    )),
                                                     builder: (context) {
                                                       return CorrigerStock(
                                                           controller:
@@ -701,7 +755,10 @@ class DetailGestionScreen extends GetView<DetailScreenController> {
                                                         fontSize: 14,
                                                       ),
                                                     ),
-                                                    Text(controller.medicament!.stock.toString(),
+                                                    Text(
+                                                      controller
+                                                          .medicament!.stock
+                                                          .toString(),
                                                       style: TextStyle(
                                                         color: kOrangeColor
                                                             .withOpacity(0.7),
@@ -745,64 +802,325 @@ class DetailGestionScreen extends GetView<DetailScreenController> {
                                           ),
                                         ),
                                         const SizedBox(height: 16),
-                                        ...List.generate(controller.medicament!.entrepots!.length, (index) => 
-                                        Padding(
-                                          padding: const EdgeInsets.only(bottom: kDefaultPadding/1.5),
-                                          child: CardContainer(
-                                            header: Row(
-                                              children: [
-                                                Text(controller.medicament!.entrepots![index].nom!,
-                                                  style: const TextStyle(
-                                                    color: kDarkColor,
-                                                    fontSize: 16,
-                                                    fontWeight: FontWeight.w600,
+                                        ...List.generate(
+                                          controller
+                                              .medicament!.entrepots!.length,
+                                          (index) => Padding(
+                                            padding: const EdgeInsets.only(
+                                                bottom: kDefaultPadding / 1.5),
+                                            child: CardContainer(
+                                              header: Row(
+                                                children: [
+                                                  Text(
+                                                    controller.medicament!
+                                                        .entrepots![index].nom!,
+                                                    style: const TextStyle(
+                                                      color: kDarkColor,
+                                                      fontSize: 16,
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                    ),
                                                   ),
-                                                ),
-                                                const Spacer(),
-                                                Text(
-                                                  "ENT${controller.medicament!.entrepots![index].id!.toString().padLeft(2, '0')}",
-                                                  style: const TextStyle(
-                                                    color: kDarkColor,
-                                                    fontSize: 16,
-                                                    fontWeight: FontWeight.w600,
+                                                  const Spacer(),
+                                                  Text(
+                                                    "ENT${controller.medicament!.entrepots![index].id!.toString().padLeft(2, '0')}",
+                                                    style: const TextStyle(
+                                                      color: kDarkColor,
+                                                      fontSize: 16,
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                    ),
                                                   ),
-                                                ),
-                                              ],
-                                            ),
-                                            body: Column(
-                                              children: [
-                                                const SizedBox(
-                                                    height: kDefaultPadding / 2),
-                                                MyRow(
-                                                  title: "Nombre de pièce",
-                                                  value: controller.medicament!.stock!.toString().padLeft(2, '0'),
-                                                  color: kOrangeColor,
-                                                ),
-                                                MyRow(
-                                                  title:
-                                                      "Prix moyen pondéré (PMP)",
-                                                  value: "${controller.medicament!.prix!} F",
-                                                ),
-                                                MyRow(
-                                                  title: "Valorisation à l'achat",
-                                                  value: "${controller.medicament!.prix! * controller.medicament!.stock! } F",
-                                                ),
-                                                MyRow(
-                                                  title: "Prix de vente unitaire",
-                                                  value: "${controller.medicament!.prix!} F",
-                                                ),
-                                                MyRow(
-                                                  title: "Valeur à la vente",
-                                                 value: "${controller.medicament!.prix! * controller.medicament!.stock! } F",
-                                                  color: kOrangeColor,
-                                                ),
-                                              ],
+                                                ],
+                                              ),
+                                              body: Column(
+                                                children: [
+                                                  const SizedBox(
+                                                      height:
+                                                          kDefaultPadding / 2),
+                                                  MyRow(
+                                                    title: "Nombre de pièce",
+                                                    value: controller
+                                                        .medicament!.stock!
+                                                        .toString()
+                                                        .padLeft(2, '0'),
+                                                    color: kOrangeColor,
+                                                  ),
+                                                  MyRow(
+                                                    title:
+                                                        "Prix moyen pondéré (PMP)",
+                                                    value:
+                                                        "${controller.medicament!.prix!} F",
+                                                  ),
+                                                  MyRow(
+                                                    title:
+                                                        "Valorisation à l'achat",
+                                                    value:
+                                                        "${controller.medicament!.prix! * controller.medicament!.stock!} F",
+                                                  ),
+                                                  MyRow(
+                                                    title:
+                                                        "Prix de vente unitaire",
+                                                    value:
+                                                        "${controller.medicament!.prix!} F",
+                                                  ),
+                                                  MyRow(
+                                                    title: "Valeur à la vente",
+                                                    value:
+                                                        "${controller.medicament!.prix! * controller.medicament!.stock!} F",
+                                                    color: kOrangeColor,
+                                                  ),
+                                                ],
+                                              ),
                                             ),
                                           ),
-                                        ),),
+                                        ),
                                         const SizedBox(height: 16),
                                       ],
                                     )
+                                  : Container(),
+                              controller.selectedIndex.value == 3
+                                  ? Column(
+                                    children: [
+                                      const SizedBox(height: 30),
+                                      Wrap(
+                                          spacing: kDefaultPadding,
+                                          runSpacing: kDefaultPadding,
+                                          children: [
+                                            GestureDetector(
+                                                onTap: () async {},
+                                                child: Container(
+                                                    height: 200,
+                                                    width: Get.width /2-30,
+                                                    decoration: BoxDecoration(
+                                                      color: kTextColor2
+                                                          .withOpacity(.08),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              kDefaultPadding),
+                                                    ),
+                                                    child: Container(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              kDefaultPadding /
+                                                                  2),
+                                                      decoration:
+                                                          const BoxDecoration(),
+                                                      child: Column(
+                                                        children: [
+                                                          const SizedBox(
+                                                              height: 10),
+                                                          Container(
+                                                            height: 60,
+                                                            width: 50,
+                                                            clipBehavior:
+                                                                Clip.antiAlias,
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          5),
+                                                            ),
+                                                            child: Image.asset(
+                                                              "assets/images/medecine_three.jfif",
+                                                              fit: BoxFit.fill,
+                                                            ),
+                                                          ),
+                                                          const SizedBox(
+                                                              height: 3),
+                                                          Text(
+                                                            "Quantité totale",
+                                                            textAlign:
+                                                                TextAlign.left,
+                                                            maxLines: 2,
+                                                            overflow: TextOverflow
+                                                                .ellipsis,
+                                                            style: TextStyle(
+                                                              color: kDarkColor
+                                                                  .withOpacity(
+                                                                      0.5),
+                                                              fontSize: 14,
+                                                              fontStyle: FontStyle
+                                                                  .italic,
+                                                            ),
+                                                          ),
+                                                          const SizedBox(
+                                                              height:
+                                                                  kDefaultPadding /
+                                                                      2),
+                                                          Text(controller.medicament!.stock!.toString(),
+                                                            textAlign:
+                                                                TextAlign.left,
+                                                                style: const TextStyle(
+                                                              color: kDarkColor,
+                                                              fontSize: 16,
+                                                              fontWeight:
+                                                                  FontWeight.w600,
+                                                            ),
+                                                            
+                                                          ),
+                                                          const Spacer(),
+                                                          Text(
+                                                            "Stock d'alert",
+                                                            textAlign:
+                                                                TextAlign.left,
+                                                            maxLines: 2,
+                                                            overflow: TextOverflow
+                                                                .ellipsis,
+                                                            style: TextStyle(
+                                                              color: kDarkColor
+                                                                  .withOpacity(
+                                                                      0.5),
+                                                              fontSize: 14,
+                                                              fontStyle: FontStyle
+                                                                  .italic,
+                                                            ),
+                                                          ),
+                                                          const SizedBox(
+                                                              height:
+                                                                  kDefaultPadding /
+                                                                      2),
+                                                          Text(controller.medicament!.stockAlert!.toString(),
+                                                            textAlign:
+                                                                TextAlign.left,
+                                                                style: TextStyle(
+                                                              color: kOrangeColor
+                                                                  .withOpacity(
+                                                                      0.7),
+                                                              fontSize: 16,
+                                                              fontWeight:
+                                                                  FontWeight.w600,
+                                                            ),
+                                                            
+                                                          ),
+                                                          const Spacer(),
+                                                          
+                                                          const Spacer(
+                                                            flex: 2,
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    )),
+                                              ),
+                                            GestureDetector(
+                                                onTap: () async {},
+                                                child: Container(
+                                                    height: 200,
+                                                    width: Get.width /2-30,
+                                                    decoration: BoxDecoration(
+                                                      color: kTextColor2
+                                                          .withOpacity(.08),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              kDefaultPadding),
+                                                    ),
+                                                    child: Container(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              kDefaultPadding /
+                                                                  2),
+                                                      decoration:
+                                                          const BoxDecoration(),
+                                                      child: Column(
+                                                        children: [
+                                                          const SizedBox(
+                                                              height: 10),
+                                                          Container(
+                                                            height: 60,
+                                                            width: 50,
+                                                            clipBehavior:
+                                                                Clip.antiAlias,
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          5),
+                                                            ),
+                                                            child: Image.asset(
+                                                              "assets/images/medecine_three.jfif",
+                                                              fit: BoxFit.fill,
+                                                            ),
+                                                          ),
+                                                          const SizedBox(
+                                                              height: 3),
+                                                          Text(
+                                                            "Quantité totale",
+                                                            textAlign:
+                                                                TextAlign.left,
+                                                            maxLines: 2,
+                                                            overflow: TextOverflow
+                                                                .ellipsis,
+                                                            style: TextStyle(
+                                                              color: kDarkColor
+                                                                  .withOpacity(
+                                                                      0.5),
+                                                              fontSize: 14,
+                                                              fontStyle: FontStyle
+                                                                  .italic,
+                                                            ),
+                                                          ),
+                                                          const SizedBox(
+                                                              height:
+                                                                  kDefaultPadding /
+                                                                      2),
+                                                          Text(controller.medicament!.stock!.toString(),
+                                                            textAlign:
+                                                                TextAlign.left,
+                                                                style: const TextStyle(
+                                                              color: kDarkColor,
+                                                              fontSize: 16,
+                                                              fontWeight:
+                                                                  FontWeight.w600,
+                                                            ),
+                                                            
+                                                          ),
+                                                          const Spacer(),
+                                                          Text(
+                                                            "Stock d'alert",
+                                                            textAlign:
+                                                                TextAlign.left,
+                                                            maxLines: 2,
+                                                            overflow: TextOverflow
+                                                                .ellipsis,
+                                                            style: TextStyle(
+                                                              color: kDarkColor
+                                                                  .withOpacity(
+                                                                      0.5),
+                                                              fontSize: 14,
+                                                              fontStyle: FontStyle
+                                                                  .italic,
+                                                            ),
+                                                          ),
+                                                          const SizedBox(
+                                                              height:
+                                                                  kDefaultPadding /
+                                                                      2),
+                                                          Text(controller.medicament!.stockAlert!.toString(),
+                                                            textAlign:
+                                                                TextAlign.left,
+                                                                style: TextStyle(
+                                                              color: kOrangeColor
+                                                                  .withOpacity(
+                                                                      0.7),
+                                                              fontSize: 16,
+                                                              fontWeight:
+                                                                  FontWeight.w600,
+                                                            ),
+                                                          ),
+                                                          const Spacer(
+                                                            flex: 2,
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    )),
+                                              ),
+                                            const SizedBox(height: 16),
+                                          ],
+                                        ),
+                                    ],
+                                  )
                                   : Container(),
                               controller.selectedIndex.value == 4
                                   ? Column(
@@ -811,21 +1129,29 @@ class DetailGestionScreen extends GetView<DetailScreenController> {
                                             height: kDefaultMargin * 3),
                                         MyRow(
                                           title: "Crée par",
-                                          value: controller.medicament!.createur!.username.toString().capitalize,
+                                          value: controller
+                                              .medicament!.createur!.username
+                                              .toString()
+                                              .capitalize,
                                           onPressed: () {},
                                         ),
                                         MyRow(
                                           title: "Date de création",
-                                          value: controller.medicament!.createdToString(),
+                                          value: controller.medicament!
+                                              .createdToString(),
                                         ),
                                         MyRow(
                                           title: "Modifié par",
-                                          value: controller.medicament!.createur!.username.toString().capitalize,
+                                          value: controller
+                                              .medicament!.createur!.username
+                                              .toString()
+                                              .capitalize,
                                           onPressed: () {},
                                         ),
                                         MyRow(
                                           title: "Date dernière modification",
-                                          value: controller.medicament!.updatedToString(),
+                                          value: controller.medicament!
+                                              .updatedToString(),
                                         ),
                                         const SizedBox(height: 20),
                                         Row(
@@ -877,7 +1203,9 @@ class DetailGestionScreen extends GetView<DetailScreenController> {
                                                         fontSize: 14,
                                                       ),
                                                     ),
-                                                    Text(controller.factures.length.toString(),
+                                                    Text(
+                                                      controller.factures.length
+                                                          .toString(),
                                                       style: TextStyle(
                                                         color: kOrangeColor
                                                             .withOpacity(0.7),
@@ -904,7 +1232,10 @@ class DetailGestionScreen extends GetView<DetailScreenController> {
                                                         fontSize: 14,
                                                       ),
                                                     ),
-                                                    Text(controller.quantiteTotalFacture.toString(),
+                                                    Text(
+                                                      controller
+                                                          .quantiteTotalFacture
+                                                          .toString(),
                                                       style: TextStyle(
                                                         color: kOrangeColor
                                                             .withOpacity(0.7),
@@ -920,63 +1251,79 @@ class DetailGestionScreen extends GetView<DetailScreenController> {
                                           ),
                                         ),
                                         const SizedBox(height: 16),
-                                        ...List.generate(controller.factures.length, (index) => Padding(
-                                          padding: const EdgeInsets.only(bottom: kDefaultPadding/1.5),
-                                          child: CardContainer(
-                                            header: Row(
-                                              children: [
-                                                const Text(
-                                                  "Référence",
-                                                  style: TextStyle(
-                                                    color: kDarkColor,
-                                                    fontSize: 16,
-                                                    fontWeight: FontWeight.w600,
+                                        ...List.generate(
+                                          controller.factures.length,
+                                          (index) => Padding(
+                                            padding: const EdgeInsets.only(
+                                                bottom: kDefaultPadding / 1.5),
+                                            child: CardContainer(
+                                              header: Row(
+                                                children: [
+                                                  const Text(
+                                                    "Référence",
+                                                    style: TextStyle(
+                                                      color: kDarkColor,
+                                                      fontSize: 16,
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                    ),
                                                   ),
-                                                ),
-                                                const Spacer(),
-                                                Text(
-                                                  "FAC${controller.factures[index].id!.toString().padLeft(2, '0')}",
-                                                  style: const TextStyle(
-                                                    color: kDarkColor,
-                                                    fontSize: 16,
-                                                    fontWeight: FontWeight.w600,
+                                                  const Spacer(),
+                                                  Text(
+                                                    "FAC${controller.factures[index].id!.toString().padLeft(2, '0')}",
+                                                    style: const TextStyle(
+                                                      color: kDarkColor,
+                                                      fontSize: 16,
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                    ),
                                                   ),
-                                                ),
-                                              ],
-                                            ),
-                                            body: Column(
-                                              children: [
-                                                const SizedBox(
-                                                    height: kDefaultPadding / 2),
-                                                MyRow(
-                                                  title: "Code utilisateur",
-                                                  value: controller.factures[index].utilisateur!.toString().padLeft(2, '0'),
-                                                  color: kOrangeColor,
-                                                ),
-                                                MyRow(
-                                                  title: "Date facturation",
-                                                  value: controller.factures[index].createdToString(),
-                                                ),
-                                                MyRow(
-                                                  title: "Quantité",
-                                                  value: controller.factures[index].quantiteTotal.toString().padLeft(2, '0'),
-                                                ),
-                                                MyRow(
-                                                  title: "Montant HT",
-                                                  value: "${controller.factures[index].montantTotal!} F",
-                                                ),
-                                                const MyRow(
-                                                  title: "Etat facture",
-                                                  value: "Payée",
-                                                  color: kOrangeColor,
-                                                ),
-                                              ],
+                                                ],
+                                              ),
+                                              body: Column(
+                                                children: [
+                                                  const SizedBox(
+                                                      height:
+                                                          kDefaultPadding / 2),
+                                                  MyRow(
+                                                    title: "Code utilisateur",
+                                                    value: controller
+                                                        .factures[index]
+                                                        .utilisateur!
+                                                        .toString()
+                                                        .padLeft(2, '0'),
+                                                    color: kOrangeColor,
+                                                  ),
+                                                  MyRow(
+                                                    title: "Date facturation",
+                                                    value: controller
+                                                        .factures[index]
+                                                        .createdToString(),
+                                                  ),
+                                                  MyRow(
+                                                    title: "Quantité",
+                                                    value: controller
+                                                        .factures[index]
+                                                        .quantiteTotal
+                                                        .toString()
+                                                        .padLeft(2, '0'),
+                                                  ),
+                                                  MyRow(
+                                                    title: "Montant HT",
+                                                    value:
+                                                        "${controller.factures[index].montantTotal!} F",
+                                                  ),
+                                                  const MyRow(
+                                                    title: "Etat facture",
+                                                    value: "Payée",
+                                                    color: kOrangeColor,
+                                                  ),
+                                                ],
+                                              ),
                                             ),
                                           ),
-                                        ),),
-                                        
+                                        ),
                                         const SizedBox(height: 16),
-                                        
                                       ],
                                     )
                                   : Container(),

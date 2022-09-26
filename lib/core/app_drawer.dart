@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pharmacy_app/core/app_colors.dart';
@@ -74,35 +73,44 @@ class AppNavigationDrawer extends StatelessWidget {
             Expanded(
               child: SingleChildScrollView(
                   child: Container(
-                      padding: const EdgeInsets.only(left: kDefaultPadding * 1.5, top: kDefaultPadding),
-                  child: Column(
-                    children: [
-                      ...children!,
-                      const SizedBox(height: kDefaultPadding * 2),
-                      const Padding(
-                        padding: EdgeInsets.only(right: kDefaultPadding*2),
-                        child: Divider(
-                          thickness: 0.9,
-                        ),
+                padding: const EdgeInsets.only(
+                    left: kDefaultPadding * 1.5, top: kDefaultPadding),
+                child: Column(
+                  children: [
+                    ...children!,
+                    DrawerMenuItem(
+                      title: "Pharmacies",
+                      iconData: Icons.dashboard_outlined,
+                      onTap: () {
+                        Get.offAndToNamed(AppRoutes.MAPVIEW);
+                      },
+                    ),
+                    const SizedBox(height: kDefaultPadding * 2),
+                    const Padding(
+                      padding: EdgeInsets.only(right: kDefaultPadding * 2),
+                      child: Divider(
+                        thickness: 0.9,
                       ),
-                      const SizedBox(height: 8),
-                      DrawerMenuItem(
-                        title: "Se déconnecter",
-                        iconData: Icons.power_off,
-                        onTap: () async {
-                          final LocalAuthentificationService _localAuth =
-                              LocalAuthentificationServiceImpl();
-                          await _localAuth.deleteToken();
-                          Get.offAllNamed(AppRoutes.LOGIN);
-                        },
-                      ),
-                    ],
-                  ),      
-                )),
+                    ),
+                    const SizedBox(height: 8),
+                    DrawerMenuItem(
+                      title: "Se déconnecter",
+                      iconData: Icons.power_off,
+                      onTap: () async {
+                        final LocalAuthentificationService _localAuth =
+                            LocalAuthentificationServiceImpl();
+                        await _localAuth.deleteToken();
+                        Get.offAllNamed(AppRoutes.LOGIN);
+                      },
+                    ),
+                  ],
+                ),
+              )),
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Text("By KENNE TCHINDA & KUE KONGNE", 
+              child: Text(
+                "By KENNE TCHINDA & KUE KONGNE",
                 style: TextStyle(
                   fontSize: 10,
                   color: kDarkColor.withOpacity(0.4),
@@ -122,20 +130,28 @@ class DrawerMenuItem extends StatelessWidget {
   final IconData? iconData;
   final Function()? onTap;
   const DrawerMenuItem({
-    Key? key, this.title, this.iconData, this.onTap,
+    Key? key,
+    this.title,
+    this.iconData,
+    this.onTap,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(bottom: kDefaultPadding* 0.9),
+      margin: const EdgeInsets.only(bottom: kDefaultPadding * 0.9),
       child: InkWell(
         onTap: onTap,
         child: Row(
           children: [
-            Icon(iconData, color: kTextColor2.withOpacity(0.4), size: 24,),
-            const SizedBox(width: kDefaultPadding/2),
-            Text(title!,
+            Icon(
+              iconData,
+              color: kTextColor2.withOpacity(0.4),
+              size: 24,
+            ),
+            const SizedBox(width: kDefaultPadding / 2),
+            Text(
+              title!,
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w500,

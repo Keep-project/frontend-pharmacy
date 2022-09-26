@@ -209,8 +209,10 @@ class FactureFormScreen extends GetView<FactureFormController> {
                                                 .lignesProduits[index].stock! ==
                                             controller.lignesProduits[index]
                                                 .quantite!) {
-                                          controller.showMessage(context, controller
-                                                .lignesProduits[index].nom!);
+                                          controller.showMessage(
+                                              context,
+                                              controller
+                                                  .lignesProduits[index].nom!);
                                           return;
                                         }
                                         controller.lignesProduits[index]
@@ -338,6 +340,20 @@ class FactureFormScreen extends GetView<FactureFormController> {
                                     },
                                     child: Row(
                                       children: [
+                                        Container(
+                                            height: 35,
+                                            width: 35,
+                                            clipBehavior: Clip.antiAlias,
+                                            decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                        kDefaultRadius)),
+                                            child: Image.asset(
+                                              "assets/images/medecine_three.jfif",
+                                              fit: BoxFit.fill,
+                                            )),
+                                        const SizedBox(
+                                            width: kDefaultPadding / 3),
                                         Text(
                                             controller.medicamentsList[index]
                                                 .nom!.capitalizeFirst!,
@@ -437,12 +453,14 @@ class FactureFormScreen extends GetView<FactureFormController> {
                                       CircularButton(
                                         text: '+',
                                         onTap: () {
-                                          if (controller.selectedMedoc!.stock! ==
-                                            controller.selectedMedoc!
-                                                .quantite!) {
-                                          controller.showMessage(context, controller.selectedMedoc!.nom!);
-                                          return;
-                                        }
+                                          if (controller
+                                                  .selectedMedoc!.stock! ==
+                                              controller
+                                                  .selectedMedoc!.quantite!) {
+                                            controller.showMessage(context,
+                                                controller.selectedMedoc!.nom!);
+                                            return;
+                                          }
                                           controller.selectedMedoc!.quantite =
                                               controller.selectedMedoc!
                                                       .quantite! +

@@ -112,87 +112,87 @@ class PharmacieScreen extends GetView<PharmacieScreenController> {
                               ),
                               ...List.generate(
                                 controller.pharmaciesList.length,
-                                (index) => GestureDetector(
-                                  onTap: () async {
-                                    final LocalAuthentificationService
-                                        _localAuth =
-                                        LocalAuthentificationServiceImpl();
-                                    await _localAuth.savePharmacyId(controller
-                                        .pharmaciesList[index].id
-                                        .toString());
-                                    Get.toNamed(AppRoutes.STOCK);
-                                  },
-                                  child: Container(
-                                      height: 200,
-                                      width: Get.width / 2 - 30,
-                                      decoration: BoxDecoration(
-                                        color: kTextColor2.withOpacity(.08),
-                                        borderRadius: BorderRadius.circular(
-                                            kDefaultPadding),
-                                      ),
-                                      child: Container(
-                                        padding: const EdgeInsets.all(
-                                            kDefaultPadding/2),
-                                        decoration: const BoxDecoration(),
-                                        child: Column(
-                                          children: [
-                                            const SizedBox(height: 10),
-                                            Container(
-                                              height: 60,
-                                              width: 50,
-                                              clipBehavior: Clip.antiAlias,
-                                              decoration: BoxDecoration(
-                                                borderRadius: BorderRadius.circular(5),
-                                              ),
-                                              child: Image.asset(
-                                                "assets/images/pharmacy_two.png",
-                                                fit: BoxFit.fill,
-                                                
-                                              ),
+                              (index) => GestureDetector(
+                                onTap: () async {
+                                  final LocalAuthentificationService
+                                      _localAuth =
+                                      LocalAuthentificationServiceImpl();
+                                  await _localAuth.savePharmacyId(controller
+                                      .pharmaciesList[index].id
+                                      .toString());
+                                  Get.toNamed(AppRoutes.STOCK);
+                                },
+                                child: Container(
+                                    height: 200,
+                                    width: Get.width / 2 - 30,
+                                    decoration: BoxDecoration(
+                                      color: kTextColor2.withOpacity(.08),
+                                      borderRadius: BorderRadius.circular(
+                                          kDefaultPadding),
+                                    ),
+                                    child: Container(
+                                      padding: const EdgeInsets.all(
+                                          kDefaultPadding/2),
+                                      decoration: const BoxDecoration(),
+                                      child: Column(
+                                        children: [
+                                          const SizedBox(height: 10),
+                                          Container(
+                                            height: 60,
+                                            width: 50,
+                                            clipBehavior: Clip.antiAlias,
+                                            decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.circular(5),
                                             ),
-                                            const SizedBox(height: 3),
-                                            Text(
-                                              controller
-                                                  .pharmaciesList[index].nom!
-                                                  .toString()
-                                                  .capitalizeFirst!,
-                                              textAlign: TextAlign.left,
-                                              maxLines: 2,
-                                              overflow: TextOverflow.ellipsis,
-                                              style: TextStyle(
-                                                color: kTextColor2
-                                                    .withOpacity(0.7),
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w600,
-                                              ),
+                                            child: Image.asset(
+                                              "assets/images/pharmacy_two.png",
+                                              fit: BoxFit.fill,
+                                              
                                             ),
-                                            const SizedBox(
-                                                height: kDefaultPadding / 2),
-                                            Text(
-                                              "Ouvre de ${controller.pharmaciesList[index].ouverture} à ${controller.pharmaciesList[index].fermeture}",
-                                              textAlign: TextAlign.left,
-                                              style: TextStyle(
-                                                color:
-                                                    kDarkColor.withOpacity(0.5),
-                                                fontSize: 14,
-                                                fontStyle: FontStyle.italic,
-                                              ),
+                                          ),
+                                          const SizedBox(height: 3),
+                                          Text(
+                                            controller
+                                                .pharmaciesList[index].nom!
+                                                .toString()
+                                                .capitalizeFirst!,
+                                            textAlign: TextAlign.left,
+                                            maxLines: 2,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(
+                                              color: kTextColor2
+                                                  .withOpacity(0.7),
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w600,
                                             ),
+                                          ),
+                                          const SizedBox(
+                                              height: kDefaultPadding / 2),
+                                          Text(
+                                            "Ouvre de ${controller.pharmaciesList[index].ouverture} à ${controller.pharmaciesList[index].fermeture}",
+                                            textAlign: TextAlign.left,
+                                            style: TextStyle(
+                                              color:
+                                                  kDarkColor.withOpacity(0.5),
+                                              fontSize: 14,
+                                              fontStyle: FontStyle.italic,
+                                            ),
+                                          ),
+                                          const Spacer(),
+                                          Row(children: [
                                             const Spacer(),
-                                            Row(children: [
-                                              const Spacer(),
-                                              Icon(CupertinoIcons.arrow_right,
-                                                  size: 26,
-                                                  color: kDarkColor
-                                                      .withOpacity(.7)),
-                                            ]),
-                                            const Spacer(
-                                              flex: 2,
-                                            ),
-                                          ],
-                                        ),
-                                      )),
-                                ),
+                                            Icon(CupertinoIcons.arrow_right,
+                                                size: 26,
+                                                color: kDarkColor
+                                                    .withOpacity(.7)),
+                                          ]),
+                                          const Spacer(
+                                            flex: 2,
+                                          ),
+                                        ],
+                                      ),
+                                    )),
+                              ),
                               ),
                               controller.pharmacyStatus ==
                                       LoadingStatus.searching
