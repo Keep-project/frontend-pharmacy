@@ -21,26 +21,26 @@ import 'package:pharmacy_app/services/remote_services/pharmacie/pharmacie.dart';
 class PharmacieFormScreenController extends GetxController {
   LoadingStatus pharmacieStatus = LoadingStatus.initial;
 
-  final PharmacieService _pharmacieService =
-      PharmacieServiceImpl();
+  final PharmacieService _pharmacieService = PharmacieServiceImpl();
   final TextEditingController textEditingNom = TextEditingController();
   final TextEditingController textEditingEmail = TextEditingController();
   final TextEditingController textEditingPhone = TextEditingController();
   final TextEditingController textEditingPays = TextEditingController();
   final TextEditingController textEditingQuartier = TextEditingController();
   final TextEditingController textEditingVille = TextEditingController();
-  final TextEditingController textEditingControllerLocalisation = TextEditingController();
+  final TextEditingController textEditingControllerLocalisation =
+      TextEditingController();
 
   TimeOfDay ouverture = TimeOfDay.now();
   TimeOfDay fermeture = TimeOfDay.now();
 
-  final PageController pageController = PageController();
-  int step = 1;
+  // final PageController pageController = PageController();
+  int step = 0;
 
-final Completer<GoogleMapController> mapController = Completer();
+  final Completer<GoogleMapController> mapController = Completer();
   Rx<BitmapDescriptor> mapMarker =
       BitmapDescriptor.defaultMarkerWithHue(0.0).obs;
-  
+
   LatLng position = const LatLng(3.866667, 11.516667);
 
   final CameraPosition _kLake = const CameraPosition(
@@ -62,15 +62,13 @@ final Completer<GoogleMapController> mapController = Completer();
   Placemark? localisationInformations;
   String searchText = "";
 
-
-
- CameraPosition kGooglePlex = const CameraPosition(
-    //bearing: 192.8334901395799,
-    target: LatLng(3.866667, 11.516667), // Initialisation de la position sur Yaoundé
-    //target: LatLng(37.4219983, -122.084),
-    tilt: 14.440717697143555,
-    zoom: 3.151926040649414
-  );
+  CameraPosition kGooglePlex = const CameraPosition(
+      //bearing: 192.8334901395799,
+      target: LatLng(
+          3.866667, 11.516667), // Initialisation de la position sur Yaoundé
+      //target: LatLng(37.4219983, -122.084),
+      tilt: 14.440717697143555,
+      zoom: 3.151926040649414);
 
   @override
   void onInit() async {
@@ -90,8 +88,7 @@ final Completer<GoogleMapController> mapController = Completer();
     super.dispose();
   }
 
-
-   // Select place function
+  // Select place function
   Future<void> onSelectPlace(int ip) async {
     //loadingLocation = LoadingStatus.searching;
     final placeId = predictions[ip].placeId!;
@@ -113,17 +110,16 @@ final Completer<GoogleMapController> mapController = Completer();
       print("==================================");
       print(localisationInformations);
       print("==================================");
-      position = LatLng(newCameraPosition!.target.latitude, newCameraPosition!.target.longitude);
+      position = LatLng(newCameraPosition!.target.latitude,
+          newCameraPosition!.target.longitude);
       textEditingPays.text = localisationInformations!.country!;
       textEditingVille.text = localisationInformations!.administrativeArea!;
-      textEditingQuartier.text = localisationInformations!.subAdministrativeArea!;
-
-      
+      textEditingQuartier.text =
+          localisationInformations!.subAdministrativeArea!;
 
       //loadingLocation = LoadingStatus.completed;
 
-    }
-    else {
+    } else {
       print("==================================");
       print(details);
       print("==================================");
@@ -140,11 +136,9 @@ final Completer<GoogleMapController> mapController = Completer();
     }
   }
 
-
   final List<Widget> pages = const <Widget>[PageOne(), PageTwo(), PageThree()];
 
   void jumpToStepTwo(BuildContext context) {
-
     if (textEditingNom.text.trim().isEmpty) {
       CustomSnacbar.showMessage(
           context, "Veuillez renseigner le nom de votre pharmacie");
@@ -161,35 +155,32 @@ final Completer<GoogleMapController> mapController = Completer();
           context, "Veuillez entrez un contact téléphonique correcte !");
       return;
     }
-    pageController.nextPage(
-        duration: const Duration(milliseconds: 300), curve: Curves.ease);
+    // pageController.nextPage(
+    //     duration: const Duration(milliseconds: 300), curve: Curves.ease);
+    step = 1;
+    update();
+  }
+
+  void nextPage() {
+    // pageController.nextPage(
+    //     duration: const Duration(milliseconds: 300), curve: Curves.ease);
     step = 2;
     update();
   }
 
-
-  void nextPage() {
-    pageController.nextPage(
-        duration: const Duration(milliseconds: 300), curve: Curves.ease);
-    step = 3;
-    update();
-  }
-
   void previousPage() {
-    pageController.previousPage(
-        duration: const Duration(milliseconds: 300), curve: Curves.ease);
+    // pageController.previousPage(
+    //     duration: const Duration(milliseconds: 300), curve: Curves.ease);
     step -= 1;
     update();
   }
 
   Future addPharmacy(BuildContext context) async {
-    
-    if (textEditingPays.text.trim().isEmpty ) {
-      CustomSnacbar.showMessage(
-          context, "Le champs pays doit être renseigné!");
+    if (textEditingPays.text.trim().isEmpty) {
+      CustomSnacbar.showMessage(context, "Le champs pays doit être renseigné!");
       return;
     }
-    if (textEditingVille.text.trim().isEmpty ) {
+    if (textEditingVille.text.trim().isEmpty) {
       CustomSnacbar.showMessage(
           context, "Le champs ville doit être renseigné!");
       return;
@@ -197,21 +188,21 @@ final Completer<GoogleMapController> mapController = Completer();
 
     PharmacieRequestModel pharmacieModel = PharmacieRequestModel(
       nom: textEditingNom.text.trim(),
-      localisation: "${textEditingPays.text.trim()};${textEditingVille.text.trim()};${textEditingQuartier.text.trim()}",
+      localisation:
+          "${textEditingPays.text.trim()};${textEditingVille.text.trim()};${textEditingQuartier.text.trim()}",
       phone: textEditingPhone.text.trim(),
       email: textEditingEmail.text.trim(),
       latitude: position.latitude,
       longitude: position.longitude,
       ouverture: ouverture.format(context),
-      fermeture: fermeture.format(context),  
+      fermeture: fermeture.format(context),
     );
     pharmacieStatus = LoadingStatus.searching;
     update();
     await _pharmacieService.add(
       pharmacieModel: pharmacieModel,
       onSuccess: (data) {
-        CustomSnacbar.showMessage(
-            context, "Pharmacie créée avec succès !");
+        CustomSnacbar.showMessage(context, "Pharmacie créée avec succès !");
         pharmacieStatus = LoadingStatus.completed;
         Get.offAndToNamed(AppRoutes.PHARMACIE_USER);
         update();
@@ -230,25 +221,27 @@ final Completer<GoogleMapController> mapController = Completer();
       },
     );
   }
-  
+
   Future getOpenTimePicker(BuildContext context) async {
     var t1 = await showTimePicker(
-    context: context,
-    initialTime: TimeOfDay.now(),
+      context: context,
+      initialTime: TimeOfDay.now(),
     );
-    if (t1 == null) { return; }
-    ouverture = t1; 
+    if (t1 == null) {
+      return;
+    }
+    ouverture = t1;
     update();
   }
 
- 
-
   Future getCloseTimePicker(BuildContext context) async {
     var t1 = await showTimePicker(
-    context: context,
-    initialTime: TimeOfDay.now(),
+      context: context,
+      initialTime: TimeOfDay.now(),
     );
-    if (t1 == null) { return; }
+    if (t1 == null) {
+      return;
+    }
     fermeture = t1;
     update();
   }
@@ -267,15 +260,27 @@ final Completer<GoogleMapController> mapController = Completer();
     //when map drag stops
     List<Placemark> placemarks = await placemarkFromCoordinates(
         newCameraPosition!.target.latitude,
-        newCameraPosition!.target.longitude
-    );
-    position = LatLng(newCameraPosition!.target.latitude, newCameraPosition!.target.longitude);
+        newCameraPosition!.target.longitude);
+    position = LatLng(newCameraPosition!.target.latitude,
+        newCameraPosition!.target.longitude);
     localisationInformations = placemarks.first;
 
     textEditingPays.text = localisationInformations!.country!;
     textEditingVille.text = localisationInformations!.administrativeArea!;
     textEditingQuartier.text = localisationInformations!.subAdministrativeArea!;
 
+    update();
+  }
+
+  void setCustomMarker() async {
+    CameraPosition kLake = CameraPosition(
+        target: position, tilt: 14.440717697143555, zoom: 3.151926040649414);
+    List<Placemark> placemarks = await placemarkFromCoordinates(
+        position.latitude,
+        position.longitude);
+    final GoogleMapController control = await mapController.future;
+    mapController.complete(control);
+    control.animateCamera(CameraUpdate.newCameraPosition(kLake));
     update();
   }
 }

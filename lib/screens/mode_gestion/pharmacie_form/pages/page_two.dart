@@ -1,10 +1,8 @@
 // ignore_for_file: avoid_print
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:pharmacy_app/components/custom_text_field2.dart';
 import 'package:pharmacy_app/core/app_colors.dart';
 import 'package:pharmacy_app/core/app_sizes.dart';
 import 'package:pharmacy_app/screens/mode_gestion/pharmacie_form/pharmacie_form.dart';
@@ -29,7 +27,7 @@ class PageTwo extends GetView<PharmacieFormScreenController> {
                   clipBehavior: Clip.antiAlias,
                   children: [
                     Container(
-                      height: Get.height-24,
+                      height: Get.height - 24,
                       width: Get.width,
                       clipBehavior: Clip.antiAlias,
                       decoration: const BoxDecoration(),
@@ -38,17 +36,21 @@ class PageTwo extends GetView<PharmacieFormScreenController> {
                         mapType: MapType.normal,
                         initialCameraPosition: controller.kGooglePlex,
                         onMapCreated: (GoogleMapController control) {
-                          controller.mapController.complete(control);
+                          try {
+                            controller.setCustomMarker();
+                            
+                          } catch (e) {
+                            print(e);
+                          }
                         },
                         onCameraMove: (CameraPosition newCameraPosition) {
                           controller.newCameraPosition = newCameraPosition;
                           controller.update();
                         },
                         onCameraIdle: () async {
-                          try{
+                          try {
                             await controller.onCameraIdle();
-                          }
-                          catch(e){
+                          } catch (e) {
                             print(e);
                           }
                         },
@@ -57,7 +59,11 @@ class PageTwo extends GetView<PharmacieFormScreenController> {
                             markerId: const MarkerId("point-id-0"),
                             infoWindow: InfoWindow(
                                 title: "Localisation actuelle",
-                                snippet: controller.localisationInformations != null ? controller.localisationInformations!.country! : "Yoaundé" ),
+                                snippet:
+                                    controller.localisationInformations != null
+                                        ? controller
+                                            .localisationInformations!.country!
+                                        : "Yoaundé"),
                             icon: controller.mapMarker.value,
                             position: LatLng(controller.position.latitude,
                                 controller.position.longitude),
@@ -75,29 +81,35 @@ class PageTwo extends GetView<PharmacieFormScreenController> {
                         child: Row(
                           children: [
                             InkWell(
-                              onTap: () {controller.previousPage();},
+                              onTap: () {
+                                controller.previousPage();
+                              },
                               child: Container(
-                                height: 45,
-                                width: 45,
-                                decoration: const BoxDecoration(
-                                  color: kWhiteColor,
-                                  shape: BoxShape.circle,
-                                ),
-                                child: const Icon(Icons.arrow_left, color: kDarkColor, size: 36 )),
+                                  height: 45,
+                                  width: 45,
+                                  decoration: const BoxDecoration(
+                                    color: kWhiteColor,
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: const Icon(Icons.arrow_left,
+                                      color: kDarkColor, size: 36)),
                             ),
-                              const Spacer(),
-                              InkWell(
-                                onTap: () { controller.nextPage(); },
-                                child: Container(
-                                height: 45,
-                                width: 45,
-                                decoration: const BoxDecoration(
-                                  color: kWhiteColor,
-                                  shape: BoxShape.circle,
-                                ),
-                                child: const Icon(Icons.arrow_right, color: kDarkColor, size: 36 )),
-                              ),
-                            ],
+                            const Spacer(),
+                            InkWell(
+                              onTap: () {
+                                controller.nextPage();
+                              },
+                              child: Container(
+                                  height: 45,
+                                  width: 45,
+                                  decoration: const BoxDecoration(
+                                    color: kWhiteColor,
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: const Icon(Icons.arrow_right,
+                                      color: kDarkColor, size: 36)),
+                            ),
+                          ],
                         ),
                       ),
                     ),

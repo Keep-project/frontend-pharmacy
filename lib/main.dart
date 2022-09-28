@@ -22,7 +22,7 @@ class App extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Pharmacy CM',
       theme: ThemeData(
-        //fontFamily: 'Poppins',
+        // fontFamily: 'Poppins',
         primarySwatch: kPrimaryColor,
         scaffoldBackgroundColor: kBackgroundColor,
         visualDensity: VisualDensity.adaptivePlatformDensity,
