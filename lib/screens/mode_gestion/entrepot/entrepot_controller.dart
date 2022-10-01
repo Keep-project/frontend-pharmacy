@@ -42,6 +42,7 @@ class EntrepotController extends GetxController {
 
   @override
   void onInit() async {
+    update();
     await getEntrepot();
     await listerner();
     super.onInit();

@@ -114,7 +114,7 @@ class PageThree extends GetView<PharmacieFormScreenController> {
                                   Expanded(
                                     child: InkWell(
                                       onTap: () async {
-                                        if (controller.step == 3) {
+                                        if (controller.step == 2) {
                                           await controller.addPharmacy(context);
                                         }
                                       },

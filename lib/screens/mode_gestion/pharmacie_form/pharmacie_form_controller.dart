@@ -164,7 +164,7 @@ class PharmacieFormScreenController extends GetxController {
   void nextPage() {
     // pageController.nextPage(
     //     duration: const Duration(milliseconds: 300), curve: Curves.ease);
-    step = 2;
+    step += 1;
     update();
   }
 
