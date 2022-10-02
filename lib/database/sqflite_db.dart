@@ -44,9 +44,9 @@ class PharmacieDatabase {
   }
 
   Future _onCreateDB(Database db, int version) async {
-    const idType = "INTEGER PRIMARY KEY AUTOINCREMENT";
+    const idType = "BIGINT PRIMARY KEY AUTOINCREMENT";
     const boolType = "BOOLEAN NOT NULL";
-    const integerType = "INTERGER NOT NULL";
+    const integerType = "BIGINT NOT NULL";
     const realType = "REAL NULL";
     const textType = "TEXT NOT NULL";
 
@@ -92,6 +92,14 @@ class PharmacieDatabase {
           ${CarnetFields.updated_at} $textType,
           ${CarnetFields.consultation} $integerType,
           ${CarnetFields.maladie} $integerType,
+
+          FOREIGN KEY (${CarnetFields.maladie})
+          REFERENCES $tableMaladie (${MaladieFields.id}) 
+          ON DELETE CASCADE,
+
+          FOREIGN KEY (${CarnetFields.consultation})
+          REFERENCES $tableConsultation (${ConsultationFields.id}) 
+          ON DELETE CASCADE,
         )''');
 
     /**  Création de la table Consultation
@@ -104,6 +112,15 @@ class PharmacieDatabase {
           ${ConsultationFields.updated_at} $textType,
           ${ConsultationFields.symptome} $integerType,
           ${ConsultationFields.user} $integerType,
+
+          FOREIGN KEY (${ConsultationFields.symptome})
+          REFERENCES $tableSymptome (${SymptomeFields.id}) 
+          ON DELETE CASCADE,
+
+          FOREIGN KEY (${ConsultationFields.user})
+          REFERENCES $tableUser (${UserFields.id}) 
+          ON DELETE CASCADE,
+
         )''');
 
     /**  Création de la table Entrepot
@@ -119,6 +136,10 @@ class PharmacieDatabase {
           ${EntrepotFields.description} $textType,
           ${EntrepotFields.updated_at} $textType,
           ${EntrepotFields.pharmacie} $integerType,
+
+          FOREIGN KEY (${EntrepotFields.pharmacie})
+          REFERENCES $tablePharmacie (${PharmacieFields.id}) 
+          ON DELETE CASCADE,
         )''');
 
     /**  Création de la table Facture
@@ -134,6 +155,12 @@ class PharmacieDatabase {
           ${FactureFields.updated_at} $textType,
           ${FactureFields.updated_at} $textType,
           ${FactureFields.utilisateur} $integerType,
+
+          FOREIGN KEY (${FactureFields.utilisateur})
+          REFERENCES $tableUser (${UserFields.id}) 
+          ON DELETE CASCADE,
+
+
         )''');
 
     /**  Création de la table HistoriquePrix
@@ -161,6 +188,10 @@ class PharmacieDatabase {
           ${InventaireFields.updated_at} $textType,
           ${InventaireFields.updated_at} $textType,
           ${InventaireFields.entrepot} $integerType,
+
+          FOREIGN KEY (${InventaireFields.entrepot})
+          REFERENCES $tableEntrepot (${EntrepotFields.id}) 
+          ON DELETE CASCADE,
         )''');
 
     /**  Création de la table InventaireMedicament
@@ -168,13 +199,22 @@ class PharmacieDatabase {
     */
     await db.execute('''  
         CREATE TABLE $tableInventaireMedicament(
-          ${InventaireMedicamentFields.id} $idType,
           ${InventaireMedicamentFields.quantiteAttendue} $integerType,
           ${InventaireMedicamentFields.quantiteReelle} $integerType,
           ${InventaireMedicamentFields.updated_at} $textType,
           ${InventaireMedicamentFields.updated_at} $textType,
           ${InventaireMedicamentFields.inventaire} $integerType,
           ${InventaireMedicamentFields.medicament} $integerType,
+
+          PRIMARY KEY (${InventaireMedicamentFields.inventaire}, ${InventaireMedicamentFields.medicament}),
+
+          FOREIGN KEY (${InventaireMedicamentFields.inventaire})
+          REFERENCES $tableInventaire (${InventaireFields.id}) 
+          ON DELETE CASCADE,
+
+          FOREIGN KEY (${InventaireMedicamentFields.medicament})
+          REFERENCES $tableMedicament (${MedicamentFields.id}) 
+          ON DELETE CASCADE,
         )''');
 
 /*  Création de la table Maladie
@@ -212,6 +252,24 @@ class PharmacieDatabase {
           ${MedicamentFields.stockAlert} $integerType,
           ${MedicamentFields.stockOptimal} $integerType,
           ${MedicamentFields.entrepot} $integerType,
+
+
+          FOREIGN KEY (${MedicamentFields.categorie})
+          REFERENCES $tableCategorie (${MedicamentFields.id}) 
+          ON DELETE CASCADE,
+
+          FOREIGN KEY (${MedicamentFields.user})
+          REFERENCES $tableUser (${UserFields.id}) 
+          ON DELETE CASCADE,
+
+          FOREIGN KEY (${MedicamentFields.pharmacie})
+          REFERENCES $tablePharmacie (${PharmacieFields.id}) 
+          ON DELETE CASCADE,
+
+          FOREIGN KEY (${MedicamentFields.entrepot})
+          REFERENCES $tableEntrepot (${EntrepotFields.id}) 
+          ON DELETE CASCADE,
+          
         )''');
 
     /*  Création de la table MedicamentFacture
@@ -219,27 +277,46 @@ class PharmacieDatabase {
     */
     await db.execute('''  
         CREATE TABLE $tableMedicamentFacture(
-          ${MedicamentFactureFields.id} $idType,
           ${MedicamentFactureFields.montant} $integerType,
           ${MedicamentFactureFields.quantite} $integerType,
           ${MedicamentFactureFields.updated_at} $textType,
           ${MedicamentFactureFields.updated_at} $textType,
           ${MedicamentFactureFields.facture} $integerType,
           ${MedicamentFactureFields.medicament} $integerType,
+
+          PRIMARY KEY (${MedicamentFactureFields.facture}, ${MedicamentFactureFields.medicament}),
+
+          FOREIGN KEY (${MedicamentFactureFields.facture})
+          REFERENCES $tableFacture (${FactureFields.id}) 
+          ON DELETE CASCADE,
+
+          FOREIGN KEY (${MedicamentFactureFields.medicament})
+          REFERENCES $tableMedicament (${MedicamentFields.id}) 
+          ON DELETE CASCADE,
         )''');
 
-       /*  Création de la table MouvementStock
+    /*  Création de la table MouvementStock
     Pour enregistrer les mouvements de stock des produits
     */
     await db.execute('''  
         CREATE TABLE $tableMouvementStock(
-          ${MouvementStockFields.id} $idType,
           ${MouvementStockFields.description} $textType,
           ${MouvementStockFields.quantite} $integerType,
           ${MouvementStockFields.updated_at} $textType,
           ${MouvementStockFields.updated_at} $textType,
           ${MouvementStockFields.entrepot} $integerType,
           ${MouvementStockFields.medicament} $integerType,
+
+
+          PRIMARY KEY (${MouvementStockFields.entrepot}, ${MouvementStockFields.medicament}),
+
+          FOREIGN KEY (${MouvementStockFields.entrepot})
+          REFERENCES $tableEntrepot (${EntrepotFields.id}) 
+          ON DELETE CASCADE,
+
+          FOREIGN KEY (${MouvementStockFields.medicament})
+          REFERENCES $tableMedicament (${MedicamentFields.id}) 
+          ON DELETE CASCADE,
         )''');
 
     /*  Création de la table Pharmacie
@@ -260,9 +337,12 @@ class PharmacieDatabase {
           ${PharmacieFields.updated_at} $textType,
           ${PharmacieFields.user} $integerType,
           ${PharmacieFields.email} $textType,
+          FOREIGN KEY (${PharmacieFields.user})
+          REFERENCES $tableUser (${UserFields.id}) 
+          ON DELETE CASCADE
         )''');
 
-     /*  Création de la table Symptome
+    /*  Création de la table Symptome
     Pour enregistrer les symptomes des maladies
     */
     await db.execute('''  
@@ -272,8 +352,6 @@ class PharmacieDatabase {
           ${PharmacieFields.updated_at} $textType,
           ${PharmacieFields.updated_at} $textType,
         )''');
-
-
 
     /** Table d'exemple */
     await db.execute('''  
