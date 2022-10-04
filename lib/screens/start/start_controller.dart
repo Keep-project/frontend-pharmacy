@@ -2,12 +2,17 @@
 
 import 'package:get/get.dart';
 import 'package:location/location.dart' as l;
+import 'package:pharmacy_app/database/models/categorie.dart';
+import 'package:pharmacy_app/database/sqflite_db.dart';
 
 class StartScreenController extends GetxController {
+
+  List<Categorie> categories = <Categorie>[];
 
   @override
   void onInit() async {
     await getCurrentLocation();
+    categories = await PharmacieDatabase.instance.readAllCategorie();
     super.onInit();
   }
 
