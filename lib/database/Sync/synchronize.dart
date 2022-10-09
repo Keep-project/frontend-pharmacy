@@ -17,7 +17,7 @@ class SynchronizationData {
           return true;
         }
         else {
-          print('No internet :( Reason:');
+          print('No internet :( Reason: mobile data');
           return false;
         }
       }
@@ -27,7 +27,7 @@ class SynchronizationData {
           return true;
         }
         else {
-          print('No internet :( Reason:');
+          print('No internet :( Reason: wifi');
           return false;
         }
       }

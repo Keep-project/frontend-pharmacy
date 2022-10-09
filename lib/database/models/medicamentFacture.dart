@@ -57,13 +57,13 @@ class MedicamentFacture {
       );
 
   Map<String, dynamic> toMap() => {
-        MedicamentFactureFields.id: id,
+        'id': id,
         MedicamentFactureFields.montant: montant,
         MedicamentFactureFields.quantite: quantite,
         MedicamentFactureFields.created_at: created_at!.toIso8601String(),
         MedicamentFactureFields.updated_at: updated_at!.toIso8601String(),
-        MedicamentFactureFields.facture: facture,
-        MedicamentFactureFields.medicament: medicament,
+        'facture': facture,
+        'medicament': medicament,
       };
 
   MedicamentFacture copy({

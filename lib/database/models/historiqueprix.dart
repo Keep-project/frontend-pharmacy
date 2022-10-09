@@ -49,14 +49,14 @@ class HistoriquePrix {
       );
 
   Map<String, dynamic> toMap() => {
-        HistoriquePrixFields.id: id,
+        'id': id,
         HistoriquePrixFields.basePrix:basePrix,
         HistoriquePrixFields.prixVente: prixVente,
         HistoriquePrixFields.tva: tva,
         HistoriquePrixFields.created_at: created_at!.toIso8601String(),
         HistoriquePrixFields.updated_at: updated_at!.toIso8601String(),
-        HistoriquePrixFields.medicament: medicament,
-        HistoriquePrixFields.utilisateur: utilisateur,
+        'medicament': medicament,
+        'utilisateur': utilisateur,
       };
 
   HistoriquePrix copy({

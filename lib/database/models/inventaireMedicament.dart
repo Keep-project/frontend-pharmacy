@@ -46,13 +46,13 @@ class InventaireMedicament {
       );
 
   Map<String, dynamic> toMap() => {
-        InventaireMedicamentFields.id: id,
+        'id': id,
         InventaireMedicamentFields.quantiteAttendue: quantiteAttendue,
         InventaireMedicamentFields.quantiteReelle: quantiteReelle,
         InventaireMedicamentFields.created_at: created_at!.toIso8601String(),
         InventaireMedicamentFields.updated_at: updated_at!.toIso8601String(),
-        InventaireMedicamentFields.inventaire: inventaire,
-        InventaireMedicamentFields.medicament: medicament,
+        'inventaire': inventaire,
+        'medicament': medicament,
       };
 
   InventaireMedicament copy({

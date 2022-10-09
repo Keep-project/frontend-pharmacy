@@ -114,7 +114,7 @@ class Medicament {
       );
 
   Map<String, dynamic> toMap() => {
-        MedicamentFields.id: id,
+        'id': id,
         MedicamentFields.nom: nom,
         MedicamentFields.prix: prix,
         MedicamentFields.marque: marque,
@@ -127,12 +127,12 @@ class Medicament {
         MedicamentFields.voix: voix,
         MedicamentFields.created_at: created_at!.toIso8601String(),
         MedicamentFields.updated_at: updated_at!.toIso8601String(),
-        MedicamentFields.categorie: categorie,
-        MedicamentFields.pharmacie: pharmacie,
-        MedicamentFields.user: user,
+        'categorie': categorie,
+        'pharmacie': pharmacie,
+        'user': user,
         MedicamentFields.stockAlert: stockAlert,
         MedicamentFields.stockOptimal: stockOptimal,
-        MedicamentFields.entrepot: entrepot
+        'entrepot': entrepot
       };
 
   Medicament copy({

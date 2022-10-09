@@ -93,7 +93,7 @@ class User {
       );
 
   Map<String, dynamic> toMap() => {
-        UserFields.id: id,
+        'id': id,
         UserFields.password: password,
         UserFields.lastLogin: lastLogin!.toIso8601String(),
         UserFields.isSuperuser: isSuperuser == true ? 1 : 0,

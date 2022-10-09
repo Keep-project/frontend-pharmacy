@@ -38,11 +38,11 @@ class Inventaire {
       );
 
   Map<String, dynamic> toMap() => {
-        InventaireFields.id: id,
+        'id': id,
         InventaireFields.libelle: libelle,
         InventaireFields.created_at: created_at!.toIso8601String(),
         InventaireFields.updated_at: updated_at!.toIso8601String(),
-        InventaireFields.entrepot: entrepot,
+        'entrepot': entrepot,
       };
 
   Inventaire copy({

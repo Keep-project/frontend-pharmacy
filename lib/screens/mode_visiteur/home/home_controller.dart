@@ -1,6 +1,6 @@
 // ignore_for_file: avoid_print, non_constant_identifier_names, unused_field, prefer_typing_uninitialized_variables
 
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:location/location.dart' as l;
@@ -22,7 +22,7 @@ class HomeScreenController extends GetxController {
   RxInt selectedCategorieIndex = 0.obs;
 
   l.LocationData? currentLocation;
-  double distance = 5; // initialisation du rayon de recherche à 5 KM par défaut
+  double distance = 25000; // initialisation du rayon de recherche à 5 KM par défaut
 
   int _count = 0;
   var next, previous;
@@ -161,6 +161,7 @@ class HomeScreenController extends GetxController {
           next = data.next;
           previous = data.previous;
           medicamentsList.addAll(data.results!);
+          print(medicamentsList[0].toMap());
           infinityStatus = LoadingStatus.completed;
           is_searching = false;
           update();

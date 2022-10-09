@@ -39,7 +39,7 @@ class PharmacieDatabase {
     final path = p.join(dbPath, filePath);
 
     return await openDatabase(path,
-        version: _databaseVersion, onCreate: _onCreateDB);
+        version: _databaseVersion, onCreate: _onCreateDB,);
   }
 
   Future _onCreateDB(Database db, int version) async {
@@ -133,6 +133,7 @@ class PharmacieDatabase {
           ${EntrepotFields.ville} $textType,
           ${EntrepotFields.telephone} $textType,
           ${EntrepotFields.description} $textType,
+          ${EntrepotFields.created_at} $textType,
           ${EntrepotFields.updated_at} $textType,
           ${EntrepotFields.pharmacie} $integerType,
 
@@ -358,9 +359,7 @@ class PharmacieDatabase {
           ${PharmacieFields.created_at} $textType,
           ${PharmacieFields.updated_at} $textType
         )''');
-
   }
-
 
   /**
  * Méthodes / Requêtes SQL
@@ -376,6 +375,10 @@ class PharmacieDatabase {
       id = await txn.insert(tableCategorie, categorie.toMap());
     });
     return categorie.copy(id: id);
+
+    // exemple
+
+    // await PharmacieDatabase.instance.createCategorie(Categorie(libelle: 'Adultes'));
   }
 
   Future<Categorie?> readCategorie(int id) async {
@@ -397,11 +400,7 @@ class PharmacieDatabase {
     }
   }
 
-
   Future<List<Categorie>> readAllCategorie() async {
-    print("===========================");
-    print("Demande de la liste de toutes les categories");
-    print("===========================");
     final db = await instance.database;
     const orderBy = "${CategorieFields.id} ASC";
 
@@ -438,9 +437,9 @@ class PharmacieDatabase {
     );
   }
 
-/// La table Utilisateur
+  /// La table Utilisateur
 
-Future<User> createUser(User user) async {
+  Future<User> createUser(User user) async {
     // Méthode permettant d'ajouter une note dans notre base de données
     final db = await instance.database;
     int id = 0;
@@ -468,7 +467,6 @@ Future<User> createUser(User user) async {
       return null;
     }
   }
-
 
   Future<List<User>> readAllUser() async {
     final db = await instance.database;
@@ -507,10 +505,9 @@ Future<User> createUser(User user) async {
     );
   }
 
+  /// La table Carnet
 
-/// La table Carnet
-
-Future<Carnet> createCarnet(Carnet carnet) async {
+  Future<Carnet> createCarnet(Carnet carnet) async {
     // Méthode permettant d'ajouter une note dans notre base de données
     final db = await instance.database;
     int id = 0;
@@ -538,7 +535,6 @@ Future<Carnet> createCarnet(Carnet carnet) async {
       return null;
     }
   }
-
 
   Future<List<Carnet>> readAllCarnet() async {
     final db = await instance.database;
@@ -577,10 +573,9 @@ Future<Carnet> createCarnet(Carnet carnet) async {
     );
   }
 
+  /// La table Consultation
 
-/// La table Consultation
-
-Future<Consultation> createConsultation(Consultation consultation) async {
+  Future<Consultation> createConsultation(Consultation consultation) async {
     // Méthode permettant d'ajouter une note dans notre base de données
     final db = await instance.database;
     int id = 0;
@@ -609,7 +604,6 @@ Future<Consultation> createConsultation(Consultation consultation) async {
     }
   }
 
-
   Future<List<Consultation>> readAllConsultation() async {
     final db = await instance.database;
     const orderBy = "${ConsultationFields.id} ASC";
@@ -619,7 +613,8 @@ Future<Consultation> createConsultation(Consultation consultation) async {
       tableConsultation,
       orderBy: orderBy,
     );
-    return List<Consultation>.from(result.map((json) => Consultation.fromMap(json)));
+    return List<Consultation>.from(
+        result.map((json) => Consultation.fromMap(json)));
   }
 
   Future<int> updateConsultation(Consultation consultation) async {
@@ -647,10 +642,9 @@ Future<Consultation> createConsultation(Consultation consultation) async {
     );
   }
 
+  /// La table Entrepot
 
-/// La table Entrepot
-
-Future<Entrepot> createEntrepot(Entrepot entrepot) async {
+  Future<Entrepot> createEntrepot(Entrepot entrepot) async {
     // Méthode permettant d'ajouter une note dans notre base de données
     final db = await instance.database;
     int id = 0;
@@ -658,6 +652,22 @@ Future<Entrepot> createEntrepot(Entrepot entrepot) async {
       id = await txn.insert(tableEntrepot, entrepot.toMap());
     });
     return entrepot.copy(id: id);
+
+    // Exemple
+
+    // Entrepot entrepot = await PharmacieDatabase.instance
+    //       .createEntrepot(
+    //         Entrepot(
+    //           nom: 'Magasin 1',
+    //           pays: 'Cameroun',
+    //           ville: 'Yaoundé',
+    //           telephone: '652310829',
+    //           description: 'Entrepot de stockage de produits pharmaceutiques pour adultes',
+    //           created_at: DateTime.now(),
+    //           updated_at: DateTime.now(),
+    //           pharmacie: pharmacy.first.id,
+    //         )
+    //       );
   }
 
   Future<Entrepot?> readEntrepot(int id) async {
@@ -678,7 +688,6 @@ Future<Entrepot> createEntrepot(Entrepot entrepot) async {
       return null;
     }
   }
-
 
   Future<List<Entrepot>> readAllEntrepot() async {
     final db = await instance.database;
@@ -717,9 +726,9 @@ Future<Entrepot> createEntrepot(Entrepot entrepot) async {
     );
   }
 
-/// La table Facture
+  /// La table Facture
 
-Future<Facture> createFacture(Facture facture) async {
+  Future<Facture> createFacture(Facture facture) async {
     // Méthode permettant d'ajouter une note dans notre base de données
     final db = await instance.database;
     int id = 0;
@@ -747,7 +756,6 @@ Future<Facture> createFacture(Facture facture) async {
       return null;
     }
   }
-
 
   Future<List<Facture>> readAllFacture() async {
     final db = await instance.database;
@@ -786,9 +794,10 @@ Future<Facture> createFacture(Facture facture) async {
     );
   }
 
-/// La table HistoriquePrix
+  /// La table HistoriquePrix
 
-Future<HistoriquePrix> createHistoriquePrix(HistoriquePrix historiquePrix) async {
+  Future<HistoriquePrix> createHistoriquePrix(
+      HistoriquePrix historiquePrix) async {
     // Méthode permettant d'ajouter une note dans notre base de données
     final db = await instance.database;
     int id = 0;
@@ -817,8 +826,7 @@ Future<HistoriquePrix> createHistoriquePrix(HistoriquePrix historiquePrix) async
     }
   }
 
-
-  Future<List<HistoriquePrix>> readAllHistoriquePrix(int id) async {
+  Future<List<HistoriquePrix>> readAllHistoriquePrix() async {
     final db = await instance.database;
     const orderBy = "${HistoriquePrixFields.id} ASC";
 
@@ -827,7 +835,8 @@ Future<HistoriquePrix> createHistoriquePrix(HistoriquePrix historiquePrix) async
       tableHistoriquePrix,
       orderBy: orderBy,
     );
-    return List<HistoriquePrix>.from(result.map((json) => HistoriquePrix.fromMap(json)));
+    return List<HistoriquePrix>.from(
+        result.map((json) => HistoriquePrix.fromMap(json)));
   }
 
   Future<int> updateHistoriquePrix(HistoriquePrix historiquePrix) async {
@@ -855,9 +864,9 @@ Future<HistoriquePrix> createHistoriquePrix(HistoriquePrix historiquePrix) async
     );
   }
 
-/// La table Inventaire
+  /// La table Inventaire
 
-Future<Inventaire> createInventaire(Inventaire inventaire) async {
+  Future<Inventaire> createInventaire(Inventaire inventaire) async {
     // Méthode permettant d'ajouter une note dans notre base de données
     final db = await instance.database;
     int id = 0;
@@ -886,8 +895,7 @@ Future<Inventaire> createInventaire(Inventaire inventaire) async {
     }
   }
 
-
-  Future<List<Inventaire>> readAllInventaire(int id) async {
+  Future<List<Inventaire>> readAllInventaire() async {
     final db = await instance.database;
     const orderBy = "${InventaireFields.id} ASC";
 
@@ -896,7 +904,8 @@ Future<Inventaire> createInventaire(Inventaire inventaire) async {
       tableInventaire,
       orderBy: orderBy,
     );
-    return List<Inventaire>.from(result.map((json) => Inventaire.fromMap(json)));
+    return List<Inventaire>.from(
+        result.map((json) => Inventaire.fromMap(json)));
   }
 
   Future<int> updateInventaire(Inventaire inventaire) async {
@@ -924,14 +933,16 @@ Future<Inventaire> createInventaire(Inventaire inventaire) async {
     );
   }
 
-/// La table InventaireMedicament
+  /// La table InventaireMedicament
 
-Future<InventaireMedicament> createInventaireMedicament(InventaireMedicament inventaireMedicament) async {
+  Future<InventaireMedicament> createInventaireMedicament(
+      InventaireMedicament inventaireMedicament) async {
     // Méthode permettant d'ajouter une note dans notre base de données
     final db = await instance.database;
     int id = 0;
     await db.transaction((txn) async {
-      id = await txn.insert(tableInventaireMedicament, inventaireMedicament.toMap());
+      id = await txn.insert(
+          tableInventaireMedicament, inventaireMedicament.toMap());
     });
     return inventaireMedicament.copy(id: id);
   }
@@ -955,8 +966,7 @@ Future<InventaireMedicament> createInventaireMedicament(InventaireMedicament inv
     }
   }
 
-
-  Future<List<InventaireMedicament>> readAllInventaireMedicament(int id) async {
+  Future<List<InventaireMedicament>> readAllInventaireMedicament() async {
     final db = await instance.database;
     const orderBy = "${InventaireMedicamentFields.id} ASC";
 
@@ -965,10 +975,12 @@ Future<InventaireMedicament> createInventaireMedicament(InventaireMedicament inv
       tableInventaireMedicament,
       orderBy: orderBy,
     );
-    return List<InventaireMedicament>.from(result.map((json) => InventaireMedicament.fromMap(json)));
+    return List<InventaireMedicament>.from(
+        result.map((json) => InventaireMedicament.fromMap(json)));
   }
 
-  Future<int> updateInventaireMedicament(InventaireMedicament inventaireMedicament) async {
+  Future<int> updateInventaireMedicament(
+      InventaireMedicament inventaireMedicament) async {
     final db = await instance.database;
 
     return db.update(
@@ -993,10 +1005,9 @@ Future<InventaireMedicament> createInventaireMedicament(InventaireMedicament inv
     );
   }
 
+  /// La table Maladie
 
-/// La table Maladie
-
-Future<Maladie> createMaladie(Maladie maladie) async {
+  Future<Maladie> createMaladie(Maladie maladie) async {
     // Méthode permettant d'ajouter une note dans notre base de données
     final db = await instance.database;
     int id = 0;
@@ -1025,8 +1036,7 @@ Future<Maladie> createMaladie(Maladie maladie) async {
     }
   }
 
-
-  Future<List<Maladie>> readAllMaladie(int id) async {
+  Future<List<Maladie>> readAllMaladie() async {
     final db = await instance.database;
     const orderBy = "${MaladieFields.id} ASC";
 
@@ -1063,10 +1073,9 @@ Future<Maladie> createMaladie(Maladie maladie) async {
     );
   }
 
+  /// La table Medicament
 
-/// La table Medicament
-
-Future<Medicament> createMedicament(Medicament medicament) async {
+  Future<Medicament> createMedicament(Medicament medicament) async {
     // Méthode permettant d'ajouter une note dans notre base de données
     final db = await instance.database;
     int id = 0;
@@ -1095,8 +1104,7 @@ Future<Medicament> createMedicament(Medicament medicament) async {
     }
   }
 
-
-  Future<List<Medicament>> readAllMedicament(int id) async {
+  Future<List<Medicament>> readAllMedicament() async {
     final db = await instance.database;
     const orderBy = "${MedicamentFields.id} ASC";
 
@@ -1105,7 +1113,8 @@ Future<Medicament> createMedicament(Medicament medicament) async {
       tableMedicament,
       orderBy: orderBy,
     );
-    return List<Medicament>.from(result.map((json) => Medicament.fromMap(json)));
+    return List<Medicament>.from(
+        result.map((json) => Medicament.fromMap(json)));
   }
 
   Future<int> updateMedicament(Medicament medicament) async {
@@ -1133,9 +1142,10 @@ Future<Medicament> createMedicament(Medicament medicament) async {
     );
   }
 
-/// La table MedicamentFacture
+  /// La table MedicamentFacture
 
-Future<MedicamentFacture> createMedicamentFacture(MedicamentFacture medicamentFacture) async {
+  Future<MedicamentFacture> createMedicamentFacture(
+      MedicamentFacture medicamentFacture) async {
     // Méthode permettant d'ajouter une note dans notre base de données
     final db = await instance.database;
     int id = 0;
@@ -1164,8 +1174,7 @@ Future<MedicamentFacture> createMedicamentFacture(MedicamentFacture medicamentFa
     }
   }
 
-
-  Future<List<MedicamentFacture>> readAllMedicamentFacture(int id) async {
+  Future<List<MedicamentFacture>> readAllMedicamentFacture() async {
     final db = await instance.database;
     const orderBy = "${MedicamentFactureFields.id} ASC";
 
@@ -1174,10 +1183,12 @@ Future<MedicamentFacture> createMedicamentFacture(MedicamentFacture medicamentFa
       tableMedicament,
       orderBy: orderBy,
     );
-    return List<MedicamentFacture>.from(result.map((json) => MedicamentFacture.fromMap(json)));
+    return List<MedicamentFacture>.from(
+        result.map((json) => MedicamentFacture.fromMap(json)));
   }
 
-  Future<int> updateMedicamentFacture(MedicamentFacture medicamentFacture) async {
+  Future<int> updateMedicamentFacture(
+      MedicamentFacture medicamentFacture) async {
     final db = await instance.database;
 
     return db.update(
@@ -1202,9 +1213,10 @@ Future<MedicamentFacture> createMedicamentFacture(MedicamentFacture medicamentFa
     );
   }
 
-/// La table MouvementStock
+  /// La table MouvementStock
 
-Future<MouvementStock> createMouvementStock(MouvementStock mouvementStock) async {
+  Future<MouvementStock> createMouvementStock(
+      MouvementStock mouvementStock) async {
     // Méthode permettant d'ajouter une note dans notre base de données
     final db = await instance.database;
     int id = 0;
@@ -1233,8 +1245,7 @@ Future<MouvementStock> createMouvementStock(MouvementStock mouvementStock) async
     }
   }
 
-
-  Future<List<MouvementStock>> readAllMouvementStock(int id) async {
+  Future<List<MouvementStock>> readAllMouvementStock() async {
     final db = await instance.database;
     const orderBy = "${MouvementStockFields.id} ASC";
 
@@ -1243,7 +1254,8 @@ Future<MouvementStock> createMouvementStock(MouvementStock mouvementStock) async
       tableMouvementStock,
       orderBy: orderBy,
     );
-    return List<MouvementStock>.from(result.map((json) => MouvementStock.fromMap(json)));
+    return List<MouvementStock>.from(
+        result.map((json) => MouvementStock.fromMap(json)));
   }
 
   Future<int> updateMouvementStock(MouvementStock mouvementStock) async {
@@ -1271,9 +1283,9 @@ Future<MouvementStock> createMouvementStock(MouvementStock mouvementStock) async
     );
   }
 
-/// La table Pharmacie
+  /// La table Pharmacie
 
-Future<Pharmacie> createPharmacie(Pharmacie pharmacie) async {
+  Future<Pharmacie> createPharmacie(Pharmacie pharmacie) async {
     // Méthode permettant d'ajouter une note dans notre base de données
     final db = await instance.database;
     int id = 0;
@@ -1300,10 +1312,28 @@ Future<Pharmacie> createPharmacie(Pharmacie pharmacie) async {
     } else {
       return null;
     }
+
+    // exemple
+  
+    // Pharmacie pharmacy = await PharmacieDatabase.instance.createPharmacie(
+    //   Pharmacie(
+    //     libelle: '1',
+    //     nom: 'Pharmacie de la côte',
+    //     localisation: "Cameroun;Yaoundé;Mvan",
+    //     tel: "+237 652 310 829",
+    //     latitude: 3.866667,
+    //     longitude : 11.516667,
+    //     ouverture: '08h30',
+    //     fermeture: '19h30',
+    //     created_at: DateTime.now(),
+    //     updated_at: DateTime.now(),
+    //     user: 1,
+    //     email: 'info@gmail.com',
+    //   )
+    // );
   }
 
-
-  Future<List<Pharmacie>> readAllPharmacie(int id) async {
+  Future<List<Pharmacie>> readAllPharmacie() async {
     final db = await instance.database;
     const orderBy = "${PharmacieFields.id} ASC";
 
@@ -1340,9 +1370,9 @@ Future<Pharmacie> createPharmacie(Pharmacie pharmacie) async {
     );
   }
 
-/// La table Symptome
+  /// La table Symptome
 
-Future<Symptome> createSymptome(Symptome symptome) async {
+  Future<Symptome> createSymptome(Symptome symptome) async {
     // Méthode permettant d'ajouter une note dans notre base de données
     final db = await instance.database;
     int id = 0;
@@ -1371,8 +1401,7 @@ Future<Symptome> createSymptome(Symptome symptome) async {
     }
   }
 
-
-  Future<List<Symptome>> readAllSymptome(int id) async {
+  Future<List<Symptome>> readAllSymptome() async {
     final db = await instance.database;
     const orderBy = "${SymptomeFields.id} ASC";
 
@@ -1409,11 +1438,9 @@ Future<Symptome> createSymptome(Symptome symptome) async {
     );
   }
 
-/// Fin des requêtes SQL
+  /// Fin des requêtes SQL
 
-
-
-/// Méthode pour fermer la base de données
+  /// Méthode pour fermer la base de données
   Future close() async {
     final db = await instance.database;
     db.close();

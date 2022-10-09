@@ -57,13 +57,13 @@ class MouvementStock {
       );
 
   Map<String, dynamic> toMap() => {
-        MouvementStockFields.id: id,
+        'id': id,
         MouvementStockFields.description: description,
         MouvementStockFields.quantite: quantite,
         MouvementStockFields.created_at: created_at!.toIso8601String(),
         MouvementStockFields.updated_at: updated_at!.toIso8601String(),
-        MouvementStockFields.entrepot: entrepot,
-        MouvementStockFields.medicament: medicament,
+        'entrepot': entrepot,
+        'medicament': medicament,
       };
 
   MouvementStock copy({

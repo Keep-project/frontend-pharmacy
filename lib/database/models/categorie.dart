@@ -27,7 +27,7 @@ class Categorie {
       );
 
   Map<String, dynamic> toMap() => {
-        CategorieFields.id: id,
+        'id': id,
         CategorieFields.libelle: libelle,
       };
 
