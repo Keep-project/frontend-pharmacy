@@ -161,7 +161,6 @@ class HomeScreenController extends GetxController {
           next = data.next;
           previous = data.previous;
           medicamentsList.addAll(data.results!);
-          print(medicamentsList[0].toMap());
           infinityStatus = LoadingStatus.completed;
           is_searching = false;
           update();

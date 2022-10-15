@@ -74,7 +74,7 @@ class Pharmacie {
       );
 
   Map<String, dynamic> toMap() => {
-        'id': id,
+        PharmacieFields.id: id,
         PharmacieFields.libelle: libelle,
         PharmacieFields.nom: nom,
         PharmacieFields.localisation: localisation,
@@ -85,7 +85,7 @@ class Pharmacie {
         PharmacieFields.fermeture: fermeture,
         PharmacieFields.created_at: created_at!.toIso8601String(),
         PharmacieFields.updated_at: updated_at!.toIso8601String(),
-        'user': user,
+        PharmacieFields.user: user,
         PharmacieFields.email: email,
       };
 

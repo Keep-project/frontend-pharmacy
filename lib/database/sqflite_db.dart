@@ -241,6 +241,7 @@ class PharmacieDatabase {
     await db.execute('''  
         CREATE TABLE $tableMedicament(
           ${MedicamentFields.id} $idType,
+          ${MedicamentFields.idMedicament} $integerType,
           ${MedicamentFields.nom} $textType,
           ${MedicamentFields.prix} $integerType,
           ${MedicamentFields.marque} $textType,

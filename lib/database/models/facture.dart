@@ -50,14 +50,14 @@ class Facture {
       );
 
   Map<String, dynamic> toMap() => {
-        'id': id,
+        FactureFields.id: id,
         FactureFields.montantTotal:montantTotal,
         FactureFields.quantiteTotal: quantiteTotal,
         FactureFields.reduction: reduction,
         FactureFields.note: note,
         FactureFields.created_at: created_at!.toIso8601String(),
         FactureFields.updated_at: updated_at!.toIso8601String(),
-        'utilisateur': utilisateur,
+        FactureFields.utilisateur: utilisateur,
       };
 
   Facture copy({

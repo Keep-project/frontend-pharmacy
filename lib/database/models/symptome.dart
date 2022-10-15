@@ -40,7 +40,7 @@ class Symptome {
       );
 
   Map<String, dynamic> toMap() => {
-        'id': id,
+        SymptomeFields.id: id,
         SymptomeFields.libelle: libelle,
         SymptomeFields.created_at: created_at,
         SymptomeFields.updated_at: updated_at,

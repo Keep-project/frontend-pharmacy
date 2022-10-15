@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pharmacy_app/core/app_snackbar.dart';
 import 'package:pharmacy_app/core/app_state.dart';
+import 'package:pharmacy_app/database/utilities/utility.dart';
 import 'package:pharmacy_app/models/request_data_models/medicament_model.dart';
 import 'package:pharmacy_app/models/response_data_models/entrepot_model.dart';
 import 'package:pharmacy_app/models/response_data_models/medicament_model.dart';
@@ -144,8 +145,7 @@ class MedicamentFormController extends GetxController {
     if (pickedFile != null) {
       imageFile = File(pickedFile.path);
       imageName = pickedFile.name;
-      var imageBytes = imageFile.readAsBytesSync();
-      var encoded = base64Encode(imageBytes);
+      String encoded = Utility.base64String(imageFile);  
       photo = "data:image/png;base64, $encoded";
       update();
     }

@@ -54,7 +54,7 @@ class Entrepot {
       );
 
   Map<String, dynamic> toMap() => {
-        'id': id,
+        EntrepotFields.id: id,
         EntrepotFields.nom: nom,
         EntrepotFields.pays: pays,
         EntrepotFields.ville: ville,
@@ -62,7 +62,7 @@ class Entrepot {
         EntrepotFields.description: description,
         EntrepotFields.created_at: created_at!.toIso8601String(),
         EntrepotFields.updated_at: updated_at!.toIso8601String(),
-        'pharmacie': pharmacie,
+        EntrepotFields.pharmacie: pharmacie,
       };
 
   Entrepot copy({

@@ -5,7 +5,7 @@ import 'package:pharmacy_app/core/app_colors.dart';
 import 'package:pharmacy_app/core/app_sizes.dart';
 
 class CustomSnacbar{
-  static showMessage(BuildContext context, String message){
+  static showMessage(BuildContext context, String message, {double? height}){
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         elevation: 0,
@@ -15,7 +15,7 @@ class CustomSnacbar{
           clipBehavior: Clip.none,
           children: [
             Container(
-              height: 100,
+              height: height ?? 100,
             ),
             Positioned(
               bottom: 0,
@@ -23,7 +23,7 @@ class CustomSnacbar{
               right: 0,
               child: Container(
                 padding: const EdgeInsets.all(16),
-                height: 90,
+                height: height != null ? height - 10 : 90,
                 width: double.infinity,
                 decoration: BoxDecoration(
                   color: kTextColor2,
@@ -33,6 +33,8 @@ class CustomSnacbar{
                   children: [
                     const Spacer(),
                     Text(message,
+                    // maxLines: 3,
+                    // overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
                       fontStyle: FontStyle.normal,
                     )),

@@ -41,6 +41,29 @@ class MedicamentRequestModel {
     this.image,
   });
 
+
+  factory MedicamentRequestModel.fromJson(String string) => MedicamentRequestModel.fromMap(json.decode(string));
+
+  factory MedicamentRequestModel.fromMap(Map<String, dynamic> json) => MedicamentRequestModel(
+    nom: json["nom"],
+    prix: json["prix"],
+    masse: json["masse"],
+    marque: json["marque"],
+    date_exp: DateTime.parse(json["date_exp"]),
+    qte_stock: json["qte_stock"],
+    stockAlert: json["stockAlert"],
+    stockOptimal: json["stockOptimal"],
+    description: json["description"],
+    posologie: json["posologie"],
+    categorie: json["categorie_id"],
+    voix: json["voix"],
+    pharmacie: json["pharmacie_id"],
+    entrepot: json["entrepot_id"],
+    tva: json["tva"] ?? 0.0,
+    basePrix: json["basePrix"] ?? "",
+    image: json["image"] ?? ""
+  );
+
   Map<String, dynamic> toMap() => {
         'nom': nom,
         'prix': prix,

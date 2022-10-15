@@ -1,24 +1,45 @@
 // ignore_for_file: avoid_print
 
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:location/location.dart' as l;
+import 'package:pharmacy_app/core/app_snackbar.dart';
+import 'package:pharmacy_app/core/app_state.dart';
 import 'package:pharmacy_app/database/Sync/synchronize.dart';
 import 'package:pharmacy_app/database/models/categorie.dart';
 import 'package:pharmacy_app/database/models/entrepot.dart';
 import 'package:pharmacy_app/database/models/medicament.dart';
 import 'package:pharmacy_app/database/models/pharmacie.dart';
 import 'package:pharmacy_app/database/sqflite_db.dart';
+import 'package:pharmacy_app/models/request_data_models/medicament_model.dart';
+import 'package:pharmacy_app/models/response_data_models/medicament_model.dart'
+    as rm;
+import 'package:pharmacy_app/services/local_services/authentication/authentication_services.dart';
+import 'package:pharmacy_app/services/local_services/authentication/authentication_services_impl.dart';
+import 'package:pharmacy_app/services/remote_services/medicament/medicament.dart';
 
 class StartScreenController extends GetxController {
   List<Categorie> categories = <Categorie>[];
+
+  LoadingStatus synchronizeStatus = LoadingStatus.initial;
+  final MedicamentService _medicamentService = MedicamentServiceImpl();
+  final LocalAuthentificationService _localAuth =
+      LocalAuthentificationServiceImpl();
+
+  bool isInternetConnection = false;
+
+  dynamic next, previous;
+  int _count = 0;
+
+  var medicaments;
+  List<rm.Medicament> medicamentsList = [];
 
   @override
   void onInit() async {
     await getCurrentLocation();
     // await SynchronizationData().fetchAllNotes();
-    bool status = await SynchronizationData.isInternet();
-    print(status);
-  // await PharmacieDatabase.instance.createCategorie(Categorie(libelle: 'Adultes'));
+    isInternetConnection = await SynchronizationData.isInternet();
+    // await PharmacieDatabase.instance.createCategorie(Categorie(libelle: 'Adultes'));
     // categories = await PharmacieDatabase.instance.readAllCategorie();
     // for (Categorie cat in categories) {
     //   print("\n\n");
@@ -43,7 +64,7 @@ class StartScreenController extends GetxController {
     // var pharmacy = await PharmacieDatabase.instance.readAllPharmacie();
     // print(pharmacy.first.toMap());
     try {
-    print("============================");
+      print("============================");
       // Entrepot entrepot = await PharmacieDatabase.instance.createEntrepot(Entrepot(
       //   nom: 'Magasin 1',
       //   pays: 'Cameroun',
@@ -57,31 +78,71 @@ class StartScreenController extends GetxController {
       // ));
       // var entrepots = await PharmacieDatabase.instance.readAllEntrepot();
       // print(entrepots.first.toMap());
-      // Medicament medicament = await PharmacieDatabase.instance.createMedicament(
-      //   Medicament(
-      //     nom: "Spedifen",
-      //     prix: 350,
-      //     marque: "Denk",
-      //     dateExp: DateTime.now(),
-      //     image: '',
-      //     masse: '12g',
-      //     qteStock: 202,
-      //     description: 'Medicament pour soulagement des maux de ...',
-      //     posologie: 'A prendre chaque jour à la même heure',
-      //     voix: 1,
-      //     created_at: DateTime.now(),
-      //     updated_at: DateTime.now(),
-      //     categorie: 1,
-      //     pharmacie: 1,
-      //     user: 1,
-      //     stockAlert: 40,
-      //     stockOptimal: 410,
-      //     entrepot: 1,
-      //   )
-      // );
-      var medicaments = await PharmacieDatabase.instance.readAllMedicament();
-      print(medicaments.first.toMap());
-    print("============================");
+      /*Medicament medicament = await PharmacieDatabase.instance.createMedicament(
+          Medicament(
+              nom: "Versol",
+              prix: 200,
+              marque: "denk",
+              dateExp: DateTime.now(),
+              image: "",
+              masse: "30g",
+              qteStock: 194,
+              stockAlert: 47,
+              stockOptimal: 210,
+              description: "médicament pour enfant",
+              posologie: "deux comprimé chaque jour",
+              voix: 1,
+              categorie: 2,
+              user: 2,
+              pharmacie: 1,
+              entrepot: 1,
+              created_at: DateTime.now(),
+              updated_at: DateTime.now(),));*/
+      /*await PharmacieDatabase.instance.updateMedicament(Medicament(
+              id: 1,
+              nom: "Aclav",
+              prix: 4300,
+              marque: "denk",
+              dateExp: DateTime.parse("2022-09-21T12:55:53.018Z"),
+              image: "",
+              masse: "200g",
+              qteStock: 194,
+              stockAlert: 1,
+              stockOptimal: 1,
+              description: "médicament pour enfant",
+              posologie: "deux comprimÚ chaque jour",
+              voix: 2,
+              categorie: 1,
+              user: 2,
+              pharmacie: 1,
+              entrepot: 1,
+              created_at: DateTime.parse("2022-07-04T16:43:45.684Z"),
+              updated_at: DateTime.parse("2022-09-26T05:48:34.878Z")));
+      await PharmacieDatabase.instance.updateMedicament(Medicament(
+              id: 2,
+              nom: "Flucazol",
+              prix: 4300,
+              marque: "denk",
+              dateExp: DateTime.parse("2022-09-21T12:55:53.018Z"),
+              image: "",
+              masse: "200g",
+              qteStock: 194,
+              stockAlert: 1,
+              stockOptimal: 1,
+              description: "médicament pour enfant",
+              posologie: "deux comprimÚ chaque jour",
+              voix: 2,
+              categorie: 1,
+              user: 2,
+              pharmacie: 1,
+              entrepot: 1,
+              created_at: DateTime.parse("2022-07-04T16:43:45.684Z"),
+              updated_at: DateTime.parse("2022-09-26T05:48:34.878Z")));*/
+
+      medicaments = await SynchronizationData().readAllMedicament();
+      print(isInternetConnection);
+      print(medicaments);
+      print("============================");
     } catch (e) {
       print(e);
     }
@@ -122,5 +183,75 @@ class StartScreenController extends GetxController {
     });
 
     update();
+  }
+
+  /** 
+   * Synchronisation des bases de données 
+   * 
+   * */
+
+  Future pushData(BuildContext context) async {
+    synchronizeStatus = LoadingStatus.searching;
+    update();
+    for (var medoc in medicaments) {
+      MedicamentRequestModel newmedecine =
+          MedicamentRequestModel.fromMap(medoc.toMap());
+      await _medicamentService.add(
+        medicamentModel: newmedecine,
+        onSuccess: (data) {
+          print("${medoc.nom!} save successfully !\n\n");
+          CustomSnacbar.showMessage(context, "Médicament ajouté avec succès !");
+          // Get.offAndToNamed(AppRoutes.STOCK);
+          // synchronizeStatus = LoadingStatus.completed;
+          // update();
+        },
+        onError: (error) {
+          print("============ Médicament form / error ===========");
+          print(error.response);
+          if (error.response!.statusCode == 400) {
+            CustomSnacbar.showMessage(
+                context, "${error.response!.data['message']}",
+                height: 120);
+          }
+          print("=================================");
+          // synchronizeStatus = LoadingStatus.failed;
+          // update();
+        },
+      );
+    }
+    synchronizeStatus = LoadingStatus.completed;
+    update();
+  }
+
+  Future pullData(BuildContext context) async {
+    synchronizeStatus = LoadingStatus.searching;
+    update();
+    await _medicamentService.medicamentForPharmacy(
+        url: next,
+        data: {'None': null},
+        idPharmacie: await _localAuth.getPharmacyId(),
+        onSuccess: (data) async {
+          _count = data.count!;
+          next = data.next;
+          previous = data.previous;
+          medicamentsList.addAll(data.results!);
+          for (rm.Medicament med in data.results!) {
+            await SynchronizationData().saveMedicament(med);
+          }
+          print(medicamentsList);
+          if (next != null) {
+            await pullData(context);
+          } else {
+            synchronizeStatus = LoadingStatus.completed;
+            update();
+          }
+        },
+        onError: (e) {
+          print("=============== pull data error ================");
+          print(e);
+          print("==========================================");
+          synchronizeStatus = LoadingStatus.failed;
+          update();
+        });
   }
 }

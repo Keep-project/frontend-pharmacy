@@ -39,11 +39,11 @@ class Consultation {
       );
 
   Map<String, dynamic> toMap() => {
-        'id': id,
+        ConsultationFields.id: id,
         ConsultationFields.created_at: created_at!.toIso8601String(),
         ConsultationFields.updated_at: updated_at!.toIso8601String(),
-        'symptome': symptome,
-        'user': user,
+        ConsultationFields.symptome: symptome,
+        ConsultationFields.user: user,
       };
 
   Consultation copy({

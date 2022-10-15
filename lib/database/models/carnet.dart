@@ -48,12 +48,12 @@ class Carnet {
       );
 
   Map<String, dynamic> toMap() => {
-        'id': id,
+        CarnetFields.id: id,
         CarnetFields.user: user,
         CarnetFields.created_at: created_at!.toIso8601String(),
         CarnetFields.updated_at: updated_at!.toIso8601String(),
-        'consultation': consultation,
-        'maladie': maladie,
+        CarnetFields.consultation: consultation,
+        CarnetFields.maladie: maladie,
       };
 
   Carnet copy({

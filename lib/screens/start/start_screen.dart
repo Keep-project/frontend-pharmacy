@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pharmacy_app/core/app_colors.dart';
 import 'package:pharmacy_app/core/app_sizes.dart';
+import 'package:pharmacy_app/core/app_state.dart';
 import 'package:pharmacy_app/router/app_router.dart';
 import 'package:pharmacy_app/screens/start/start.dart';
 
@@ -260,6 +261,35 @@ class StartScreen extends GetView<StartScreenController> {
                                   ],
                                 ),
                               )),
+                        ),
+                        const SizedBox(height: kDefaultPadding * 3),
+                        Container(
+                          alignment: Alignment.center,
+                          child: InkWell(
+                            onTap: () async {
+                              if (controller.synchronizeStatus == LoadingStatus.searching){return;}
+                              await controller.pullData(context);
+                            },
+                            child: Container(
+                                height: kDefaultPadding * 3,
+                                width: kDefaultPadding * 3,
+                                decoration: const BoxDecoration(
+                                  color: kTextColor2,
+                                  shape: BoxShape.circle,
+                                ),
+                                child: controller.synchronizeStatus ==
+                                        LoadingStatus.searching
+                                    ? Container(
+                                      height: 18,
+                                      width: 18,
+                                      alignment: Alignment.center,
+                                      child: const CircularProgressIndicator(
+                                          color: kWhiteColor,
+                                        ),
+                                    )
+                                    : const Icon(Icons.refresh_sharp,
+                                        size: 36, color: kWhiteColor)),
+                          ),
                         ),
                         const SizedBox(height: kDefaultPadding * 3),
                       ],

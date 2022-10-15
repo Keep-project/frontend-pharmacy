@@ -5,6 +5,7 @@ const String tableMedicament = "medicaments";
 class MedicamentFields {
   static const List<String> values = [
     id,
+    idMedicament,
     nom,
     prix,
     marque,
@@ -26,6 +27,7 @@ class MedicamentFields {
   ];
 
   static const String id = "_id";
+  static const String idMedicament = "idMedicament";
   static const String nom = "nom";
   static const String prix = "prix";
   static const String marque = "marque";
@@ -48,6 +50,7 @@ class MedicamentFields {
 
 class Medicament {
   final int? id;
+  final int? idMedicament;
   final String? nom;
   final int? prix;
   final String? marque;
@@ -69,6 +72,7 @@ class Medicament {
 
   Medicament(
       {this.id,
+      this.idMedicament,
       this.nom,
       this.prix,
       this.marque,
@@ -93,6 +97,7 @@ class Medicament {
 
   factory Medicament.fromMap(Map<String, dynamic> json) => Medicament(
         id: json[MedicamentFields.id] as int?,
+        idMedicament: json[MedicamentFields.idMedicament] as int?,
         nom: json[MedicamentFields.nom] as String?,
         prix: json[MedicamentFields.prix] as int?,
         marque: json[MedicamentFields.marque] as String?,
@@ -114,7 +119,8 @@ class Medicament {
       );
 
   Map<String, dynamic> toMap() => {
-        'id': id,
+        MedicamentFields.id: id,
+        MedicamentFields.idMedicament: idMedicament,
         MedicamentFields.nom: nom,
         MedicamentFields.prix: prix,
         MedicamentFields.marque: marque,
@@ -127,16 +133,17 @@ class Medicament {
         MedicamentFields.voix: voix,
         MedicamentFields.created_at: created_at!.toIso8601String(),
         MedicamentFields.updated_at: updated_at!.toIso8601String(),
-        'categorie': categorie,
-        'pharmacie': pharmacie,
-        'user': user,
+        MedicamentFields.categorie: categorie,
+        MedicamentFields.pharmacie: pharmacie,
+        MedicamentFields.user: user,
         MedicamentFields.stockAlert: stockAlert,
         MedicamentFields.stockOptimal: stockOptimal,
-        'entrepot': entrepot
+        MedicamentFields.entrepot: entrepot
       };
 
   Medicament copy({
     int? id,
+    int? idMedicament,
     String? nom,
     int? prix,
     String? marque,
@@ -158,6 +165,7 @@ class Medicament {
   }) =>
       Medicament(
         id: id ?? this.id,
+        idMedicament: idMedicament ?? this.idMedicament,
         nom: nom ?? this.nom,
         prix: prix ?? this.prix,
         marque: marque ?? this.marque,
