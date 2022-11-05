@@ -347,13 +347,14 @@ class MedicamentFormController extends GetxController {
             selectedEntrepot = entrepots[1]['libelle'];
             entrepots.removeAt(0);
             for (Map map in entrepots) {
-              if (map['id'] == medicament!.entrepot!) {
+              if ( medicament != null && map['id'] == medicament!.entrepot!) {
                 onChangeEntrepot(map['libelle']);
                 break;
               }
             }
             update();
           }
+          print(entrepots);
           update();
         },
         onError: (error) {

@@ -102,15 +102,15 @@ class StockScreen extends GetView<StockController> {
                                         fontWeight: FontWeight.w600,
                                       ),
                                     ),
-                                    const Spacer(),
-                                    Text(
-                                      "Ref: ${controller.medicamentsList[index].id!.toString().padLeft(2, '0')}",
-                                      style: const TextStyle(
-                                        color: kDarkColor,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                    ),
+                                    // const Spacer(),
+                                    // Text(
+                                    //   "Ref: ${controller.medicamentsList[index].id!.toString().padLeft(2, '0')}",
+                                    //   style: const TextStyle(
+                                    //     color: kDarkColor,
+                                    //     fontSize: 16,
+                                    //     fontWeight: FontWeight.w600,
+                                    //   ),
+                                    // ),
                                   ],
                                 ),
                                 body: Column(
