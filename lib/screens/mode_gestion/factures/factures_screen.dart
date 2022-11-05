@@ -4,7 +4,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:pdf/widgets.dart' as pw;
 import 'package:pharmacy_app/components/card_container.dart';
 import 'package:pharmacy_app/components/my_row.dart';
 import 'package:pharmacy_app/components/title_text.dart';

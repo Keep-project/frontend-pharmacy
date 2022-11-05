@@ -32,7 +32,7 @@ class FactureResponseModel {
 }
 
 class Facture {
-  final int? id;
+  final String? id;
   final int? utilisateur;
   final int? montantTotal;
   final int? quantiteTotal;
@@ -60,7 +60,7 @@ class Facture {
       Facture.fromMap(json.decode(string));
 
   factory Facture.fromMap(Map<String, dynamic> json) => Facture(
-      id: json['id'] ?? 0,
+      id: json['id'] ?? "",
       utilisateur: json['utilisateur'] ?? 0,
       montantTotal: json['montantTotal'] ?? 0,
       quantiteTotal: json['quantiteTotal'] ?? 0,
@@ -100,7 +100,7 @@ class Facture {
 }
 
 class LigneProduit {
-  final int? id;
+  final String? id;
   final int? facture;
   final int? medicament;
   final int? montant;
@@ -125,7 +125,7 @@ class LigneProduit {
       LigneProduit.fromMap(json.decode(string));
 
   factory LigneProduit.fromMap(Map<String, dynamic> json) => LigneProduit(
-      id: json["id"] ?? 0,
+      id: json["id"] ?? "",
       facture: json["facture"] ?? 0,
       medicament: json["medicament"] ?? 0,
       montant: json["montant"] ?? 0,

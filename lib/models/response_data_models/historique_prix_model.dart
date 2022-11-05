@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 class HistoriquePrix {
-  final int? id;
+  final String? id;
   final String? basePrix;
   final double? tva;
   final int? prixVente;
@@ -23,7 +23,7 @@ class HistoriquePrix {
   factory HistoriquePrix.fromJson(String string) =>
       HistoriquePrix.fromMap(json.decode(string));
   factory HistoriquePrix.fromMap(Map<String, dynamic> json) => HistoriquePrix(
-        id: json['id'] ?? 0,
+        id: json['id'] ?? "",
         basePrix: json['basePrix'] ?? 'HT',
         tva: json['tva'] ?? 19.25,
         prixVente: json['prixVente'] ?? 0,

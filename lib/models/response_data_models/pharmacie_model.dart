@@ -41,7 +41,7 @@ class PharmacieResponseModel {
 
 
 class Pharmacie {
-  final int? id;
+  final String? id;
   final String? nom;
   final String? localisation;
   final String? phone;
@@ -76,7 +76,7 @@ class Pharmacie {
       Pharmacie.fromMap(json.decode(string));
 
   factory Pharmacie.fromMap(Map<String, dynamic> json) => Pharmacie(
-      id: json['id'] ?? 0,
+      id: json['id'] ?? "",
       nom: json['nom'] ?? "",
       localisation: json['localisation'] ?? "",
       phone: json['tel'] ?? "",

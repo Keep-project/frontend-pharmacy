@@ -50,7 +50,7 @@ class MedicamentFields {
 
 class Medicament {
   final int? id;
-  final int? idMedicament;
+  final String? idMedicament;
   final String? nom;
   final int? prix;
   final String? marque;
@@ -63,12 +63,12 @@ class Medicament {
   final int? voix;
   final DateTime? created_at;
   final DateTime? updated_at;
-  final int? categorie;
-  final int? pharmacie;
+  final String? categorie;
+  final String? pharmacie;
   final int? user;
   final int? stockAlert;
   final int? stockOptimal;
-  final int? entrepot;
+  final String? entrepot;
 
   Medicament(
       {this.id,
@@ -97,7 +97,7 @@ class Medicament {
 
   factory Medicament.fromMap(Map<String, dynamic> json) => Medicament(
         id: json[MedicamentFields.id] as int?,
-        idMedicament: json[MedicamentFields.idMedicament] as int?,
+        idMedicament: json[MedicamentFields.idMedicament] as String?,
         nom: json[MedicamentFields.nom] as String?,
         prix: json[MedicamentFields.prix] as int?,
         marque: json[MedicamentFields.marque] as String?,
@@ -110,12 +110,12 @@ class Medicament {
         voix: json[MedicamentFields.voix] as int?,
         created_at: DateTime.parse(json[MedicamentFields.created_at] as String),
         updated_at: DateTime.parse(json[MedicamentFields.updated_at] as String),
-        categorie: json[MedicamentFields.categorie] as int?,
-        pharmacie: json[MedicamentFields.pharmacie] as int?,
+        categorie: json[MedicamentFields.categorie] as String?,
+        pharmacie: json[MedicamentFields.pharmacie] as String?,
         user: json[MedicamentFields.user] as int?,
         stockAlert: json[MedicamentFields.stockAlert] as int?,
         stockOptimal: json[MedicamentFields.stockOptimal] as int?,
-        entrepot: json[MedicamentFields.entrepot] as int?,
+        entrepot: json[MedicamentFields.entrepot] as String?,
       );
 
   Map<String, dynamic> toMap() => {
@@ -143,7 +143,7 @@ class Medicament {
 
   Medicament copy({
     int? id,
-    int? idMedicament,
+    String? idMedicament,
     String? nom,
     int? prix,
     String? marque,
@@ -156,12 +156,12 @@ class Medicament {
     int? voix,
     DateTime? created_at,
     DateTime? updated_at,
-    int? categorie,
-    int? pharmacie,
+    String? categorie,
+    String? pharmacie,
     int? user,
     int? stockAlert,
     int? stockOptimal,
-    int? entrepot,
+    String? entrepot,
   }) =>
       Medicament(
         id: id ?? this.id,

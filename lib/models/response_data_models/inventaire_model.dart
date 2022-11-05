@@ -29,9 +29,9 @@ class InventaireResponseModel {
 }
 
 class Inventaire {
-  final int? id;
+  final String? id;
   final String? libelle;
-  final int? entrepot;
+  final String? entrepot;
   final String? entrepotName;
   final List<LigneInventaire>? lignesInventaire;
   final DateTime? created_at;
@@ -50,7 +50,7 @@ class Inventaire {
       Inventaire.fromMap(json.decode(string));
 
   factory Inventaire.fromMap(Map<String, dynamic> json) => Inventaire(
-        id: json["id"] ?? 0,
+        id: json["id"] ?? "",
         libelle: json["libelle"] ?? "",
         entrepot: json["entrepot"] ?? 0,
         entrepotName: json["get_entrepot_name"] ?? "",
@@ -87,9 +87,9 @@ class Inventaire {
 }
 
 class LigneInventaire {
-  final int? id;
-  final int? inventaire;
-  final int? medicament;
+  final String? id;
+  final String? inventaire;
+  final String? medicament;
   final String? productName;
   final int? quantiteAttendue;
   final int? quantiteReelle;
@@ -109,9 +109,9 @@ class LigneInventaire {
   factory LigneInventaire.fromJson(String string) =>
       LigneInventaire.fromMap(json.decode(string));
   factory LigneInventaire.fromMap(Map<String, dynamic> json) => LigneInventaire(
-        id: json['id'] ?? 0,
-        inventaire: json['inventaire'] ?? 0,
-        medicament: json['medicament'] ?? 0,
+        id: json['id'] ?? "",
+        inventaire: json['inventaire'] ?? "",
+        medicament: json['medicament'] ?? "",
         productName: json['get_medecine_name'] ?? 0,
         quantiteAttendue: json['quantiteAttendue'] ?? "",
         quantiteReelle: json['quantiteReelle'] ?? "",

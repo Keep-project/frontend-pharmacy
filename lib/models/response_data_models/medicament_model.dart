@@ -40,7 +40,7 @@ class MedicamentResponseModel {
 }
 
 class Medicament {
-  final int? id;
+  final String? id;
   final String? nom;
  int? prix;
   final String? masse;
@@ -53,16 +53,16 @@ class Medicament {
   final String? description;
   final String? posologie;
   final String? pharmaciename;
-  final int? categorie;
+  final String? categorie;
   final int? user;
   final int? voix;
   final User? createur;
-  final int? pharmacie;
+  final String? pharmacie;
   final List<Pharmacie>? pharmacies;
   final List<Entrepot>? entrepots;
   final List<Facture>? references;
   final List<HistoriquePrix>? historiques;
-  final int? entrepot;
+  final String? entrepot;
   final DateTime? created_at;
   final DateTime? updated_at;
 
@@ -97,7 +97,7 @@ class Medicament {
     factory Medicament.fromJson(String string) => Medicament.fromMap(json.decode(string));
 
     factory Medicament.fromMap(Map<String, dynamic> json) => Medicament(
-      id:  json["id"] ?? 0,
+      id:  json["id"] ?? "",
       nom: json["nom"] ?? "",
       prix: json["prix"] ?? 0,
       masse: json["masse"]?? "",
@@ -110,16 +110,16 @@ class Medicament {
       description: json["description"] ?? "",
       posologie : json["posologie"] ??"",
       pharmaciename: json["get_pharmacie_name"] ?? "",
-      categorie: json["categorie"]?? 0,
+      categorie: json["categorie"] ?? "",
       user: json["user"] ?? 0,
       voix: json["voix"] ?? 0,
       createur: json["proprietaire"] == null ? null : User.fromMap(json['proprietaire']),
-      pharmacie: json["pharmacie"] ?? 0,
+      pharmacie: json["pharmacie"] ?? "",
       pharmacies: json["pharmacies"] == null ? [] : List<Pharmacie>.from(json["pharmacies"].map((e) => Pharmacie.fromMap(e))),
       entrepots: json["entrepots"] == null ? [] : List<Entrepot>.from(json["entrepots"].map((e) => Entrepot.fromMap(e))),
       references: json["references"] == null ? [] : List<Facture>.from(json["references"].map((e) => Facture.fromMap(e))),
       historiques: json["historiques"] == null ? [] : List<HistoriquePrix>.from(json["historiques"].map((e) => HistoriquePrix.fromMap(e))),
-      entrepot: json["entrepot"]?? 0,
+      entrepot: json["entrepot"]?? "",
       created_at: json["created_at"] == null ? null : DateTime.parse(json['created_at']),
       updated_at: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
     );

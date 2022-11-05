@@ -36,7 +36,7 @@ class CategorieRequestModel {
 
 
 class Categorie {
-  final int? id;
+  final String? id;
   final String? libelle;
 
   Categorie({this.id, this.libelle});
@@ -45,7 +45,7 @@ class Categorie {
   factory Categorie.fromJson(String string) => Categorie.fromMap(json.decode(string));
 
   factory Categorie.fromMap(Map<String, dynamic> json) => Categorie(
-    id: json['id'] ?? 0,
+    id: json['id'] ?? "",
     libelle: json['lebelle'] ?? "",
   );
 

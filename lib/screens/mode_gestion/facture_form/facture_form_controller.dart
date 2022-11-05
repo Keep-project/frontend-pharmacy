@@ -166,7 +166,7 @@ class FactureFormController extends GetxController {
 }
 
 class Medoc {
-  int? id;
+  String? id;
   String? nom;
   int? prix;
   int? quantite;

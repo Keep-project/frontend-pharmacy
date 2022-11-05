@@ -34,7 +34,7 @@ class EntrepotResponseModel {
 }
 
 class Entrepot {
-  final int? id;
+  final String? id;
   final String? nom;
   final String? pays;
   final String? ville;
@@ -60,7 +60,7 @@ class Entrepot {
   factory Entrepot.fromJson(String string) =>
       Entrepot.fromMap(json.decode(string));
   factory Entrepot.fromMap(Map<String, dynamic> json) => Entrepot(
-        id: json['id'] ?? 0,
+        id: json['id'] ?? "",
         nom: json['nom'] ?? "",
         pays: json['pays'] ?? "",
         ville: json['ville'] ?? "",

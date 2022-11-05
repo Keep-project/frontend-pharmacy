@@ -33,9 +33,9 @@ class MouvementStockResponseModel {
 }
 
 class MouvementStock {
-  final int? id;
-  final int? entrepot;
-  final int? medicament;
+  final String? id;
+  final String? entrepot;
+  final String? medicament;
   final String? description;
   final String? productName;
   final String? entrepotName;
@@ -57,9 +57,9 @@ class MouvementStock {
   factory MouvementStock.fromJson(String string) => MouvementStock.fromMap(json.decode(string));
 
   factory MouvementStock.fromMap(Map<String, dynamic> json) => MouvementStock(
-    id : json['id'] ?? 0,
-    entrepot: json["entrepot"] ?? 0,
-    medicament: json['medicament'] ?? 0,
+    id : json['id'] ?? "",
+    entrepot: json["entrepot"] ?? "",
+    medicament: json['medicament'] ?? "",
     description: json['description'] ?? "",
     productName: json['get_medecine_name'] ?? "",
     entrepotName: json['get_entrepot_name'] ?? "",
