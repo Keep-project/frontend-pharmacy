@@ -11,6 +11,7 @@ class InventaireMedicamentFields {
     updated_at,
     inventaire,
     medicament,
+    isUpdate,
   ];
 
   static const String id = "_id";
@@ -20,6 +21,7 @@ class InventaireMedicamentFields {
   static const String updated_at = "updated_at";
   static const String inventaire = "inventaire_id";
   static const String medicament = "medicament_id";
+  static const String isUpdate = "isUpdate";
 }
 
 class InventaireMedicament {
@@ -30,8 +32,9 @@ class InventaireMedicament {
   final DateTime? updated_at;
   final int? inventaire;
   final int? medicament;
+  final bool? isUpdate;
 
-  InventaireMedicament({this.id, this.quantiteAttendue, this.quantiteReelle, this.created_at, this.updated_at, this.inventaire, this.medicament});
+  InventaireMedicament({this.id, this.quantiteAttendue, this.quantiteReelle, this.created_at, this.updated_at, this.inventaire, this.medicament, this.isUpdate});
 
   factory InventaireMedicament.formJson(String string) => InventaireMedicament.fromMap(json.decode(string));
 
@@ -43,6 +46,7 @@ class InventaireMedicament {
         updated_at: DateTime.parse(json[InventaireMedicamentFields.updated_at] as String),
         inventaire: json[InventaireMedicamentFields.inventaire] as int?,
         medicament: json[InventaireMedicamentFields.medicament] as int?,
+        isUpdate: json[InventaireMedicamentFields.isUpdate] == 1 ? true : false
       );
 
   Map<String, dynamic> toMap() => {
@@ -53,6 +57,7 @@ class InventaireMedicament {
         InventaireMedicamentFields.updated_at: updated_at!.toIso8601String(),
         InventaireMedicamentFields.inventaire: inventaire,
         InventaireMedicamentFields.medicament: medicament,
+        InventaireMedicamentFields.isUpdate: isUpdate == true ? 1 : 0,
       };
 
   InventaireMedicament copy({
@@ -63,6 +68,7 @@ class InventaireMedicament {
     DateTime? updated_at,
     int? inventaire,
     int? medicament,
+    bool? isUpdate,
   }) =>
       InventaireMedicament(
         id: id ?? this.id,
@@ -72,5 +78,6 @@ class InventaireMedicament {
         updated_at: updated_at ?? this.updated_at,
         inventaire: inventaire ?? this.inventaire,
         medicament: medicament ?? this.medicament,
+        isUpdate: isUpdate ?? this.isUpdate
       );
 }

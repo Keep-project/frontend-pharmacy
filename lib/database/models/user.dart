@@ -19,6 +19,7 @@ class UserFields {
     avatar,
     status,
     experience,
+    isUpdate
   ];
 
   static const String id = "_id";
@@ -36,6 +37,7 @@ class UserFields {
   static const String avatar = "avatar";
   static const String status = "status";
   static const String experience = "experience";
+  static const String isUpdate = "isUpdate";
 }
 
 class User {
@@ -54,6 +56,7 @@ class User {
   final String? avatar;
   final String? status;
   final String? experience;
+  final bool? isUpdate;
 
   User(
       {this.id,
@@ -70,7 +73,8 @@ class User {
       this.adresse,
       this.avatar,
       this.status,
-      this.experience});
+      this.experience,
+      this.isUpdate});
 
   factory User.formJson(String string) => User.fromMap(json.decode(string));
 
@@ -90,6 +94,7 @@ class User {
         avatar: json[UserFields.avatar] as String?,
         status: json[UserFields.status] as String?,
         experience: json[UserFields.experience] as String?,
+        isUpdate:  json[UserFields.isUpdate] == 1 ? true : false
       );
 
   Map<String, dynamic> toMap() => {
@@ -107,7 +112,8 @@ class User {
         UserFields.adresse: adresse,
         UserFields.avatar: avatar,
         UserFields.status: status,
-        UserFields.experience: experience
+        UserFields.experience: experience,
+        UserFields.isUpdate: isUpdate == true ? 1 : 0
       };
 
   User copy({
@@ -126,6 +132,7 @@ class User {
     String? avatar,
     String? status,
     String? experience,
+    bool? isUpdate
   }) =>
       User(
         id: id ?? this.id,
@@ -143,5 +150,6 @@ class User {
         avatar: avatar ?? this.avatar,
         status: status ?? this.status,
         experience: experience ?? this.experience,
+        isUpdate: isUpdate ?? this.isUpdate,
       );
 }

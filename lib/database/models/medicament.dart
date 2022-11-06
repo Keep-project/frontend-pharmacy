@@ -23,7 +23,8 @@ class MedicamentFields {
     user,
     stockAlert,
     stockOptimal,
-    entrepot
+    entrepot,
+    isUpdate
   ];
 
   static const String id = "_id";
@@ -46,6 +47,7 @@ class MedicamentFields {
   static const String stockAlert = "stockAlert";
   static const String stockOptimal = "stockOptimal";
   static const String entrepot = "entrepot_id";
+  static const String isUpdate = "isUpdate";
 }
 
 class Medicament {
@@ -69,6 +71,7 @@ class Medicament {
   final int? stockAlert;
   final int? stockOptimal;
   final String? entrepot;
+  final bool? isUpdate;
 
   Medicament(
       {this.id,
@@ -90,7 +93,8 @@ class Medicament {
       this.user,
       this.stockAlert,
       this.stockOptimal,
-      this.entrepot});
+      this.entrepot,
+      this.isUpdate});
 
   factory Medicament.formJson(String string) =>
       Medicament.fromMap(json.decode(string));
@@ -116,6 +120,7 @@ class Medicament {
         stockAlert: json[MedicamentFields.stockAlert] as int?,
         stockOptimal: json[MedicamentFields.stockOptimal] as int?,
         entrepot: json[MedicamentFields.entrepot] as String?,
+        isUpdate: json[MedicamentFields.isUpdate] == 1 ? true : false,
       );
 
   Map<String, dynamic> toMap() => {
@@ -138,7 +143,8 @@ class Medicament {
         MedicamentFields.user: user,
         MedicamentFields.stockAlert: stockAlert,
         MedicamentFields.stockOptimal: stockOptimal,
-        MedicamentFields.entrepot: entrepot
+        MedicamentFields.entrepot: entrepot,
+        MedicamentFields.isUpdate: isUpdate == true ? 1 : 0,
       };
 
   Medicament copy({
@@ -162,6 +168,7 @@ class Medicament {
     int? stockAlert,
     int? stockOptimal,
     String? entrepot,
+    bool? isUpdate
   }) =>
       Medicament(
         id: id ?? this.id,
@@ -184,5 +191,6 @@ class Medicament {
         stockAlert: stockAlert ?? this.stockAlert,
         stockOptimal: stockOptimal ?? this.stockOptimal,
         entrepot: entrepot ?? this.entrepot,
+        isUpdate: isUpdate ?? this.isUpdate
       );
 }

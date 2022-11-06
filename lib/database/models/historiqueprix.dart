@@ -10,7 +10,8 @@ class HistoriquePrixFields {
     prixVente,
     created_at,
     medicament,
-    utilisateur
+    utilisateur,
+    isUpdate
   ];
 
   static const String id = "_id";
@@ -21,6 +22,7 @@ class HistoriquePrixFields {
   static const String updated_at = "updated_at";
   static const String medicament = "medicament_id";
   static const String utilisateur = "utilisateur_id";
+  static const String isUpdate = "isUpdate";
 }
 
 class HistoriquePrix {
@@ -32,8 +34,9 @@ class HistoriquePrix {
   final DateTime? updated_at;
   final int? medicament;
   final int? utilisateur;
+  final bool? isUpdate;
 
-  HistoriquePrix({this.id, this.basePrix, this.tva, this.prixVente, this.created_at, this.updated_at, this.medicament, this.utilisateur});
+  HistoriquePrix({this.id, this.basePrix, this.tva, this.prixVente, this.created_at, this.updated_at, this.medicament, this.utilisateur, this.isUpdate});
 
   factory HistoriquePrix.formJson(String string) => HistoriquePrix.fromMap(json.decode(string));
 
@@ -46,6 +49,7 @@ class HistoriquePrix {
         updated_at: DateTime.parse(json[HistoriquePrixFields.updated_at] as String),
         medicament: json[HistoriquePrixFields.medicament] as int?,
         utilisateur: json[HistoriquePrixFields.utilisateur] as int?,
+        isUpdate: json[HistoriquePrixFields.isUpdate] == 1 ? true : false
       );
 
   Map<String, dynamic> toMap() => {
@@ -57,6 +61,7 @@ class HistoriquePrix {
         HistoriquePrixFields.updated_at: updated_at!.toIso8601String(),
         HistoriquePrixFields.medicament: medicament,
         HistoriquePrixFields.utilisateur: utilisateur,
+        HistoriquePrixFields.isUpdate: isUpdate == true ? 1 : 0,
       };
 
   HistoriquePrix copy({
@@ -68,6 +73,7 @@ class HistoriquePrix {
     DateTime? updated_at,
     int? medicament,
     int? utilisateur,
+    bool? isUpdate,
   }) =>
       HistoriquePrix(
         id: id ?? this.id,
@@ -78,5 +84,6 @@ class HistoriquePrix {
         updated_at: updated_at ?? this.updated_at,
         medicament: medicament ?? this.medicament,
         utilisateur: utilisateur ?? this.utilisateur,
+        isUpdate: isUpdate ?? this.isUpdate,
       );
 }

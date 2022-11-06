@@ -12,7 +12,8 @@ class EntrepotFields {
     description,
     created_at,
     updated_at,
-    pharmacie
+    pharmacie,
+    isUpdate
   ];
 
   static const String id = "_id";
@@ -24,6 +25,7 @@ class EntrepotFields {
   static const String created_at = "created_at";
   static const String updated_at = "updated_at";
   static const String pharmacie = "pharmacie_id";
+  static const String isUpdate = "isUpdate";
 }
 
 class Entrepot {
@@ -36,8 +38,9 @@ class Entrepot {
   final DateTime? created_at;
   final DateTime? updated_at;
   final int? pharmacie;
+  final bool? isUpdate;
 
-  Entrepot({this.id, this.nom, this.pays, this.ville, this.telephone, this.description, this.created_at, this.updated_at, this.pharmacie});
+  Entrepot({this.id, this.nom, this.pays, this.ville, this.telephone, this.description, this.created_at, this.updated_at, this.pharmacie, this.isUpdate});
 
   factory Entrepot.formJson(String string) => Entrepot.fromMap(json.decode(string));
 
@@ -51,6 +54,7 @@ class Entrepot {
         created_at: DateTime.parse(json[EntrepotFields.created_at] as String),
         updated_at: DateTime.parse(json[EntrepotFields.updated_at] as String),
         pharmacie: json[EntrepotFields.pharmacie] as int?,
+        isUpdate: json[EntrepotFields.isUpdate] == 1 ? true : false,
       );
 
   Map<String, dynamic> toMap() => {
@@ -63,6 +67,7 @@ class Entrepot {
         EntrepotFields.created_at: created_at!.toIso8601String(),
         EntrepotFields.updated_at: updated_at!.toIso8601String(),
         EntrepotFields.pharmacie: pharmacie,
+        EntrepotFields.isUpdate: isUpdate == true ? 1 : 0,
       };
 
   Entrepot copy({
@@ -75,6 +80,7 @@ class Entrepot {
     DateTime? created_at,
     DateTime? updated_at,
     int? pharmacie,
+    bool? isUpdate,
   }) =>
       Entrepot(
         id: id ?? this.id,
@@ -86,5 +92,6 @@ class Entrepot {
         created_at: created_at ?? this.created_at,
         updated_at: updated_at ?? this.updated_at,
         pharmacie: pharmacie ?? this.pharmacie,
+        isUpdate: isUpdate ?? this.isUpdate,
       );
 }

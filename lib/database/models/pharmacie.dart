@@ -17,6 +17,7 @@ class PharmacieFields {
     updated_at,
     user,
     email,
+    isUpdate
   ];
 
   static const String id = "_id";
@@ -32,6 +33,7 @@ class PharmacieFields {
   static const String updated_at = "updated_at";
   static const String user = "user_id";
   static const String email = "email";
+  static const String isUpdate = "isUpdate";
 }
 
 class Pharmacie {
@@ -48,8 +50,9 @@ class Pharmacie {
   final DateTime? updated_at;
   final int? user;
   final String? email;
+  final bool? isUpdate;
 
-  Pharmacie({this.id, this.libelle, this.nom, this.localisation, this.tel, this.latitude, this.longitude, this.ouverture, this.fermeture, this.created_at, this.updated_at, this.user, this.email});
+  Pharmacie({this.id, this.libelle, this.nom, this.localisation, this.tel, this.latitude, this.longitude, this.ouverture, this.fermeture, this.created_at, this.updated_at, this.user, this.email, this.isUpdate});
 
   factory Pharmacie.formJson(String string) =>
       Pharmacie.fromMap(json.decode(string));
@@ -71,6 +74,7 @@ class Pharmacie {
             DateTime.parse(json[PharmacieFields.updated_at] as String),
         user: json[PharmacieFields.user] as int?,
         email: json[PharmacieFields.email] as String?,
+        isUpdate: json[PharmacieFields.isUpdate] == 1 ? true : false,
       );
 
   Map<String, dynamic> toMap() => {
@@ -87,6 +91,7 @@ class Pharmacie {
         PharmacieFields.updated_at: updated_at!.toIso8601String(),
         PharmacieFields.user: user,
         PharmacieFields.email: email,
+        PharmacieFields.isUpdate: isUpdate == true ? 1 : 0,
       };
 
   Pharmacie copy({
@@ -103,6 +108,7 @@ class Pharmacie {
   DateTime? updated_at,
   int? user,
   String? email,
+  bool? isUpdate,
   }) =>
       Pharmacie(
         id: id ?? this.id,
@@ -118,5 +124,6 @@ class Pharmacie {
         updated_at: updated_at ?? this.updated_at,
         user: user ?? this.user,
         email: email ?? this.email,
+        isUpdate: isUpdate ?? this.isUpdate
       );
 }

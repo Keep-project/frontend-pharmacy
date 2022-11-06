@@ -139,7 +139,7 @@ class StartScreenController extends GetxController {
               created_at: DateTime.parse("2022-07-04T16:43:45.684Z"),
               updated_at: DateTime.parse("2022-09-26T05:48:34.878Z")));*/
 
-      // medicaments = await SynchronizationData().readAllMedicament();
+      medicaments = await SynchronizationData().readAllMedicament();
       // print(isInternetConnection);
       // print(medicaments);
       print("============================");

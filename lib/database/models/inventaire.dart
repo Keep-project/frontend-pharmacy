@@ -9,6 +9,7 @@ class InventaireFields {
     created_at,
     updated_at,
     entrepot,
+    isUpdate
   ];
 
   static const String id = "_id";
@@ -16,6 +17,7 @@ class InventaireFields {
   static const String created_at = "created_at";
   static const String updated_at = "updated_at";
   static const String entrepot = "entrepot_id";
+  static const String isUpdate = "isUpdate";
 }
 
 class Inventaire {
@@ -24,8 +26,9 @@ class Inventaire {
   final DateTime? created_at;
   final DateTime? updated_at;
   final int? entrepot;
+  final  bool? isUpdate;
 
-  Inventaire({this.id, this.libelle, this.created_at, this.updated_at, this.entrepot});
+  Inventaire({this.id, this.libelle, this.created_at, this.updated_at, this.entrepot, this.isUpdate});
 
   factory Inventaire.formJson(String string) => Inventaire.fromMap(json.decode(string));
 
@@ -35,6 +38,7 @@ class Inventaire {
         created_at: DateTime.parse(json[InventaireFields.created_at] as String),
         updated_at: DateTime.parse(json[InventaireFields.updated_at] as String),
         entrepot: json[InventaireFields.entrepot] as int?,
+        isUpdate: json[InventaireFields.isUpdate] == 1 ? true : false,
       );
 
   Map<String, dynamic> toMap() => {
@@ -43,6 +47,7 @@ class Inventaire {
         InventaireFields.created_at: created_at!.toIso8601String(),
         InventaireFields.updated_at: updated_at!.toIso8601String(),
         InventaireFields.entrepot: entrepot,
+        InventaireFields.isUpdate: isUpdate == true ? 1 : 0,
       };
 
   Inventaire copy({
@@ -51,6 +56,7 @@ class Inventaire {
     DateTime? created_at,
     DateTime? updated_at,
     int? entrepot,
+    bool? isUpdate,
   }) =>
       Inventaire(
         id: id ?? this.id,
@@ -58,5 +64,6 @@ class Inventaire {
         created_at: created_at ?? this.created_at,
         updated_at: updated_at ?? this.updated_at,
         entrepot: entrepot ?? this.entrepot,
+        isUpdate: isUpdate ?? this.isUpdate
       );
 }

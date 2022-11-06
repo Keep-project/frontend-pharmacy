@@ -11,7 +11,8 @@ class FactureFields {
     note,
     created_at,
     updated_at,
-    utilisateur
+    utilisateur,
+    isUpdate,
   ];
 
   static const String id = "_id";
@@ -22,6 +23,7 @@ class FactureFields {
   static const String created_at = "created_at";
   static const String updated_at = "updated_at";
   static const String utilisateur = "utilisateur_id";
+  static const String isUpdate = "isUpdate";
 }
 
 class Facture {
@@ -33,8 +35,9 @@ class Facture {
   final DateTime? created_at;
   final DateTime? updated_at;
   final int? utilisateur;
+  final bool? isUpdate;
 
-  Facture({this.id, this.montantTotal, this.quantiteTotal, this.reduction, this.note, this.created_at, this.updated_at, this.utilisateur});
+  Facture({this.id, this.montantTotal, this.quantiteTotal, this.reduction, this.note, this.created_at, this.updated_at, this.utilisateur, this.isUpdate});
 
   factory Facture.formJson(String string) => Facture.fromMap(json.decode(string));
 
@@ -47,6 +50,7 @@ class Facture {
         created_at: DateTime.parse(json[FactureFields.created_at] as String),
         updated_at: DateTime.parse(json[FactureFields.updated_at] as String),
         utilisateur: json[FactureFields.utilisateur] as int?,
+        isUpdate: json[FactureFields.isUpdate] == 1 ? true : false,
       );
 
   Map<String, dynamic> toMap() => {
@@ -58,6 +62,7 @@ class Facture {
         FactureFields.created_at: created_at!.toIso8601String(),
         FactureFields.updated_at: updated_at!.toIso8601String(),
         FactureFields.utilisateur: utilisateur,
+        FactureFields.isUpdate: isUpdate == true ? 1 : 0,
       };
 
   Facture copy({
@@ -69,6 +74,7 @@ class Facture {
     DateTime? created_at,
     DateTime? updated_at,
     int? utilisateur,
+    bool? isUpdate,
   }) =>
       Facture(
         id: id ?? this.id,
@@ -79,5 +85,6 @@ class Facture {
         created_at: created_at ?? this.created_at,
         updated_at: updated_at ?? this.updated_at,
         utilisateur: utilisateur ?? this.utilisateur,
+        isUpdate: isUpdate ?? this.isUpdate
       );
 }

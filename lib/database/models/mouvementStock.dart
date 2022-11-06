@@ -11,6 +11,7 @@ class MouvementStockFields {
     updated_at,
     entrepot,
     medicament,
+    isUpdate
   ];
 
   static const String id = "_id";
@@ -20,6 +21,7 @@ class MouvementStockFields {
   static const String updated_at = "updated_at";
   static const String entrepot = "entrepot_id";
   static const String medicament = "medicament_id";
+  static const String isUpdate = "isUpdate";
 }
 
 class MouvementStock {
@@ -30,6 +32,7 @@ class MouvementStock {
   final DateTime? updated_at;
   final int? entrepot;
   final int? medicament;
+  final bool? isUpdate;
 
   MouvementStock(
       {this.id,
@@ -38,7 +41,8 @@ class MouvementStock {
       this.created_at,
       this.updated_at,
       this.entrepot,
-      this.medicament});
+      this.medicament,
+      this.isUpdate});
 
   factory MouvementStock.formJson(String string) =>
       MouvementStock.fromMap(json.decode(string));
@@ -54,6 +58,7 @@ class MouvementStock {
             DateTime.parse(json[MouvementStockFields.updated_at] as String),
         entrepot: json[MouvementStockFields.entrepot] as int?,
         medicament: json[MouvementStockFields.medicament] as int?,
+        isUpdate: json[MouvementStockFields.isUpdate] == 1 ? true : false
       );
 
   Map<String, dynamic> toMap() => {
@@ -64,6 +69,7 @@ class MouvementStock {
         MouvementStockFields.updated_at: updated_at!.toIso8601String(),
         MouvementStockFields.entrepot: entrepot,
         MouvementStockFields.medicament: medicament,
+        MouvementStockFields.isUpdate: isUpdate == true ? 1 : 0,
       };
 
   MouvementStock copy({
@@ -74,6 +80,7 @@ class MouvementStock {
     DateTime? updated_at,
     int? entrepot,
     int? medicament,
+    bool? isUpdate
   }) =>
       MouvementStock(
         id: id ?? this.id,
@@ -83,5 +90,6 @@ class MouvementStock {
         updated_at: updated_at ?? this.updated_at,
         entrepot: entrepot ?? this.entrepot,
         medicament: medicament ?? this.medicament,
+        isUpdate: isUpdate ?? this.isUpdate,
       );
 }

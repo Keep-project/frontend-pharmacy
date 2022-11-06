@@ -10,6 +10,7 @@ class CarnetFields {
     updated_at,
     consultation,
     maladie,
+    isUpdate,
   ];
 
   static const String id = "_id";
@@ -18,6 +19,7 @@ class CarnetFields {
   static const String updated_at = "updated_at";
   static const String consultation = "consultation_id";
   static const String maladie = "maladie_id";
+  static const String isUpdate = "isUpdate";
 }
 
 class Carnet {
@@ -27,6 +29,7 @@ class Carnet {
   final DateTime? updated_at;
   final int? consultation;
   final int? maladie;
+  final bool? isUpdate;
 
   Carnet(
       {this.id,
@@ -34,7 +37,8 @@ class Carnet {
       this.created_at,
       this.updated_at,
       this.consultation,
-      this.maladie});
+      this.maladie,
+      this.isUpdate});
 
   factory Carnet.formJson(String string) => Carnet.fromMap(json.decode(string));
 
@@ -45,6 +49,7 @@ class Carnet {
         updated_at: DateTime.parse(json[CarnetFields.updated_at] as String),
         consultation: json[CarnetFields.consultation] as int?,
         maladie: json[CarnetFields.maladie] as int?,
+        isUpdate: json[CarnetFields.isUpdate] == 1 ? true : false,
       );
 
   Map<String, dynamic> toMap() => {
@@ -54,6 +59,7 @@ class Carnet {
         CarnetFields.updated_at: updated_at!.toIso8601String(),
         CarnetFields.consultation: consultation,
         CarnetFields.maladie: maladie,
+        CarnetFields.isUpdate: isUpdate == true ? 1 : 0,
       };
 
   Carnet copy({
@@ -63,6 +69,7 @@ class Carnet {
     DateTime? updated_at,
     int? consultation,
     int? maladie,
+    bool? isUpdate,
   }) =>
       Carnet(
         id: id ?? this.id,
@@ -71,5 +78,6 @@ class Carnet {
         updated_at: updated_at ?? this.updated_at,
         consultation: consultation ?? this.consultation,
         maladie: maladie ?? this.maladie,
+        isUpdate: isUpdate ?? this.isUpdate
       );
 }
