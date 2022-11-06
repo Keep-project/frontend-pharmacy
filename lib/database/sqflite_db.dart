@@ -77,7 +77,8 @@ class PharmacieDatabase {
           ${UserFields.adresse} $textType,
           ${UserFields.avatar} $textType,
           ${UserFields.status} $textType,
-          ${UserFields.experience} $textType
+          ${UserFields.experience} $textType,
+          ${UserFields.isUpdate} $boolType
         )''');
 
     /**  Création de la table Carnet
@@ -91,6 +92,7 @@ class PharmacieDatabase {
           ${CarnetFields.updated_at} $textType,
           ${CarnetFields.consultation} $integerType,
           ${CarnetFields.maladie} $integerType,
+          ${CarnetFields.isUpdate} $boolType,
 
           FOREIGN KEY (${CarnetFields.maladie})
           REFERENCES $tableMaladie (${MaladieFields.id}) 
@@ -111,6 +113,7 @@ class PharmacieDatabase {
           ${ConsultationFields.updated_at} $textType,
           ${ConsultationFields.symptome} $integerType,
           ${ConsultationFields.user} $integerType,
+          ${ConsultationFields.isUpdate} $boolType,
 
           FOREIGN KEY (${ConsultationFields.symptome})
           REFERENCES $tableSymptome (${SymptomeFields.id}) 
@@ -136,6 +139,7 @@ class PharmacieDatabase {
           ${EntrepotFields.created_at} $textType,
           ${EntrepotFields.updated_at} $textType,
           ${EntrepotFields.pharmacie} $integerType,
+          ${EntrepotFields.isUpdate} $boolType,
 
           FOREIGN KEY (${EntrepotFields.pharmacie})
           REFERENCES $tablePharmacie (${PharmacieFields.id}) 
@@ -155,6 +159,7 @@ class PharmacieDatabase {
           ${FactureFields.created_at} $textType,
           ${FactureFields.updated_at} $textType,
           ${FactureFields.utilisateur} $integerType,
+          ${FactureFields.isUpdate} $boolType,
 
           FOREIGN KEY (${FactureFields.utilisateur})
           REFERENCES $tableUser (${UserFields.id}) 
@@ -175,6 +180,7 @@ class PharmacieDatabase {
           ${HistoriquePrixFields.updated_at} $textType,
           ${HistoriquePrixFields.medicament} $integerType,
           ${HistoriquePrixFields.utilisateur} $integerType,
+          ${HistoriquePrixFields.isUpdate} $boolType,
 
           FOREIGN KEY (${HistoriquePrixFields.utilisateur})
           REFERENCES $tableUser (${UserFields.id}) 
@@ -195,6 +201,7 @@ class PharmacieDatabase {
           ${InventaireFields.created_at} $textType,
           ${InventaireFields.updated_at} $textType,
           ${InventaireFields.entrepot} $integerType,
+          ${InventaireFields.isUpdate} $boolType,
 
           FOREIGN KEY (${InventaireFields.entrepot})
           REFERENCES $tableEntrepot (${EntrepotFields.id}) 
@@ -212,6 +219,7 @@ class PharmacieDatabase {
           ${InventaireMedicamentFields.updated_at} $textType,
           ${InventaireMedicamentFields.inventaire} $integerType,
           ${InventaireMedicamentFields.medicament} $integerType,
+          ${InventaireMedicamentFields.isUpdate} $boolType,
 
           PRIMARY KEY (${InventaireMedicamentFields.inventaire}, ${InventaireMedicamentFields.medicament}),
 
@@ -232,7 +240,8 @@ class PharmacieDatabase {
           ${MaladieFields.id} $idType,
           ${MaladieFields.libelle} $textType,
           ${MaladieFields.created_at} $textType,
-          ${MaladieFields.updated_at} $textType
+          ${MaladieFields.updated_at} $textType,
+          ${MaladieFields.isUpdate} $boolType
         )''');
 
     /*  Création de la table Medicament
@@ -260,6 +269,7 @@ class PharmacieDatabase {
           ${MedicamentFields.stockAlert} $integerType,
           ${MedicamentFields.stockOptimal} $integerType,
           ${MedicamentFields.entrepot} $integerType,
+          ${MedicamentFields.isUpdate} $boolType,
 
           FOREIGN KEY (${MedicamentFields.categorie})
           REFERENCES $tableCategorie (${MedicamentFields.id}) 
@@ -290,6 +300,7 @@ class PharmacieDatabase {
           ${MedicamentFactureFields.updated_at} $textType,
           ${MedicamentFactureFields.facture} $integerType,
           ${MedicamentFactureFields.medicament} $integerType,
+          ${MedicamentFactureFields.isUpdate} $boolType,
 
           PRIMARY KEY (${MedicamentFactureFields.facture}, ${MedicamentFactureFields.medicament}),
 
@@ -313,6 +324,7 @@ class PharmacieDatabase {
           ${MouvementStockFields.updated_at} $textType,
           ${MouvementStockFields.entrepot} $integerType,
           ${MouvementStockFields.medicament} $integerType,
+          ${MouvementStockFields.isUpdate} $boolType,
 
 
           PRIMARY KEY (${MouvementStockFields.entrepot}, ${MouvementStockFields.medicament}),
@@ -344,6 +356,7 @@ class PharmacieDatabase {
           ${PharmacieFields.updated_at} $textType,
           ${PharmacieFields.user} $integerType,
           ${PharmacieFields.email} $textType,
+          ${PharmacieFields.isUpdate} $boolType,
 
           FOREIGN KEY (${PharmacieFields.user})
           REFERENCES $tableUser (${UserFields.id}) 
@@ -356,9 +369,10 @@ class PharmacieDatabase {
     await db.execute('''  
         CREATE TABLE $tableSymptome(
           ${SymptomeFields.id} $idType,
-          ${PharmacieFields.libelle} $textType,
-          ${PharmacieFields.created_at} $textType,
-          ${PharmacieFields.updated_at} $textType
+          ${SymptomeFields.libelle} $textType,
+          ${SymptomeFields.created_at} $textType,
+          ${SymptomeFields.updated_at} $textType,
+          ${SymptomeFields.updated_at} $boolType
         )''');
   }
 
