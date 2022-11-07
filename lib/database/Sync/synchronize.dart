@@ -39,36 +39,44 @@ class SynchronizationData {
   Future<List<Medicament>> readAllMedicament() async {
     List<Medicament> medicaments = await database.readAllMedicament();
     for (var md in medicaments) {
-      print(md.toMap());
+      print("${md.nom} is update: ${md.isUpdate}");
       print("\n\n");
     }
     return medicaments;
   }
 
   Future saveMedicament(rm.Medicament med) async {
-    Medicament medicament = await database.createMedicament(
-      Medicament(
-        idMedicament: med.id,
-        nom: med.nom,
-        prix: med.prix,
-        marque: med.marque,
-        dateExp: med.date_exp,
-        image: med.photo,
-        masse: med.masse,
-        qteStock: med.stock,
-        stockAlert: med.stockAlert,
-        stockOptimal: med.stockOptimal,
-        description: med.description,
-        posologie: med.posologie,
-        voix: med.voix,
-        categorie: med.categorie,
-        user: med.user,
-        pharmacie: med.pharmacie,
-        entrepot: med.entrepot,
-        created_at: med.created_at,
-        updated_at: med.updated_at,
-      ),
-    );
-    print('Saved successfully ${medicament.nom}');
+    var medecine = await database.readMedicamentByName(med.nom!);
+    if (medecine == null) {
+      var medicament = await database.createMedicament(
+        Medicament(
+          idMedicament: med.id,
+          nom: med.nom,
+          prix: med.prix,
+          isUpdate: true,
+          marque: med.marque,
+          basePrix: "TTC",
+          tva: 19.25,
+          dateExp: med.date_exp,
+          image: med.photo,
+          masse: med.masse,
+          qteStock: med.stock,
+          stockAlert: med.stockAlert,
+          stockOptimal: med.stockOptimal,
+          description: med.description,
+          posologie: med.posologie,
+          voix: med.voix,
+          categorie: med.categorie,
+          user: med.user,
+          pharmacie: med.pharmacie,
+          entrepot: med.entrepot,
+          created_at: med.created_at,
+          updated_at: med.updated_at,
+        ),
+      );
+      print('Saved successfully ${medicament!.nom!}');
+    } else {
+      print('${med.nom} already exists in our database');
+    }
   }
 }

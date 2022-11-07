@@ -132,10 +132,11 @@ class StartScreenController extends GetxController {
               description: "médicament pour enfant",
               posologie: "deux comprimÚ chaque jour",
               voix: 2,
-              categorie: 1,
+              categorie: 1.toString(),
               user: 2,
-              pharmacie: 1,
-              entrepot: 1,
+              pharmacie: 1.toString(),
+              entrepot: 1.toString(),
+              isUpdate: true,
               created_at: DateTime.parse("2022-07-04T16:43:45.684Z"),
               updated_at: DateTime.parse("2022-09-26T05:48:34.878Z")));*/
 
@@ -205,12 +206,11 @@ class StartScreenController extends GetxController {
           // synchronizeStatus = LoadingStatus.completed;
           // update();
         },
-        onError: (error) {
+        onError: (e) {
           print("============ Médicament form / error ===========");
-          print(error.response);
-          if (error.response!.statusCode == 400) {
-            CustomSnacbar.showMessage(
-                context, "${error.response!.data['message']}",
+          print(e.response);
+          if (e.response!.statusCode == 400) {
+            CustomSnacbar.showMessage(context, "${e.response!.data['message']}",
                 height: 120);
           }
           print("=================================");

@@ -1,6 +1,4 @@
-// ignore_for_file: avoid_print
-
-import 'dart:convert';
+// ignore_for_file: avoid_print, use_build_context_synchronously
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -19,6 +17,9 @@ import 'package:pharmacy_app/screens/mode_gestion/medicament_form/pages/page_two
 import 'package:pharmacy_app/services/local_services/authentication/authentification.dart';
 import 'package:pharmacy_app/services/remote_services/entrepot/entrepot.dart';
 import 'package:pharmacy_app/services/remote_services/medicament/medicament.dart';
+import 'package:pharmacy_app/database/sqflite_db.dart';
+
+import 'package:pharmacy_app/database/models/medicament.dart' as local;
 
 class MedicamentFormController extends GetxController {
   final MedicamentService _medicamentService = MedicamentServiceImpl();
@@ -145,7 +146,7 @@ class MedicamentFormController extends GetxController {
     if (pickedFile != null) {
       imageFile = File(pickedFile.path);
       imageName = pickedFile.name;
-      String encoded = Utility.base64String(imageFile);  
+      String encoded = Utility.base64String(imageFile);
       photo = "data:image/png;base64, $encoded";
       update();
     }
@@ -241,14 +242,13 @@ class MedicamentFormController extends GetxController {
     update();
   }
 
-  Future<void> updateMedecine(BuildContext context, MedicamentRequestModel newmedecine) async {
-    
+  Future<void> updateMedecine(
+      BuildContext context, MedicamentRequestModel newmedecine) async {
     await _medicamentService.update(
       data: newmedecine.toMap(),
       idMedicament: medicament!.id!.toString(),
       onSuccess: (data) {
-        CustomSnacbar.showMessage(
-            context, data['message']);
+        CustomSnacbar.showMessage(context, data['message']);
         Get.offAndToNamed(AppRoutes.DETAILS_GESTION,
             arguments: medicament!.id!.toString());
         medicamentStatus = LoadingStatus.completed;
@@ -281,7 +281,50 @@ class MedicamentFormController extends GetxController {
       return;
     }
     var id = await _localAuth.getPharmacyId();
-    MedicamentRequestModel newmedecine = MedicamentRequestModel(
+
+    medicamentStatus = LoadingStatus.searching;
+    update();
+
+    var medicament =
+        await PharmacieDatabase.instance.createMedicament(local.Medicament(
+      idMedicament: "null",
+      nom: textEditingNom.text.trim(),
+      categorie: selectedCategorie == "Enfants"
+          ? 1.toString()
+          : categories
+              .firstWhere((c) => c['libelle'] == selectedCategorie)['id'].toString(),
+      prix: int.parse(textEditingPrixVente.text.trim()),
+      marque: textEditingMarque.text.trim(),
+      masse: textEditingMasseUnite.text.trim(),
+      user: 2,
+      qteStock: int.parse(textEditingStock.text.trim()),
+      stockAlert: int.parse(textEditingStockAlert.text.trim()),
+      stockOptimal: int.parse(textEditingStockOptimal.text.trim()),
+      tva: selectedTva == "19.25%" ? 19.25 : 0.0,
+      basePrix: selectedBasePrix,
+      dateExp: datePremption,
+      image: photo,
+      description: textEditingDescription.text.trim(),
+      posologie: textEditingPosologie.text.trim(),
+      pharmacie: id,
+      voix: voixPrise.firstWhere((c) => c['libelle'] == selectedVoix)['id'],
+      entrepot:
+          entrepots.firstWhere((c) => c['libelle'] == selectedEntrepot)['id'],
+      created_at: DateTime.now(),
+      updated_at: DateTime.now()
+    ));
+
+    CustomSnacbar.showMessage(
+        context,
+        medicament != null
+            ? "Médicament ajouté avec succès en local !"
+            : "Erreur de création du médicament ou alors il existe déjà en local !");
+
+    medicamentStatus = LoadingStatus.completed;
+    update();
+
+
+    /*MedicamentRequestModel newmedecine = MedicamentRequestModel(
       nom: textEditingNom.text.trim(),
       categorie: selectedCategorie == "Enfants"
           ? 1
@@ -332,7 +375,7 @@ class MedicamentFormController extends GetxController {
         medicamentStatus = LoadingStatus.failed;
         update();
       },
-    );
+    );*/
   }
 
   Future getEntrepot() async {
@@ -347,7 +390,7 @@ class MedicamentFormController extends GetxController {
             selectedEntrepot = entrepots[1]['libelle'];
             entrepots.removeAt(0);
             for (Map map in entrepots) {
-              if ( medicament != null && map['id'] == medicament!.entrepot!) {
+              if (medicament != null && map['id'] == medicament!.entrepot!) {
                 onChangeEntrepot(map['libelle']);
                 break;
               }

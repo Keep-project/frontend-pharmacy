@@ -38,8 +38,11 @@ class PharmacieDatabase {
     final dbPath = await getDatabasesPath();
     final path = p.join(dbPath, filePath);
 
-    return await openDatabase(path,
-        version: _databaseVersion, onCreate: _onCreateDB,);
+    return await openDatabase(
+      path,
+      version: _databaseVersion,
+      onCreate: _onCreateDB,
+    );
   }
 
   Future _onCreateDB(Database db, int version) async {
@@ -254,6 +257,8 @@ class PharmacieDatabase {
           ${MedicamentFields.nom} $textType,
           ${MedicamentFields.prix} $integerType,
           ${MedicamentFields.marque} $textType,
+          ${MedicamentFields.basePrix} $textType,
+          ${MedicamentFields.tva} $realType,
           ${MedicamentFields.dateExp} $textType,
           ${MedicamentFields.image} $textType,
           ${MedicamentFields.masse} $textType,
@@ -372,7 +377,7 @@ class PharmacieDatabase {
           ${SymptomeFields.libelle} $textType,
           ${SymptomeFields.created_at} $textType,
           ${SymptomeFields.updated_at} $textType,
-          ${SymptomeFields.updated_at} $boolType
+          ${SymptomeFields.isUpdate} $boolType
         )''');
   }
 
@@ -1090,14 +1095,18 @@ class PharmacieDatabase {
 
   /// La table Medicament
 
-  Future<Medicament> createMedicament(Medicament medicament) async {
+  Future<Medicament?> createMedicament(Medicament medicament) async {
     // Méthode permettant d'ajouter une note dans notre base de données
     final db = await instance.database;
-    int id = 0;
-    await db.transaction((txn) async {
-      id = await txn.insert(tableMedicament, medicament.toMap());
-    });
-    return medicament.copy(id: id);
+    var response = await readMedicamentByName(medicament.nom!);
+    if (response == null) {
+      int id = 0;
+      await db.transaction((txn) async {
+        id = await txn.insert(tableMedicament, medicament.toMap());
+      });
+      return medicament.copy(id: id);
+    }
+    return null;
   }
 
   Future<Medicament?> readMedicament(int id) async {
@@ -1109,6 +1118,25 @@ class PharmacieDatabase {
       where: "${MedicamentFields.id} = ?",
       whereArgs: [
         id,
+      ],
+    );
+
+    if (maps.isNotEmpty) {
+      return Medicament.fromMap(maps.first);
+    } else {
+      return null;
+    }
+  }
+
+  Future<Medicament?> readMedicamentByName(String name) async {
+    final db = await instance.database;
+
+    final maps = await db.query(
+      tableMedicament,
+      columns: MedicamentFields.values,
+      where: "${MedicamentFields.nom} = ?",
+      whereArgs: [
+        name,
       ],
     );
 
@@ -1329,7 +1357,7 @@ class PharmacieDatabase {
     }
 
     // exemple
-  
+
     // Pharmacie pharmacy = await PharmacieDatabase.instance.createPharmacie(
     //   Pharmacie(
     //     libelle: '1',

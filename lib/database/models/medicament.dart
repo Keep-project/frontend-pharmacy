@@ -9,6 +9,8 @@ class MedicamentFields {
     nom,
     prix,
     marque,
+    basePrix,
+    tva,
     dateExp,
     image,
     masse,
@@ -32,6 +34,8 @@ class MedicamentFields {
   static const String nom = "nom";
   static const String prix = "prix";
   static const String marque = "marque";
+  static const String basePrix = "basePrix";
+  static const String tva = "tva";
   static const String dateExp = "date_exp";
   static const String image = "image";
   static const String masse = "masse";
@@ -56,6 +60,8 @@ class Medicament {
   final String? nom;
   final int? prix;
   final String? marque;
+  final String? basePrix;
+  final double? tva;
   final DateTime? dateExp;
   final String? image;
   final String? masse;
@@ -79,6 +85,8 @@ class Medicament {
       this.nom,
       this.prix,
       this.marque,
+      this.basePrix,
+      this.tva,
       this.dateExp,
       this.image,
       this.masse,
@@ -105,6 +113,8 @@ class Medicament {
         nom: json[MedicamentFields.nom] as String?,
         prix: json[MedicamentFields.prix] as int?,
         marque: json[MedicamentFields.marque] as String?,
+        basePrix: json[MedicamentFields.basePrix] as String?,
+        tva: json[MedicamentFields.tva] as double?,
         dateExp: DateTime.parse(json[MedicamentFields.dateExp] as String),
         image: json[MedicamentFields.image] as String?,
         masse: json[MedicamentFields.masse] as String?,
@@ -129,6 +139,8 @@ class Medicament {
         MedicamentFields.nom: nom,
         MedicamentFields.prix: prix,
         MedicamentFields.marque: marque,
+        MedicamentFields.basePrix: basePrix,
+        MedicamentFields.tva: tva,
         MedicamentFields.dateExp: dateExp!.toIso8601String(),
         MedicamentFields.image: image,
         MedicamentFields.masse: masse,
@@ -153,6 +165,8 @@ class Medicament {
     String? nom,
     int? prix,
     String? marque,
+    String? basePrix,
+    double? tva,
     DateTime? dateExp,
     String? image,
     String? masse,
@@ -176,6 +190,8 @@ class Medicament {
         nom: nom ?? this.nom,
         prix: prix ?? this.prix,
         marque: marque ?? this.marque,
+        basePrix: basePrix ?? this.basePrix,
+        tva: tva ?? this.tva,
         dateExp: dateExp ?? this.dateExp,
         image: image ?? this.image,
         masse: masse ?? this.masse,

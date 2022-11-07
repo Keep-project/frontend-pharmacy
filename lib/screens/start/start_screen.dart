@@ -268,7 +268,7 @@ class StartScreen extends GetView<StartScreenController> {
                           child: InkWell(
                             onTap: () async {
                               if (controller.synchronizeStatus == LoadingStatus.searching){return;}
-                              await controller.pullData(context);
+                              await controller.pushData(context);
                             },
                             child: Container(
                                 height: kDefaultPadding * 3,

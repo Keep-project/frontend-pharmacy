@@ -13,10 +13,10 @@ class MedicamentRequestModel {
   final int? stockOptimal;
   final String? description;
   final String? posologie;
-  final int? categorie;
+  final String? categorie;
   final int? voix;
-  final int? pharmacie;
-  final int? entrepot;
+  final String? pharmacie;
+  final String? entrepot;
   final double? tva;
   final String? basePrix;
   final String? image;

@@ -4,16 +4,16 @@ import 'package:pharmacy_app/database/models/note.dart';
 import 'package:sqflite/sqflite.dart';
 
 
-class PharmacieDatabase {
+class PharmacieDB {
 
   static const _databaseName = "Pharmacy.db";
   static const _databaseVersion = 1;
 
-  static final PharmacieDatabase instance = PharmacieDatabase._init();
+  static final PharmacieDB instance = PharmacieDB._init();
 
   static Database? _database;
 
-  PharmacieDatabase._init();
+  PharmacieDB._init();
 
    Future<Database> get database async {
     if (_database != null) return _database!;
