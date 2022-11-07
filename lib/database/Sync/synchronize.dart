@@ -45,6 +45,11 @@ class SynchronizationData {
     return medicaments;
   }
 
+  Future<List<Medicament>> pushMedicament({int? update}) async {
+    List<Medicament> medicaments = await database.readAllUpdateMedicament(update??1);
+    return medicaments;
+  }
+
   Future saveMedicament(rm.Medicament med) async {
     var medecine = await database.readMedicamentByName(med.nom!);
     if (medecine == null) {

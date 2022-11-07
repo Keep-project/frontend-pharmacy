@@ -1160,6 +1160,23 @@ class PharmacieDatabase {
         result.map((json) => Medicament.fromMap(json)));
   }
 
+  Future<List<Medicament>> readAllUpdateMedicament(int update) async {
+    final db = await instance.database;
+    const orderBy = "${MedicamentFields.id} ASC";
+
+    // final result = await db.rawQuery("SELECT * FROM $tableNote ORDER BY $orderBy");
+    final result = await db.query(
+      tableMedicament,
+      orderBy: orderBy,
+      where: "${MedicamentFields.isUpdate} = ?",
+      whereArgs: [
+        update,
+      ],
+    );
+    return List<Medicament>.from(
+        result.map((json) => Medicament.fromMap(json)));
+  }
+
   Future<int> updateMedicament(Medicament medicament) async {
     final db = await instance.database;
 
