@@ -1,5 +1,3 @@
-
-
 // ignore_for_file: avoid_print
 
 import 'package:get/get.dart';
@@ -7,7 +5,6 @@ import 'package:pharmacy_app/core/app_state.dart';
 import 'package:pharmacy_app/models/response_data_models/facture_model.dart';
 import 'package:pharmacy_app/models/response_data_models/medicament_model.dart';
 import 'package:pharmacy_app/services/remote_services/medicament/medicament.dart';
-
 
 class DetailScreenController extends GetxController {
   final MedicamentService _medicamentService = MedicamentServiceImpl();
@@ -64,8 +61,8 @@ class DetailScreenController extends GetxController {
         onSuccess: (data) {
           medicament = data;
           // factures = data!.references!;
-          // factures.forEach((element){ 
-          //   montantFactures += element.montantTotal!; 
+          // factures.forEach((element){
+          //   montantFactures += element.montantTotal!;
           //   element.produits!.forEach((item) {
           //     if (item.medicament! == medicament!.id!) {
           //       quantiteTotalFacture += item.quantite!;
@@ -76,12 +73,9 @@ class DetailScreenController extends GetxController {
           update();
         },
         onError: (error) {
-          print(
-              "====================== Medicament details / error =======================");
+          print("=========== Medicament details / error ==============");
           print(error);
-          print(error.response!.statusCode);
-          print(
-              "=========================================================================");
+          print("======================================================");
           medicamentStatus = LoadingStatus.failed;
           update();
         });

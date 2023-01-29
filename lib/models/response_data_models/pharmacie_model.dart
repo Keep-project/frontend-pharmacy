@@ -76,14 +76,14 @@ class Pharmacie {
       Pharmacie.fromMap(json.decode(string));
 
   factory Pharmacie.fromMap(Map<String, dynamic> json) => Pharmacie(
-      id: json['id'] ?? "",
-      nom: json['nom'] ?? "",
-      localisation: json['localisation'] ?? "",
-      phone: json['tel'] ?? "",
-      email: json['email'] ?? "",
-      stock: json['stock'] ?? 0,
-      latitude: json['latitude'] ?? "",
-      longitude: json['longitude'] ?? "",
+      id: json['id'] as String?,
+      nom: json['nom'] as String?,
+      localisation: json['localisation'] as String?,
+      phone: json['tel'] as String?,
+      email: json['email'] as String?,
+      stock: json['stock'] as int? ,
+      latitude: json['latitude'] as double?,
+      longitude: json['longitude'] as double?,
       distance: json['distance'] ?? -1,
       ouverture: json['h_ouverture'] ?? "08:00 AM",
       fermeture: json['h_fermeture'] ?? "20:00 AM",

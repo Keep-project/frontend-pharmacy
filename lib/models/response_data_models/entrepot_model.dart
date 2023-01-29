@@ -40,7 +40,7 @@ class Entrepot {
   final String? ville;
   final String? telephone;
   final String? description;
-  final int? pharmacie;
+  final String? pharmacie;
   final int? valeurVente;
   final DateTime? created_at;
   final DateTime? updated_at;
@@ -60,13 +60,13 @@ class Entrepot {
   factory Entrepot.fromJson(String string) =>
       Entrepot.fromMap(json.decode(string));
   factory Entrepot.fromMap(Map<String, dynamic> json) => Entrepot(
-        id: json['id'] ?? "",
-        nom: json['nom'] ?? "",
-        pays: json['pays'] ?? "",
-        ville: json['ville'] ?? "",
-        telephone: json['telephone'] ?? "",
-        description: json['description'] ?? "",
-        pharmacie: json['pharmacie'] ?? 0,
+        id: json['id'] as String?,
+        nom: json['nom'] as String?,
+        pays: json['pays'] as String?,
+        ville: json['ville'] as String?,
+        telephone: json['telephone'] as String?,
+        description: json['description'] as String?,
+        pharmacie: json['pharmacie'] as String?,
         valeurVente: json['valeurVente'] ?? 0,
         created_at: json['created_at'] == null
             ? null

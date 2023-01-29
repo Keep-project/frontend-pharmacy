@@ -5,7 +5,7 @@ class HistoriquePrix {
   final String? basePrix;
   final double? tva;
   final int? prixVente;
-  final int? medicament;
+  final String? medicament;
   final int? utilisateur;
   final DateTime? created_at;
   final DateTime? updated_at;
@@ -23,11 +23,11 @@ class HistoriquePrix {
   factory HistoriquePrix.fromJson(String string) =>
       HistoriquePrix.fromMap(json.decode(string));
   factory HistoriquePrix.fromMap(Map<String, dynamic> json) => HistoriquePrix(
-        id: json['id'] ?? "",
+        id: json['id'] as String?,
         basePrix: json['basePrix'] ?? 'HT',
         tva: json['tva'] ?? 19.25,
-        prixVente: json['prixVente'] ?? 0,
-        medicament: json['medicament'] ?? 0,
+        prixVente: json['prixVente'] as int?,
+        medicament: json['medicament'] as String?,
         utilisateur: json['utilisateur'] ?? 0,
         created_at: json["created_at"] == null
             ? null
