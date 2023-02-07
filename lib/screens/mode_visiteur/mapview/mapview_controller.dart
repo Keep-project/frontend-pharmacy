@@ -67,9 +67,9 @@ class MapViewScreenController extends GetxController {
 
   @override
   void onInit() async {
-    textEditingDistance.text = '5';
+    textEditingDistance.text = '25000';
     sourceMapMarker.value = await BitmapDescriptor.fromAssetImage(
-    const ImageConfiguration(), "assets/images/bonhomme3.png");
+        const ImageConfiguration(), "assets/images/bonhomme3.png");
     googlePlace = GooglePlace(apiKey);
     await getCurrentLocation();
     super.onInit();
@@ -88,24 +88,24 @@ class MapViewScreenController extends GetxController {
     update();
   }
 
-
   void changeValue(bool value) {
     searchForSomeBody.value = value;
     update();
   }
-
 
   Future getPharmacies({BuildContext? context}) async {
     pharmacyStatus = LoadingStatus.searching;
     pharmaciesList.clear();
     positions.clear();
 
-    if ( searchForSomeBody.value ){
-      if ( textEditingPays.text.trim().isEmpty){
-        CustomSnacbar.showMessage(context!, "Veuillez renseigner le pays pour la recherche !");
+    if (searchForSomeBody.value) {
+      if (textEditingPays.text.trim().isEmpty) {
+        CustomSnacbar.showMessage(
+            context!, "Veuillez renseigner le pays pour la recherche !");
       }
-      if ( textEditingVille.text.trim().isEmpty){
-        CustomSnacbar.showMessage(context!, "Veuillez renseigner la ville pour la recherche !");
+      if (textEditingVille.text.trim().isEmpty) {
+        CustomSnacbar.showMessage(
+            context!, "Veuillez renseigner la ville pour la recherche !");
       }
     }
 
@@ -119,8 +119,12 @@ class MapViewScreenController extends GetxController {
         ville: textEditingVille.text.trim(),
         quartier: textEditingQuartier.text.trim(),
         onSuccess: (data) async {
+          print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+          print(data.toMap());
+          print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
           pharmaciesList.addAll(data.results!);
-          if (currentLocation!.longitude! != 0 && currentLocation!.latitude! != 0){
+          if (currentLocation!.longitude! != 0 &&
+              currentLocation!.latitude! != 0) {
             pharmaciesList.sort((a, b) => a.distance!.compareTo(b.distance!));
           }
           for (Pharmacie p in pharmaciesList) {
@@ -128,19 +132,18 @@ class MapViewScreenController extends GetxController {
           }
           if (pharmaciesList.isNotEmpty) {
             pharmacieDestination?.value = pharmaciesList[0];
-            destination.value = LatLng(pharmaciesList[0].latitude!, pharmaciesList[0].longitude!);
+            destination.value = LatLng(
+                pharmaciesList[0].latitude!, pharmaciesList[0].longitude!);
           }
-          if ( !searchForSomeBody.value){
+          if (!searchForSomeBody.value) {
             await getPolyPoints();
           }
-          
+
           pharmacyStatus = LoadingStatus.completed;
           update();
         },
         onError: (error) {
-          print("============================");
           print(error);
-          print("============================");
           pharmacyStatus = LoadingStatus.failed;
           update();
         });
@@ -161,16 +164,15 @@ class MapViewScreenController extends GetxController {
           }
           if (pharmaciesList.isNotEmpty) {
             pharmacieDestination?.value = pharmaciesList[0];
-            destination.value = LatLng(pharmaciesList[0].latitude!, pharmaciesList[0].longitude!);
+            destination.value = LatLng(
+                pharmaciesList[0].latitude!, pharmaciesList[0].longitude!);
           }
           await getPolyPoints();
           pharmacyStatus = LoadingStatus.completed;
           update();
         },
         onError: (error) {
-          print("============================");
           print(error);
-          print("============================");
           pharmacyStatus = LoadingStatus.failed;
           update();
         });
@@ -186,17 +188,20 @@ class MapViewScreenController extends GetxController {
   Future getPolyPoints() async {
     update();
     PolylinePoints polyPoints = PolylinePoints();
+    try {
+      PolylineResult result = await polyPoints.getRouteBetweenCoordinates(
+          apiKey,
+          PointLatLng(source.value.latitude, source.value.longitude),
+          PointLatLng(destination.value.latitude, destination.value.longitude));
 
-    PolylineResult result = await polyPoints.getRouteBetweenCoordinates(
-        apiKey,
-        PointLatLng(source.value.latitude, source.value.longitude),
-        PointLatLng(destination.value.latitude, destination.value.longitude));
-
-    if (result.points.isNotEmpty) {
-      polylineCoordinates.clear();
-      result.points.forEach((PointLatLng point) =>
-          polylineCoordinates.add(LatLng(point.latitude, point.longitude)));
-      update();
+      if (result.points.isNotEmpty) {
+        polylineCoordinates.clear();
+        result.points.forEach((PointLatLng point) =>
+            polylineCoordinates.add(LatLng(point.latitude, point.longitude)));
+        update();
+      }
+    } catch (e) {
+      print("erreur : ");
     }
   }
 
