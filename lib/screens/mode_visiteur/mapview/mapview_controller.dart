@@ -119,9 +119,6 @@ class MapViewScreenController extends GetxController {
         ville: textEditingVille.text.trim(),
         quartier: textEditingQuartier.text.trim(),
         onSuccess: (data) async {
-          print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-          print(data.toMap());
-          print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
           pharmaciesList.addAll(data.results!);
           if (currentLocation!.longitude! != 0 &&
               currentLocation!.latitude! != 0) {

@@ -1,12 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:pharmacy_app/components/card_container.dart';
-import 'package:pharmacy_app/components/custom_button.dart';
-import 'package:pharmacy_app/components/custom_dropdown.dart';
-import 'package:pharmacy_app/components/custom_text_field2.dart';
-import 'package:pharmacy_app/components/my_row.dart';
 import 'package:pharmacy_app/components/pharmacie_card.dart';
 import 'package:pharmacy_app/components/title_text.dart';
 import 'package:pharmacy_app/core/app_colors.dart';
@@ -91,7 +85,7 @@ class DetailVisteurScreen extends GetView<DetailScreenController> {
                         child: Container(
                           padding: const EdgeInsets.all(0),
                           child: const Icon(CupertinoIcons.arrow_left,
-                              color: kDarkColor, size: 30),
+                              color: kDarkColor, size: 26),
                         ),
                       ),
                     ),

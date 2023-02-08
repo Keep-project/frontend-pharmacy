@@ -329,7 +329,7 @@ class MapViewScreen extends GetView<MapViewScreenController> {
                                                 .capitalize!,
                                             style: const TextStyle(
                                               color: kWhiteColor,
-                                              fontSize: 18,
+                                              fontSize: 16,
                                               fontWeight: FontWeight.w600,
                                               height: 1.3,
                                             ),
@@ -341,7 +341,7 @@ class MapViewScreen extends GetView<MapViewScreenController> {
                                                   "(Plus près de vous)",
                                                   style: TextStyle(
                                                     color: kWhiteColor,
-                                                    fontSize: 12,
+                                                    fontSize: 11,
                                                   ),
                                                 )
                                               : Container(),
@@ -367,8 +367,6 @@ class MapViewScreen extends GetView<MapViewScreenController> {
                                       height: 60,
                                       width: 50,
                                     ),
-                                    /*const Icon(CupertinoIcons.gift_fill,
-                                        size: 46, color: kTextColor),*/
                                     const SizedBox(width: kDefaultPadding / 2),
                                     Column(
                                       crossAxisAlignment:
@@ -378,7 +376,7 @@ class MapViewScreen extends GetView<MapViewScreenController> {
                                           "Tel: ${controller.pharmaciesList[index].phone!.toString()}",
                                           style: const TextStyle(
                                             color: kDarkColor,
-                                            fontSize: 18,
+                                            fontSize: 15,
                                             fontWeight: FontWeight.w600,
                                             height: 1.3,
                                             wordSpacing: 1.2,
@@ -390,7 +388,7 @@ class MapViewScreen extends GetView<MapViewScreenController> {
                                           textAlign: TextAlign.left,
                                           style: TextStyle(
                                             color: kDarkColor.withOpacity(0.6),
-                                            fontSize: 14,
+                                            fontSize: 13,
                                             fontWeight: FontWeight.w400,
                                             height: 1.3,
                                             wordSpacing: 1.2,
@@ -407,7 +405,7 @@ class MapViewScreen extends GetView<MapViewScreenController> {
                                       "${index + 1}/${controller.pharmaciesList.length}",
                                       style: TextStyle(
                                         color: kDarkColor.withOpacity(0.6),
-                                        fontSize: 16,
+                                        fontSize: 14,
                                         height: 1.3,
                                       ),
                                     ),
@@ -416,7 +414,7 @@ class MapViewScreen extends GetView<MapViewScreenController> {
                                       controller.pharmaciesList[index]
                                                   .distance! >=
                                               0
-                                          ? "Située à ${controller.pharmaciesList[index].distance!.toStringAsFixed(2)} Km de votre position"
+                                          ? "Située à ${controller.pharmaciesList[index].distance!.toStringAsFixed(2)} Km de vous"
                                           : "",
                                       style: const TextStyle(
                                         color: kOrangeColor,
