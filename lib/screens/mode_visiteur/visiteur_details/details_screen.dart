@@ -31,7 +31,7 @@ class DetailVisteurScreen extends GetView<DetailScreenController> {
                       height: Get.height,
                       width: Get.width,
                     ),
-                    Hero(
+                     controller.isInternetConnection ? Hero(
                       tag: Get.arguments,
                       child: Container(
                         height: 250,
@@ -45,6 +45,23 @@ class DetailVisteurScreen extends GetView<DetailScreenController> {
                           image: DecorationImage(
                             fit: BoxFit.cover,
                             image: NetworkImage(controller.medicament!.photo!),
+                          ),
+                        ),
+                      ),
+                    ) :Hero(
+                      tag: Get.arguments,
+                      child: Container(
+                        height: 250,
+                        width: Get.width,
+                        padding: const EdgeInsets.only(
+                            left: kDefaultPadding,
+                            right: kDefaultPadding,
+                            top: kDefaultPadding),
+                        decoration: BoxDecoration(
+                          color: Colors.grey.withOpacity(.2),
+                          image: const DecorationImage(
+                            fit: BoxFit.cover,
+                            image: AssetImage("assets/images/medecine_for.png"),
                           ),
                         ),
                       ),

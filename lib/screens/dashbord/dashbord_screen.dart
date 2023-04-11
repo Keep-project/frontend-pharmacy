@@ -82,7 +82,7 @@ class DashbordScreen extends GetView<DashbordScreenController> {
                       child: Row(
                         children: List.generate(controller.medicamentsList.length, (index) => Container(
                           margin: const EdgeInsets.only(right: kDefaultMargin*2),
-                          child: MedicamentCard(medicament: controller.medicamentsList[index]),)),
+                          child: MedicamentCard(medicament: controller.medicamentsList[index], isInternetConnection: false,),)),
                       ),
                     ),                   
                   ],

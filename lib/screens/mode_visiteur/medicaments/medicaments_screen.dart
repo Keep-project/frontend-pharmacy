@@ -73,6 +73,7 @@ class MedicamentScreen extends GetView<MedicamentscreenController> {
                                 ...List.generate(
                                     controller.medicamentsList.length,
                                     (index) => MedicamentCard(
+                                      isInternetConnection: false,
                                         medicament:
                                             controller.medicamentsList[index])),
                                 controller.infinityStatus ==

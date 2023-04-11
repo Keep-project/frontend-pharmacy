@@ -3,6 +3,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:pharmacy_app/database/models/pharmacie.dart' as lp;
 
 class PharmacieResponseModel {
   final int? status;
@@ -10,35 +11,31 @@ class PharmacieResponseModel {
   final String? message;
   final List<Pharmacie>? results;
 
-  PharmacieResponseModel({
-    this.status,
-    this.success,
-    this.message,
-    this.results
-  });
+  PharmacieResponseModel(
+      {this.status, this.success, this.message, this.results});
 
-  factory PharmacieResponseModel.fromJson(String string) => PharmacieResponseModel.fromMap(json.decode(string));
+  factory PharmacieResponseModel.fromJson(String string) =>
+      PharmacieResponseModel.fromMap(json.decode(string));
 
-  factory PharmacieResponseModel.fromMap(Map<String, dynamic> json) => PharmacieResponseModel(
-    status: json['status'] ?? 0,
-    success: json['success'] ?? false,
-    message: json['message'] ?? "",
-    results: json['results']  == null ? [] : List<Pharmacie>.from(json['results'].map((x) => Pharmacie.fromMap(x)))
-  );
-
+  factory PharmacieResponseModel.fromMap(Map<String, dynamic> json) =>
+      PharmacieResponseModel(
+          status: json['status'] ?? 0,
+          success: json['success'] ?? false,
+          message: json['message'] ?? "",
+          results: json['results'] == null
+              ? []
+              : List<Pharmacie>.from(
+                  json['results'].map((x) => Pharmacie.fromMap(x))));
 
   Map<String, dynamic> toMap() => {
-    'status': status,
-    'success': success,
-    'message': message,
-    'results': results
-  };
+        'status': status,
+        'success': success,
+        'message': message,
+        'results': results
+      };
 
   String toJson() => json.encode(toMap());
-
 }
-
-
 
 class Pharmacie {
   final String? id;
@@ -81,7 +78,7 @@ class Pharmacie {
       localisation: json['localisation'] as String?,
       phone: json['tel'] as String?,
       email: json['email'] as String?,
-      stock: json['stock'] as int? ,
+      stock: json['stock'] as int?,
       latitude: json['latitude'] as double?,
       longitude: json['longitude'] as double?,
       distance: json['distance'] ?? -1,
@@ -95,22 +92,38 @@ class Pharmacie {
           ? null
           : DateTime.parse(json['updated_at']));
 
-    Map<String, dynamic> toMap() => {
-      'id': id,
-      'nom': nom,
-      'localisation': localisation,
-      'phone': phone,
-      'email': email,
-      'stock': stock,
-      'latitude': latitude,
-      'longitude': longitude,
-      'ouverture': ouverture,
-      'distance': distance,
-      'fermeture': fermeture,
-      'user': user,
-      'created_at': created_at,
-      'updated_at': updated_at
-    };
+  Map<String, dynamic> toMap() => {
+        'id': id,
+        'nom': nom,
+        'localisation': localisation,
+        'phone': phone,
+        'email': email,
+        'stock': stock,
+        'latitude': latitude,
+        'longitude': longitude,
+        'ouverture': ouverture,
+        'distance': distance,
+        'fermeture': fermeture,
+        'user': user,
+        'created_at': created_at,
+        'updated_at': updated_at
+      };
 
-    String toJson() => json.encode(toMap());
+  String toJson() => json.encode(toMap());
+
+  lp.Pharmacie convert() => lp.Pharmacie(
+      idPharmacie: id,
+      nom: nom,
+      localisation: localisation,
+      tel: phone,
+      email: email,
+      stock: stock,
+      latitude: latitude,
+      longitude: longitude,
+      distance: distance,
+      ouverture: ouverture,
+      fermeture: fermeture,
+      user: user,
+      created_at: created_at,
+      updated_at: updated_at);
 }

@@ -93,8 +93,8 @@ class PharmacieDatabase {
           ${CarnetFields.user} $integerType,
           ${CarnetFields.created_at} $textType,
           ${CarnetFields.updated_at} $textType,
-          ${CarnetFields.consultation} $integerType,
-          ${CarnetFields.maladie} $integerType,
+          ${CarnetFields.consultation} $textType,
+          ${CarnetFields.maladie} $textType,
           ${CarnetFields.isUpdate} $boolType,
 
           FOREIGN KEY (${CarnetFields.maladie})
@@ -141,7 +141,7 @@ class PharmacieDatabase {
           ${EntrepotFields.description} $textType,
           ${EntrepotFields.created_at} $textType,
           ${EntrepotFields.updated_at} $textType,
-          ${EntrepotFields.pharmacie} $integerType,
+          ${EntrepotFields.pharmacie} $textType,
           ${EntrepotFields.isUpdate} $boolType,
 
           FOREIGN KEY (${EntrepotFields.pharmacie})
@@ -161,7 +161,7 @@ class PharmacieDatabase {
           ${FactureFields.note} $textType,
           ${FactureFields.created_at} $textType,
           ${FactureFields.updated_at} $textType,
-          ${FactureFields.utilisateur} $integerType,
+          ${FactureFields.utilisateur} $textType,
           ${FactureFields.isUpdate} $boolType,
 
           FOREIGN KEY (${FactureFields.utilisateur})
@@ -181,8 +181,8 @@ class PharmacieDatabase {
           ${HistoriquePrixFields.prixVente} $integerType,
           ${HistoriquePrixFields.created_at} $textType,
           ${HistoriquePrixFields.updated_at} $textType,
-          ${HistoriquePrixFields.medicament} $integerType,
-          ${HistoriquePrixFields.utilisateur} $integerType,
+          ${HistoriquePrixFields.medicament} $textType,
+          ${HistoriquePrixFields.utilisateur} $textType,
           ${HistoriquePrixFields.isUpdate} $boolType,
 
           FOREIGN KEY (${HistoriquePrixFields.utilisateur})
@@ -203,7 +203,7 @@ class PharmacieDatabase {
           ${InventaireFields.libelle} $textType,
           ${InventaireFields.created_at} $textType,
           ${InventaireFields.updated_at} $textType,
-          ${InventaireFields.entrepot} $integerType,
+          ${InventaireFields.entrepot} $textType,
           ${InventaireFields.isUpdate} $boolType,
 
           FOREIGN KEY (${InventaireFields.entrepot})
@@ -220,8 +220,8 @@ class PharmacieDatabase {
           ${InventaireMedicamentFields.quantiteReelle} $integerType,
           ${InventaireMedicamentFields.created_at} $textType,
           ${InventaireMedicamentFields.updated_at} $textType,
-          ${InventaireMedicamentFields.inventaire} $integerType,
-          ${InventaireMedicamentFields.medicament} $integerType,
+          ${InventaireMedicamentFields.inventaire} $textType,
+          ${InventaireMedicamentFields.medicament} $textType,
           ${InventaireMedicamentFields.isUpdate} $boolType,
 
           PRIMARY KEY (${InventaireMedicamentFields.inventaire}, ${InventaireMedicamentFields.medicament}),
@@ -268,12 +268,13 @@ class PharmacieDatabase {
           ${MedicamentFields.voix} $integerType,
           ${MedicamentFields.created_at} $textType,
           ${MedicamentFields.updated_at} $textType,
-          ${MedicamentFields.categorie} $integerType,
-          ${MedicamentFields.pharmacie} $integerType,
+          ${MedicamentFields.categorie} $textType,
+          ${MedicamentFields.pharmaciename} $textType,
+          ${MedicamentFields.pharmacie} $textType,
           ${MedicamentFields.user} $integerType,
           ${MedicamentFields.stockAlert} $integerType,
           ${MedicamentFields.stockOptimal} $integerType,
-          ${MedicamentFields.entrepot} $integerType,
+          ${MedicamentFields.entrepot} $textType,
           ${MedicamentFields.isUpdate} $boolType,
 
           FOREIGN KEY (${MedicamentFields.categorie})
@@ -304,7 +305,7 @@ class PharmacieDatabase {
           ${MedicamentFactureFields.created_at} $textType,
           ${MedicamentFactureFields.updated_at} $textType,
           ${MedicamentFactureFields.facture} $integerType,
-          ${MedicamentFactureFields.medicament} $integerType,
+          ${MedicamentFactureFields.medicament} $textType,
           ${MedicamentFactureFields.isUpdate} $boolType,
 
           PRIMARY KEY (${MedicamentFactureFields.facture}, ${MedicamentFactureFields.medicament}),
@@ -327,8 +328,8 @@ class PharmacieDatabase {
           ${MouvementStockFields.quantite} $integerType,
           ${MouvementStockFields.created_at} $textType,
           ${MouvementStockFields.updated_at} $textType,
-          ${MouvementStockFields.entrepot} $integerType,
-          ${MouvementStockFields.medicament} $integerType,
+          ${MouvementStockFields.entrepot} $textType,
+          ${MouvementStockFields.medicament} $textType,
           ${MouvementStockFields.isUpdate} $boolType,
 
 
@@ -349,7 +350,7 @@ class PharmacieDatabase {
     await db.execute('''  
         CREATE TABLE $tablePharmacie(
           ${PharmacieFields.id} $idType,
-          ${PharmacieFields.libelle} $textType,
+          ${PharmacieFields.idPharmacie} $textType,
           ${PharmacieFields.nom} $textType,
           ${PharmacieFields.localisation} $textType,
           ${PharmacieFields.tel} $textType,
@@ -357,9 +358,11 @@ class PharmacieDatabase {
           ${PharmacieFields.longitude} $realType,
           ${PharmacieFields.ouverture} $textType,
           ${PharmacieFields.fermeture} $textType,
+          ${PharmacieFields.stock} $integerType,
+          ${PharmacieFields.distance} $realType,
           ${PharmacieFields.created_at} $textType,
           ${PharmacieFields.updated_at} $textType,
-          ${PharmacieFields.user} $integerType,
+          ${PharmacieFields.user} $textType,
           ${PharmacieFields.email} $textType,
           ${PharmacieFields.isUpdate} $boolType,
 
@@ -1128,6 +1131,25 @@ class PharmacieDatabase {
     }
   }
 
+  Future<Medicament?> readMedicamentByIdMedicament(String idMedicament) async {
+    final db = await instance.database;
+
+    final maps = await db.query(
+      tableMedicament,
+      columns: MedicamentFields.values,
+      where: "${MedicamentFields.idMedicament} = ?",
+      whereArgs: [
+        idMedicament,
+      ],
+    );
+
+    if (maps.isNotEmpty) {
+      return Medicament.fromMap(maps.first);
+    } else {
+      return null;
+    }
+  }
+
   Future<Medicament?> readMedicamentByName(String name) async {
     final db = await instance.database;
 
@@ -1180,6 +1202,9 @@ class PharmacieDatabase {
   Future<int> updateMedicament(Medicament medicament) async {
     final db = await instance.database;
 
+    // Mettre a jour l'état du champ isUpdate pour indiquer que l'objet a été modifié
+    medicament.isUpdate = true;
+
     return db.update(
       tableMedicament,
       medicament.toMap(),
@@ -1202,6 +1227,8 @@ class PharmacieDatabase {
     );
   }
 
+ 
+ 
   /// La table MedicamentFacture
 
   Future<MedicamentFacture> createMedicamentFacture(
@@ -1347,6 +1374,12 @@ class PharmacieDatabase {
 
   Future<Pharmacie> createPharmacie(Pharmacie pharmacie) async {
     // Méthode permettant d'ajouter une note dans notre base de données
+    var ph = await readPharmacieByIdPharmacie(pharmacie.idPharmacie!);
+    if ( ph != null ) {
+      pharmacie = pharmacie.copy(id: ph.id);
+      await updatePharmacieByIdPharmacie(pharmacie);
+      return pharmacie;
+    }
     final db = await instance.database;
     int id = 0;
     await db.transaction((txn) async {
@@ -1393,6 +1426,25 @@ class PharmacieDatabase {
     // );
   }
 
+  Future<Pharmacie?> readPharmacieByIdPharmacie(String idPharmacie) async {
+    final db = await instance.database;
+
+    final maps = await db.query(
+      tablePharmacie,
+      columns: PharmacieFields.values,
+      where: "${PharmacieFields.idPharmacie} = ?",
+      whereArgs: [
+        idPharmacie,
+      ],
+    );
+
+    if (maps.isNotEmpty) {
+      return Pharmacie.fromMap(maps.first);
+    } else {
+      return null;
+    }
+  }
+
   Future<List<Pharmacie>> readAllPharmacie() async {
     final db = await instance.database;
     const orderBy = "${PharmacieFields.id} ASC";
@@ -1414,6 +1466,19 @@ class PharmacieDatabase {
       where: "${PharmacieFields.id} = ?",
       whereArgs: [
         pharmacie.id,
+      ],
+    );
+  }
+
+   Future<int> updatePharmacieByIdPharmacie(Pharmacie pharmacie) async {
+    final db = await instance.database;
+
+    return db.update(
+      tablePharmacie,
+      pharmacie.toMap(),
+      where: "${PharmacieFields.idPharmacie} = ?",
+      whereArgs: [
+        pharmacie.idPharmacie,
       ],
     );
   }

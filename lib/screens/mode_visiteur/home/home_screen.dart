@@ -129,7 +129,7 @@ class HomeScreen extends GetView<HomeScreenController> {
                             children: [
                               ...List.generate(
                                   controller.medicamentsList.length,
-                                  (index) => MedicamentCard(medicament: controller.medicamentsList[index])),
+                                  (index) => MedicamentCard(medicament: controller.medicamentsList[index], isInternetConnection: controller.isInternetConnection,) ),
                               controller.infinityStatus ==
                                       LoadingStatus.searching
                                   ? Container(

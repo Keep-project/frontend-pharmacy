@@ -31,13 +31,13 @@ class OnboardingScreenController extends GetxController {
 
   Future verifyToken() async{
     if ( await _localAuth.hasAuthToken()){
-      Future.delayed(const Duration(milliseconds: 800), () {
+      // Future.delayed(const Duration(milliseconds: 800), () {
         //Get.offAllNamed(AppRoutes.LOGIN);
         Get.offAllNamed(AppRoutes.STARTPAGE);
-      });
+      // });
     }
     else{
-      Get.offAllNamed(AppRoutes.LOGIN);
+      // Get.offAllNamed(AppRoutes.LOGIN);
     }
   }
 

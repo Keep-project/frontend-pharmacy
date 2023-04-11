@@ -2,7 +2,11 @@
 
 import 'package:get/get.dart';
 import 'package:pharmacy_app/core/app_state.dart';
+import 'package:pharmacy_app/database/Sync/synchronize.dart';
+import 'package:pharmacy_app/database/models/medicament.dart' as lm;
+import 'package:pharmacy_app/database/models/pharmacie.dart' as lp;
 import 'package:pharmacy_app/models/response_data_models/medicament_model.dart';
+import 'package:pharmacy_app/models/response_data_models/pharmacie_model.dart';
 import 'package:pharmacy_app/services/remote_services/medicament/medicament.dart';
 
 class DetailScreenController extends GetxController {
@@ -17,19 +21,31 @@ class DetailScreenController extends GetxController {
 
   // RxInt selectedIndex = 0.obs;
 
+  bool isInternetConnection = false;
+
   @override
   void onInit() async {
-    await getMedicamentsById();
+    medicamentStatus = LoadingStatus.searching;
+    isInternetConnection = await SynchronizationData.isInternet();
+    if (!isInternetConnection) {
+      lm.Medicament? medoc = await SynchronizationData().readMedicamentByIdMedicament(Get.arguments);
+      medicament = medoc!.convert();
+      lp.Pharmacie? pharmacie = await SynchronizationData().readPharmacieByIdPharmacie(medoc.pharmacie!);
+      medicament!.pharmacies = [ pharmacie!.convert() ];
+      medicamentStatus = LoadingStatus.completed;
+      update();
+    } else {
+      await getMedicamentsById();
+    }
     super.onInit();
   }
 
-  
   Future getMedicamentsById() async {
     medicamentStatus = LoadingStatus.searching;
     update();
     await _medicamentService.getMedicamentsById(
         idMedicament: Get.arguments,
-        onSuccess: (data) {
+        onSuccess: (data) async {
           medicament = data;
           // factures = data!.references!;
           // factures.forEach((element){
@@ -40,6 +56,10 @@ class DetailScreenController extends GetxController {
           //     }
           //   });
           // });
+
+          for (Pharmacie p in medicament!.pharmacies!){
+            await SynchronizationData().savePharmacie(p.convert());
+          }
           medicamentStatus = LoadingStatus.completed;
           update();
         },
@@ -51,6 +71,4 @@ class DetailScreenController extends GetxController {
           update();
         });
   }
-
-  
 }

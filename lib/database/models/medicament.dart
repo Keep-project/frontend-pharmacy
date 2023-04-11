@@ -1,5 +1,9 @@
 import 'dart:convert';
 
+import 'package:pharmacy_app/database/models/pharmacie.dart';
+import 'package:pharmacy_app/models/response_data_models/medicament_model.dart'
+    as rm;
+
 const String tableMedicament = "medicaments";
 
 class MedicamentFields {
@@ -21,6 +25,7 @@ class MedicamentFields {
     created_at,
     updated_at,
     categorie,
+    pharmaciename,
     pharmacie,
     user,
     stockAlert,
@@ -46,7 +51,9 @@ class MedicamentFields {
   static const String created_at = "created_at";
   static const String updated_at = "updated_at";
   static const String categorie = "categorie_id";
+  static const String pharmaciename = "pharmaciename";
   static const String pharmacie = "pharmacie_id";
+  static const String pharmacies = "pharmacies";
   static const String user = "user_id";
   static const String stockAlert = "stockAlert";
   static const String stockOptimal = "stockOptimal";
@@ -72,12 +79,14 @@ class Medicament {
   final DateTime? created_at;
   final DateTime? updated_at;
   final String? categorie;
+  final String? pharmaciename;
   final String? pharmacie;
+  final List<Pharmacie>? pharmacies;
   final int? user;
   final int? stockAlert;
   final int? stockOptimal;
   final String? entrepot;
-  final bool? isUpdate;
+  bool? isUpdate;
 
   Medicament(
       {this.id,
@@ -97,7 +106,9 @@ class Medicament {
       this.created_at,
       this.updated_at,
       this.categorie,
+      this.pharmaciename,
       this.pharmacie,
+      this.pharmacies,
       this.user,
       this.stockAlert,
       this.stockOptimal,
@@ -125,7 +136,9 @@ class Medicament {
         created_at: DateTime.parse(json[MedicamentFields.created_at] as String),
         updated_at: DateTime.parse(json[MedicamentFields.updated_at] as String),
         categorie: json[MedicamentFields.categorie] as String?,
+        pharmaciename: json[MedicamentFields.pharmaciename] as String?,
         pharmacie: json[MedicamentFields.pharmacie] as String?,
+        pharmacies: json[MedicamentFields.pharmacies] == null ? [] : List<Pharmacie>.from(json[MedicamentFields.pharmacies].map((x) => Pharmacie.fromMap(x))),
         user: json[MedicamentFields.user] as int?,
         stockAlert: json[MedicamentFields.stockAlert] as int?,
         stockOptimal: json[MedicamentFields.stockOptimal] as int?,
@@ -151,7 +164,9 @@ class Medicament {
         MedicamentFields.created_at: created_at!.toIso8601String(),
         MedicamentFields.updated_at: updated_at!.toIso8601String(),
         MedicamentFields.categorie: categorie,
+        MedicamentFields.pharmaciename: pharmaciename,
         MedicamentFields.pharmacie: pharmacie,
+        // MedicamentFields.pharmacies: pharmacies == null ? [] : List.from(pharmacies!.map((x) => x.toMap())),
         MedicamentFields.user: user,
         MedicamentFields.stockAlert: stockAlert,
         MedicamentFields.stockOptimal: stockOptimal,
@@ -159,54 +174,77 @@ class Medicament {
         MedicamentFields.isUpdate: isUpdate == true ? 1 : 0,
       };
 
-  Medicament copy({
-    int? id,
-    String? idMedicament,
-    String? nom,
-    int? prix,
-    String? marque,
-    String? basePrix,
-    double? tva,
-    DateTime? dateExp,
-    String? image,
-    String? masse,
-    int? qteStock,
-    String? description,
-    String? posologie,
-    int? voix,
-    DateTime? created_at,
-    DateTime? updated_at,
-    String? categorie,
-    String? pharmacie,
-    int? user,
-    int? stockAlert,
-    int? stockOptimal,
-    String? entrepot,
-    bool? isUpdate
-  }) =>
+  Medicament copy(
+          {int? id,
+          String? idMedicament,
+          String? nom,
+          int? prix,
+          String? marque,
+          String? basePrix,
+          double? tva,
+          DateTime? dateExp,
+          String? image,
+          String? masse,
+          int? qteStock,
+          String? description,
+          String? posologie,
+          int? voix,
+          DateTime? created_at,
+          DateTime? updated_at,
+          String? categorie,
+          String? pharmaciename,
+          String? pharmacie,
+          int? user,
+          int? stockAlert,
+          int? stockOptimal,
+          String? entrepot,
+          bool? isUpdate}) =>
       Medicament(
-        id: id ?? this.id,
-        idMedicament: idMedicament ?? this.idMedicament,
-        nom: nom ?? this.nom,
-        prix: prix ?? this.prix,
-        marque: marque ?? this.marque,
-        basePrix: basePrix ?? this.basePrix,
-        tva: tva ?? this.tva,
-        dateExp: dateExp ?? this.dateExp,
-        image: image ?? this.image,
-        masse: masse ?? this.masse,
-        qteStock: qteStock ?? this.qteStock,
-        description: description ?? this.description,
-        posologie: posologie ?? this.posologie,
-        voix: voix ?? this.voix,
-        created_at: created_at ?? this.created_at,
-        updated_at: updated_at ?? this.updated_at,
-        categorie: categorie ?? this.categorie,
-        pharmacie: pharmacie ?? this.pharmacie,
-        user: user ?? this.user,
-        stockAlert: stockAlert ?? this.stockAlert,
-        stockOptimal: stockOptimal ?? this.stockOptimal,
-        entrepot: entrepot ?? this.entrepot,
-        isUpdate: isUpdate ?? this.isUpdate
-      );
+          id: id ?? this.id,
+          idMedicament: idMedicament ?? this.idMedicament,
+          nom: nom ?? this.nom,
+          prix: prix ?? this.prix,
+          marque: marque ?? this.marque,
+          basePrix: basePrix ?? this.basePrix,
+          tva: tva ?? this.tva,
+          dateExp: dateExp ?? this.dateExp,
+          image: image ?? this.image,
+          masse: masse ?? this.masse,
+          qteStock: qteStock ?? this.qteStock,
+          description: description ?? this.description,
+          posologie: posologie ?? this.posologie,
+          voix: voix ?? this.voix,
+          created_at: created_at ?? this.created_at,
+          updated_at: updated_at ?? this.updated_at,
+          categorie: categorie ?? this.categorie,
+          pharmaciename: pharmaciename ?? this.pharmaciename,
+          pharmacie: pharmacie ?? this.pharmacie,
+          user: user ?? this.user,
+          stockAlert: stockAlert ?? this.stockAlert,
+          stockOptimal: stockOptimal ?? this.stockOptimal,
+          entrepot: entrepot ?? this.entrepot,
+          isUpdate: isUpdate ?? this.isUpdate);
+
+  rm.Medicament convert() => rm.Medicament(
+      id: idMedicament,
+      nom: nom,
+      prix: prix,
+      marque: marque,
+      masse: masse,
+      date_exp: dateExp,
+      photo: image,
+      stock: qteStock,
+      stockAlert: stockAlert,
+      stockOptimal: stockOptimal,
+      description: description,
+      posologie: posologie,
+      pharmaciename: pharmaciename,
+      categorie: categorie,
+      user: user,
+      voix: voix,
+      pharmacie: pharmacie,
+      created_at: created_at,
+      updated_at: updated_at,
+      entrepot: entrepot,
+     );
 }

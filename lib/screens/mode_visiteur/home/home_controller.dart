@@ -1,11 +1,12 @@
 // ignore_for_file: avoid_print, non_constant_identifier_names, unused_field, prefer_typing_uninitialized_variables
 
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:location/location.dart' as l;
 import 'package:pharmacy_app/core/app_drawer.dart';
 import 'package:pharmacy_app/core/app_state.dart';
+import 'package:pharmacy_app/database/Sync/synchronize.dart';
+import 'package:pharmacy_app/database/models/medicament.dart' as lm;
 import 'package:pharmacy_app/models/response_data_models/medicament_model.dart';
 import 'package:pharmacy_app/router/app_router.dart';
 import 'package:pharmacy_app/services/remote_services/medicament/medicament.dart';
@@ -22,7 +23,8 @@ class HomeScreenController extends GetxController {
   RxInt selectedCategorieIndex = 0.obs;
 
   l.LocationData? currentLocation;
-  double distance = 25000; // initialisation du rayon de recherche à 5 KM par défaut
+  double distance =
+      25000; // initialisation du rayon de recherche à 5 KM par défaut
 
   int _count = 0;
   var next, previous;
@@ -34,11 +36,24 @@ class HomeScreenController extends GetxController {
     homeScaffoldKey.currentState!.openDrawer();
   }
 
+  bool isInternetConnection = false;
+
   @override
   void onInit() async {
-    await getCurrentLocation();
-    await filterList();
-    await listerner();
+    infinityStatus = LoadingStatus.searching;
+    isInternetConnection = await SynchronizationData.isInternet();
+    if (!isInternetConnection) {
+      List<lm.Medicament> localMedicamentsList = await SynchronizationData().readAllMedicament();
+      for (lm.Medicament m in localMedicamentsList){
+        medicamentsList.add(m.convert());
+      }
+    infinityStatus = LoadingStatus.completed;
+    update();
+    } else {
+      await getCurrentLocation();
+      await filterList();
+      await listerner();
+    }
     super.onInit();
   }
 
@@ -220,6 +235,4 @@ class HomeScreenController extends GetxController {
       },
     ),
   ];
-
-
 }

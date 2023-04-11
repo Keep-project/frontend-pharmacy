@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print
+// ignore_for_file: avoid_print, use_build_context_synchronously
 
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
@@ -140,14 +140,18 @@ class StartScreenController extends GetxController {
               created_at: DateTime.parse("2022-07-04T16:43:45.684Z"),
               updated_at: DateTime.parse("2022-09-26T05:48:34.878Z")));*/
 
-      medicaments = await SynchronizationData().pushMedicament(update:1);
+      medicaments = await SynchronizationData().pushMedicament(update: 1);
       // print(isInternetConnection);
       print("Liste des médicament à mettre à jour");
       print(medicaments);
       print("=====================================");
+
+      await verifyLocalData(null);
+
     } catch (e) {
-      print(e);
+      print("Une erreur est survenue : $e");
     }
+
     super.onInit();
   }
 
@@ -192,6 +196,7 @@ class StartScreenController extends GetxController {
    * 
    * */
 
+  // Méthode d'envoi des données sur la base de données en ligne
   Future pushData(BuildContext context) async {
     synchronizeStatus = LoadingStatus.searching;
     update();
@@ -224,7 +229,8 @@ class StartScreenController extends GetxController {
     update();
   }
 
-  Future pullData(BuildContext context) async {
+// Méthode d'envoi des données sur la base de données en locale
+  Future pullData(BuildContext? context) async {
     synchronizeStatus = LoadingStatus.searching;
     update();
     await _medicamentService.medicamentForPharmacy(
@@ -253,5 +259,22 @@ class StartScreenController extends GetxController {
           synchronizeStatus = LoadingStatus.failed;
           update();
         });
+  }
+
+
+  // Recupération des médicaments stokés en local
+  Future<List<Medicament>> readAllMedicament() async {
+    return await SynchronizationData().readAllMedicament();
+  }
+
+  Future<void> verifyLocalData(BuildContext? context) async {
+    // Si la table médicament de la BD local n'a pas de données alors on fait le pull des données en ligne
+      List<Medicament> localMedicaments = await readAllMedicament();
+      if (localMedicaments.isEmpty){
+        await pullData(context);
+      }
+      else{
+        print("Nombre trouvé : ${localMedicaments.length}" );
+      }
   }
 }

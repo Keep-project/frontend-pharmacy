@@ -58,7 +58,7 @@ class Medicament {
   final int? voix;
   final User? createur;
   final String? pharmacie;
-  final List<Pharmacie>? pharmacies;
+  List<Pharmacie>? pharmacies;
   final List<Entrepot>? entrepots;
   final List<Facture>? references;
   final List<HistoriquePrix>? historiques;

@@ -7,9 +7,11 @@ import 'package:pharmacy_app/router/app_router.dart';
 
 class MedicamentCard extends StatelessWidget {
   final Medicament medicament;
+  final bool isInternetConnection;
   const MedicamentCard({
     Key? key,
     required this.medicament,
+    required this.isInternetConnection,
   }) : super(key: key);
 
   @override
@@ -40,7 +42,7 @@ class MedicamentCard extends StatelessWidget {
             children: [
               Stack(
                 children: [
-                  Hero(
+                  isInternetConnection == true ? Hero(
                     tag: medicament.id.toString(),
                     child: Container(
                         height: 150,
@@ -53,6 +55,20 @@ class MedicamentCard extends StatelessWidget {
                             image: DecorationImage(
                               fit: BoxFit.cover,
                               image: NetworkImage(medicament.photo!),
+                            ))),
+                  ) : Hero(
+                    tag: medicament.id.toString(),
+                    child: Container(
+                        height: 150,
+                        decoration: BoxDecoration(
+                            color: kGreyColor,
+                            borderRadius: const BorderRadius.only(
+                              topLeft: Radius.circular(7),
+                              topRight: Radius.circular(7),
+                            ),
+                            image: const DecorationImage(
+                              fit: BoxFit.cover,
+                              image: AssetImage("assets/images/medecine_for.png"),
                             ))),
                   ),
                   Positioned(
