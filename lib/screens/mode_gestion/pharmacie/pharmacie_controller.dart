@@ -12,6 +12,8 @@ class PharmacieScreenController extends GetxController {
   final PharmacieService _pharmacieService = PharmacieServiceImpl();
   List<Pharmacie> pharmaciesList = <Pharmacie>[];
 
+  l.Location location = l.Location();
+
   @override
   void onInit() async {
     await getCurrentLocation();
@@ -36,8 +38,6 @@ class PharmacieScreenController extends GetxController {
   }
 
   Future getCurrentLocation() async {
-    l.Location location = l.Location();
-
     bool _serviceEnabled;
     l.PermissionStatus _permissionGranted;
     l.LocationData _locationData;
@@ -63,10 +63,6 @@ class PharmacieScreenController extends GetxController {
     }
 
     _locationData = await location.getLocation();
-
-    location.onLocationChanged.listen((l.LocationData currentLocation) {
-      // print(currentLocation);
-    });
 
     update();
   }

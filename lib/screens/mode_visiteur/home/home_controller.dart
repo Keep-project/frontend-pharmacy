@@ -112,9 +112,11 @@ class HomeScreenController extends GetxController {
       }
     }
 
-    location.onLocationChanged.listen((l.LocationData newLocation) {
-      currentLocation = newLocation;
-    });
+    _locationData = await location.getLocation();
+
+    // location.onLocationChanged.listen((l.LocationData newLocation) {
+    //   currentLocation = newLocation;
+    // });
     update();
   }
 

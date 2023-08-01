@@ -65,6 +65,8 @@ class MapViewScreenController extends GetxController {
   Placemark? localisationInformations;
   String searchText = "";
 
+  l.Location location = l.Location();
+
   @override
   void onInit() async {
     textEditingDistance.text = '25000';
@@ -205,7 +207,7 @@ class MapViewScreenController extends GetxController {
   Future getCurrentLocation() async {
     pharmacyStatus = LoadingStatus.searching;
     update();
-    l.Location location = l.Location();
+
     currentLocation = await location.getLocation();
 
     if (currentLocation != null) {
@@ -238,11 +240,11 @@ class MapViewScreenController extends GetxController {
       }
     }
 
-    location.onLocationChanged.listen((l.LocationData newLocation) {
-      currentLocation = newLocation;
-      source.value =
-          LatLng(currentLocation!.latitude!, currentLocation!.longitude!);
-    });
+    // location.onLocationChanged.listen((l.LocationData newLocation) {
+    //   currentLocation = newLocation;
+    //   source.value =
+    //       LatLng(currentLocation!.latitude!, currentLocation!.longitude!);
+    // });
     update();
 
     kGooglePlex = CameraPosition(
@@ -289,7 +291,6 @@ class MapViewScreenController extends GetxController {
       localisationInformations = placemarks.first;
 
       //loadingLocation = LoadingStatus.completed;
-
     }
     update();
   }

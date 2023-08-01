@@ -1,6 +1,4 @@
 // ignore_for_file: avoid_print
-import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:pharmacy_app/core/helpers.dart';
 import 'package:pharmacy_app/database/models/medicament.dart';
 import 'package:pharmacy_app/database/models/pharmacie.dart';
@@ -10,29 +8,7 @@ import 'package:pharmacy_app/models/response_data_models/medicament_model.dart'
 
 class SynchronizationData {
   static Future<bool> isInternet() async {
-    var connetivityResult = await (ConnectivityPlus.checkInternetConnection());
-
-    if (connetivityResult == ConnectivityResult.mobile) {
-      if (await InternetConnectionChecker().hasConnection) {
-        print("Mobile data detected & Internet connection confirmed");
-        return true;
-      } else {
-        print('No internet :( Reason: mobile data');
-        return false;
-      }
-    } else if (connetivityResult == ConnectivityResult.wifi) {
-      if (await InternetConnectionChecker().hasConnection) {
-        print("Wifi data detected & Internet connection confirmed");
-        return true;
-      } else {
-        print('No internet :( Reason: wifi');
-        return false;
-      }
-    } else {
-      print(
-          "Neither mobile data or Wifi connection detected. Not internet found");
-      return false;
-    }
+    return await (ConnectivityPlus.checkInternetConnection());
   }
 
   final PharmacieDatabase database = PharmacieDatabase.instance;

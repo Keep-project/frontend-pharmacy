@@ -34,7 +34,7 @@ class StartScreenController extends GetxController {
 
   @override
   void onInit() async {
-    // await getCurrentLocation();
+    await getCurrentLocation();
     isInternetConnection = await ConnectivityPlus.checkInternetConnection();
     // await PharmacieDatabase.instance.createCategorie(Categorie(libelle: 'Adultes'));
     // categories = await PharmacieDatabase.instance.readAllCategorie();
@@ -180,9 +180,11 @@ class StartScreenController extends GetxController {
 
     _locationData = await location.getLocation();
 
-    location.onLocationChanged.listen((l.LocationData currentLocation) {
-      // print(currentLocation);
-    });
+    // location.enableBackgroundMode(enable: true);
+
+    // location.onLocationChanged.listen((l.LocationData currentLocation) {
+    //   // Use current location
+    // });
 
     update();
   }
