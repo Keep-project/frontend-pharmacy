@@ -51,16 +51,17 @@ class OnboardingOne extends StatelessWidget {
               ),
             ),
           ),
-          Positioned(
+          const Positioned(
             right: 0,
-            bottom: kDefaultPadding*5,
+            bottom: kDefaultPadding * 5,
             left: 0,
             child: Padding(
-              padding: const EdgeInsets.all(kDefaultPadding*2),
+              padding: EdgeInsets.all(kDefaultPadding * 2),
               child: Column(
-                children: const [
-                  Text("Recherchez vous une pharmacie ?",
-                  textAlign: TextAlign.center,
+                children: [
+                  Text(
+                    "Recherchez vous une pharmacie ?",
+                    textAlign: TextAlign.center,
                     style: TextStyle(
                       letterSpacing: 1.3,
                       color: kWhiteColor,
@@ -69,10 +70,11 @@ class OnboardingOne extends StatelessWidget {
                     ),
                   ),
                   SizedBox(
-                    height: kDefaultPadding*1.5,
+                    height: kDefaultPadding * 1.5,
                   ),
-                  Text("Vous trouverez ici une bonne poignée de pharmacies qui peuvent avoir le produit dont vous avez besoin ! Vous pouvez également ajouter une pharmacie qui est la votre.",
-                  textAlign: TextAlign.center,
+                  Text(
+                    "Vous trouverez ici une bonne poignée de pharmacies qui peuvent avoir le produit dont vous avez besoin ! Vous pouvez également ajouter une pharmacie qui est la votre.",
+                    textAlign: TextAlign.center,
                     style: TextStyle(
                       color: kWhiteColor,
                       height: 1.5,
