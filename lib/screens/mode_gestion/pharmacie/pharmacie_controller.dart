@@ -14,7 +14,7 @@ class PharmacieScreenController extends GetxController {
 
   @override
   void onInit() async {
-    // await getCurrentLocation();
+    await getCurrentLocation();
     await getPharmacies();
     super.onInit();
   }
