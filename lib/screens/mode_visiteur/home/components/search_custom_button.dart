@@ -2,7 +2,7 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:pharmacy_app/components/search_bar.dart';
+import 'package:pharmacy_app/components/search_bar_action.dart';
 import 'package:pharmacy_app/core/app_colors.dart';
 import 'package:pharmacy_app/screens/mode_visiteur/home/components/custom_filter_dialog.dart';
 
@@ -22,16 +22,20 @@ class SearchBarAndButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var currentFocus;
-      void unfocus() {
-        currentFocus = FocusScope.of(context);
-        if (!currentFocus.hasPrimaryFocus) {
-          currentFocus.unfocus();
-        }
+    void unfocus() {
+      currentFocus = FocusScope.of(context);
+      if (!currentFocus.hasPrimaryFocus) {
+        currentFocus.unfocus();
       }
+    }
+
     return Row(
       children: [
         Expanded(
-          child: SearchBar(controller: controller.searchController, onTap: onTap, onChanged: onChanged),
+          child: SearchBarAction(
+              controller: controller.searchController,
+              onTap: onTap,
+              onChanged: onChanged),
         ),
         const SizedBox(width: 5),
         InkWell(

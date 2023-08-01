@@ -1,7 +1,7 @@
 // ignore_for_file: avoid_print
-
-import 'package:connectivity/connectivity.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'package:pharmacy_app/core/helpers.dart';
 import 'package:pharmacy_app/database/models/medicament.dart';
 import 'package:pharmacy_app/database/models/pharmacie.dart';
 import 'package:pharmacy_app/database/sqflite_db.dart';
@@ -10,7 +10,7 @@ import 'package:pharmacy_app/models/response_data_models/medicament_model.dart'
 
 class SynchronizationData {
   static Future<bool> isInternet() async {
-    var connetivityResult = await (Connectivity().checkConnectivity());
+    var connetivityResult = await (ConnectivityPlus.checkInternetConnection());
 
     if (connetivityResult == ConnectivityResult.mobile) {
       if (await InternetConnectionChecker().hasConnection) {
@@ -37,17 +37,16 @@ class SynchronizationData {
 
   final PharmacieDatabase database = PharmacieDatabase.instance;
 
-
 // Récupérer tous les médicaments de la base de données locale
   Future<List<Medicament>> readAllMedicament() async {
     List<Medicament> medicaments = await database.readAllMedicament();
     return medicaments;
   }
 
-
   // Récupérer tous les médicaments qui ont été mise à jour de la base de données locale
   Future<List<Medicament>> pushMedicament({int? update}) async {
-    List<Medicament> medicaments = await database.readAllUpdateMedicament(update??1);
+    List<Medicament> medicaments =
+        await database.readAllUpdateMedicament(update ?? 1);
     return medicaments;
   }
 
@@ -55,7 +54,6 @@ class SynchronizationData {
   Future<Medicament?> readMedicamentByIdMedicament(String idMedicament) async {
     return await database.readMedicamentByIdMedicament(idMedicament);
   }
-
 
   // Ajout un médicament dans la base de données locale
   Future saveMedicament(rm.Medicament med) async {
@@ -66,7 +64,8 @@ class SynchronizationData {
           idMedicament: med.id,
           nom: med.nom,
           prix: med.prix,
-          isUpdate: false, // Variable permettant de savoir si l'objet a été mis à jour ou non 
+          isUpdate:
+              false, // Variable permettant de savoir si l'objet a été mis à jour ou non
           marque: med.marque,
           basePrix: "TTC",
           tva: 19.25,
@@ -94,7 +93,6 @@ class SynchronizationData {
     }
   }
 
-
   // Ajout d'un pharmacie en base de donnée
   Future savePharmacie(Pharmacie pharmacie) async {
     var p = await database.createPharmacie(pharmacie);
@@ -103,5 +101,4 @@ class SynchronizationData {
   Future<Pharmacie?> readPharmacieByIdPharmacie(String idPharmacie) async {
     return await database.readPharmacieByIdPharmacie(idPharmacie);
   }
-
 }

@@ -1227,8 +1227,6 @@ class PharmacieDatabase {
     );
   }
 
- 
- 
   /// La table MedicamentFacture
 
   Future<MedicamentFacture> createMedicamentFacture(
@@ -1374,8 +1372,9 @@ class PharmacieDatabase {
 
   Future<Pharmacie> createPharmacie(Pharmacie pharmacie) async {
     // Méthode permettant d'ajouter une note dans notre base de données
-    var ph = await readPharmacieByIdPharmacie(pharmacie.idPharmacie!);
-    if ( ph != null ) {
+    var ph =
+        await readPharmacieByIdPharmacie(pharmacie.idPharmacie!.toString());
+    if (ph != null) {
       pharmacie = pharmacie.copy(id: ph.id);
       await updatePharmacieByIdPharmacie(pharmacie);
       return pharmacie;
@@ -1470,7 +1469,7 @@ class PharmacieDatabase {
     );
   }
 
-   Future<int> updatePharmacieByIdPharmacie(Pharmacie pharmacie) async {
+  Future<int> updatePharmacieByIdPharmacie(Pharmacie pharmacie) async {
     final db = await instance.database;
 
     return db.update(

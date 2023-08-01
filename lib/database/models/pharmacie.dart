@@ -1,6 +1,7 @@
 import 'dart:convert';
 
-import 'package:pharmacy_app/models/response_data_models/pharmacie_model.dart' as rp;
+import 'package:pharmacy_app/models/response_data_models/pharmacie_model.dart'
+    as rp;
 
 const String tablePharmacie = "pharmacies";
 
@@ -24,7 +25,7 @@ class PharmacieFields {
   ];
 
   static const String id = "_id";
-  static const String idPharmacie= "pharmacie_id";
+  static const String idPharmacie = "pharmacie_id";
   static const String nom = "nom";
   static const String localisation = "localisation";
   static const String tel = "tel";
@@ -43,7 +44,7 @@ class PharmacieFields {
 
 class Pharmacie {
   final int? id;
-  final String? idPharmacie;
+  final int? idPharmacie;
   final String? nom;
   final String? localisation;
   final String? tel;
@@ -59,15 +60,30 @@ class Pharmacie {
   final String? email;
   final bool? isUpdate;
 
-  Pharmacie({this.id, this.idPharmacie, this.stock, this.distance, this.nom, this.localisation, this.tel, this.latitude, this.longitude, this.ouverture, this.fermeture, this.created_at, this.updated_at, this.user, this.email, this.isUpdate});
+  Pharmacie(
+      {this.id,
+      this.idPharmacie,
+      this.stock,
+      this.distance,
+      this.nom,
+      this.localisation,
+      this.tel,
+      this.latitude,
+      this.longitude,
+      this.ouverture,
+      this.fermeture,
+      this.created_at,
+      this.updated_at,
+      this.user,
+      this.email,
+      this.isUpdate});
 
   factory Pharmacie.formJson(String string) =>
       Pharmacie.fromMap(json.decode(string));
 
-  factory Pharmacie.fromMap(Map<String, dynamic> json) =>
-      Pharmacie(
+  factory Pharmacie.fromMap(Map<String, dynamic> json) => Pharmacie(
         id: json[PharmacieFields.id] as int?,
-        idPharmacie: json[PharmacieFields.idPharmacie] as String?,
+        idPharmacie: json[PharmacieFields.idPharmacie] as int?,
         stock: json[PharmacieFields.stock] as int?,
         distance: json[PharmacieFields.distance] as double?,
         nom: json[PharmacieFields.nom] as String?,
@@ -77,10 +93,8 @@ class Pharmacie {
         longitude: json[PharmacieFields.longitude] as double?,
         ouverture: json[PharmacieFields.ouverture] as String?,
         fermeture: json[PharmacieFields.fermeture] as String?,
-        created_at:
-            DateTime.parse(json[PharmacieFields.created_at] as String),
-        updated_at:
-            DateTime.parse(json[PharmacieFields.updated_at] as String),
+        created_at: DateTime.parse(json[PharmacieFields.created_at] as String),
+        updated_at: DateTime.parse(json[PharmacieFields.updated_at] as String),
         user: int.parse(json[PharmacieFields.user]),
         email: json[PharmacieFields.email] as String?,
         isUpdate: json[PharmacieFields.isUpdate] == 1 ? true : false,
@@ -107,54 +121,53 @@ class Pharmacie {
 
   Pharmacie copy({
     int? id,
-  String? idPharmacie,
-  String? nom,
-  String? localisation,
-  String? tel,
-  double? latitude,
-  double? longitude,
-  String? ouverture,
-  String? fermeture,
-  int? stock,
-  double? distance,
-  DateTime? created_at,
-  DateTime? updated_at,
-  int? user,
-  String? email,
-  bool? isUpdate,
+    int? idPharmacie,
+    String? nom,
+    String? localisation,
+    String? tel,
+    double? latitude,
+    double? longitude,
+    String? ouverture,
+    String? fermeture,
+    int? stock,
+    double? distance,
+    DateTime? created_at,
+    DateTime? updated_at,
+    int? user,
+    String? email,
+    bool? isUpdate,
   }) =>
       Pharmacie(
-        id: id ?? this.id,
-        idPharmacie: idPharmacie ?? this.idPharmacie,
-        nom: nom ?? this.nom,
-        localisation: localisation ?? this.localisation,
-        tel: tel ?? this.tel,
-        latitude: latitude ?? this.latitude,
-        longitude: longitude ?? this.longitude,
-        ouverture: ouverture ?? this.ouverture,
-        fermeture: fermeture ?? this.fermeture,
-        stock: stock ?? this.stock,
-        distance: distance ?? this.distance,
-        created_at: created_at ?? this.created_at,
-        updated_at: updated_at ?? this.updated_at,
-        user: user ?? this.user,
-        email: email ?? this.email,
-        isUpdate: isUpdate ?? this.isUpdate
-      );
+          id: id ?? this.id,
+          idPharmacie: idPharmacie ?? this.idPharmacie,
+          nom: nom ?? this.nom,
+          localisation: localisation ?? this.localisation,
+          tel: tel ?? this.tel,
+          latitude: latitude ?? this.latitude,
+          longitude: longitude ?? this.longitude,
+          ouverture: ouverture ?? this.ouverture,
+          fermeture: fermeture ?? this.fermeture,
+          stock: stock ?? this.stock,
+          distance: distance ?? this.distance,
+          created_at: created_at ?? this.created_at,
+          updated_at: updated_at ?? this.updated_at,
+          user: user ?? this.user,
+          email: email ?? this.email,
+          isUpdate: isUpdate ?? this.isUpdate);
 
-  rp.Pharmacie convert() =>  rp.Pharmacie(
-    id: idPharmacie,
-    nom: nom,
-    localisation: localisation,
-    phone: tel,
-    email: email,
-    stock: stock,
-    latitude: latitude,
-    longitude: longitude,
-    distance: distance,
-    ouverture: ouverture,
-    fermeture: fermeture,
-    user: user,
-    created_at: created_at,
-    updated_at: updated_at);
+  rp.Pharmacie convert() => rp.Pharmacie(
+      id: idPharmacie,
+      nom: nom,
+      localisation: localisation,
+      phone: tel,
+      email: email,
+      stock: stock,
+      latitude: latitude,
+      longitude: longitude,
+      distance: distance,
+      ouverture: ouverture,
+      fermeture: fermeture,
+      user: user,
+      created_at: created_at,
+      updated_at: updated_at);
 }

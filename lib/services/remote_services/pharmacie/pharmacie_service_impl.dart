@@ -104,7 +104,7 @@ class PharmacieServiceImpl implements PharmacieService {
       Function(dynamic error)? onError}) async {
     ApiRequest(
       url: "${Constants.API_URL}/pharmacie/filter/",
-      data: { 'search': search },
+      data: {'search': search},
       token: await _localAuth.getToken(),
     ).post(onSuccess: (data) {
       onSuccess!(PharmacieResponseModel.fromMap(data));
@@ -114,9 +114,11 @@ class PharmacieServiceImpl implements PharmacieService {
       }
     });
   }
-  
+
   @override
-  Future<void> userPharmacies({Function(dynamic data)? onSuccess, Function(dynamic error)? onError}) async {
+  Future<void> userPharmacies(
+      {Function(dynamic data)? onSuccess,
+      Function(dynamic error)? onError}) async {
     ApiRequest(
       url: "${Constants.API_URL}/pharmacie/me/",
       data: {},

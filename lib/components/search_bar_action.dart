@@ -1,4 +1,3 @@
-
 // ignore_for_file: avoid_print
 
 import 'package:flutter/cupertino.dart';
@@ -6,16 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:pharmacy_app/core/app_colors.dart';
 import 'package:pharmacy_app/core/app_sizes.dart';
 
-class SearchBar extends StatelessWidget {
+class SearchBarAction extends StatelessWidget {
   final TextEditingController controller;
   final Function()? onTap;
   final Function(String text)? onChanged;
-  const SearchBar({
-    Key? key,
-    required this.controller,
-    required this.onTap,
-    this.onChanged
-  }) : super(key: key);
+  const SearchBarAction(
+      {Key? key, required this.controller, required this.onTap, this.onChanged})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +23,7 @@ class SearchBar extends StatelessWidget {
       child: TextField(
         controller: controller,
         onChanged: (data) async {
-        await onChanged!(data);
+          await onChanged!(data);
         },
         style: const TextStyle(
           color: Colors.black,

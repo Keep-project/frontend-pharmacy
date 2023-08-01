@@ -7,15 +7,14 @@ import 'package:pharmacy_app/models/response_data_models/pharmacie_model.dart';
 import 'package:pharmacy_app/services/remote_services/pharmacie/pharmacie.dart';
 
 class PharmacieScreenController extends GetxController {
-
   LoadingStatus pharmacyStatus = LoadingStatus.initial;
 
- final PharmacieService _pharmacieService = PharmacieServiceImpl();
+  final PharmacieService _pharmacieService = PharmacieServiceImpl();
   List<Pharmacie> pharmaciesList = <Pharmacie>[];
 
   @override
   void onInit() async {
-    await getCurrentLocation();
+    // await getCurrentLocation();
     await getPharmacies();
     super.onInit();
   }
@@ -23,13 +22,11 @@ class PharmacieScreenController extends GetxController {
   Future getPharmacies() async {
     pharmacyStatus = LoadingStatus.searching;
     update();
-    await _pharmacieService.userPharmacies(
-      onSuccess: (data) {
-        pharmaciesList.addAll(data.results!);
+    await _pharmacieService.userPharmacies(onSuccess: (data) {
+      pharmaciesList.addAll(data.results!);
       pharmacyStatus = LoadingStatus.completed;
       update();
-    },
-    onError: (error) {
+    }, onError: (error) {
       print("============== pharmacie list / error ==============");
       print(error);
       print("====================================================");
@@ -37,9 +34,6 @@ class PharmacieScreenController extends GetxController {
       update();
     });
   }
-
-
-
 
   Future getCurrentLocation() async {
     l.Location location = l.Location();
@@ -77,6 +71,3 @@ class PharmacieScreenController extends GetxController {
     update();
   }
 }
-
-
-

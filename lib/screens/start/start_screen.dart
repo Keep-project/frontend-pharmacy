@@ -102,7 +102,7 @@ class StartScreen extends GetView<StartScreenController> {
                                             "Rechercher une Pharmacie",
                                             style: TextStyle(
                                               color: kTextColor2.withOpacity(1),
-                                              fontSize: 16,
+                                              fontSize: 14,
                                               fontWeight: FontWeight.w500,
                                             ),
                                           ),
@@ -110,7 +110,7 @@ class StartScreen extends GetView<StartScreenController> {
                                           Row(children: [
                                             const Spacer(),
                                             Icon(CupertinoIcons.arrow_right,
-                                                size: 26,
+                                                size: 24,
                                                 color:
                                                     kDarkColor.withOpacity(.7)),
                                           ]),
@@ -157,7 +157,7 @@ class StartScreen extends GetView<StartScreenController> {
                                             "Rechercher des médicaments",
                                             style: TextStyle(
                                               color: kTextColor2.withOpacity(1),
-                                              fontSize: 16,
+                                              fontSize: 14,
                                               fontWeight: FontWeight.w500,
                                             ),
                                           ),
@@ -165,7 +165,7 @@ class StartScreen extends GetView<StartScreenController> {
                                           Row(children: [
                                             const Spacer(),
                                             Icon(CupertinoIcons.arrow_right,
-                                                size: 26,
+                                                size: 24,
                                                 color:
                                                     kDarkColor.withOpacity(.7)),
                                           ]),
@@ -267,7 +267,10 @@ class StartScreen extends GetView<StartScreenController> {
                           alignment: Alignment.center,
                           child: InkWell(
                             onTap: () async {
-                              if (controller.synchronizeStatus == LoadingStatus.searching){return;}
+                              if (controller.synchronizeStatus ==
+                                  LoadingStatus.searching) {
+                                return;
+                              }
                               await controller.pullData(context);
                               // await controller.pushData(context);
                             },
@@ -281,13 +284,13 @@ class StartScreen extends GetView<StartScreenController> {
                                 child: controller.synchronizeStatus ==
                                         LoadingStatus.searching
                                     ? Container(
-                                      height: 18,
-                                      width: 18,
-                                      alignment: Alignment.center,
-                                      child: const CircularProgressIndicator(
+                                        height: 18,
+                                        width: 18,
+                                        alignment: Alignment.center,
+                                        child: const CircularProgressIndicator(
                                           color: kWhiteColor,
                                         ),
-                                    )
+                                      )
                                     : const Icon(Icons.refresh_sharp,
                                         size: 36, color: kWhiteColor)),
                           ),

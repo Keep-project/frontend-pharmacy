@@ -1,29 +1,25 @@
-
-// ignore_for_file: no_leading_underscores_for_local_identifiers
-
+import 'dart:convert';
 import 'dart:io';
 
-import 'package:dio/adapter.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
+import 'package:dio/io.dart';
 
 class ApiRequest {
   final String? url;
   final String? token;
   final Map<String, dynamic>? data;
   ApiRequest({
-    @required this.url,
+    required this.url,
     this.token,
     this.data,
   });
 
   Dio _dio() {
-    Dio _dioR =
-        Dio(BaseOptions( headers: {
+    Dio _dioR = Dio(BaseOptions(headers: {
       'Authorization': 'Bearer $token',
       "Content-Type": 'application/json',
     }));
-    (_dioR.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
+    (_dioR.httpClientAdapter as IOHttpClientAdapter).onHttpClientCreate =
         (HttpClient client) {
       client.badCertificateCallback =
           (X509Certificate cert, String host, int port) => true;
@@ -38,13 +34,10 @@ class ApiRequest {
     Function(dynamic data)? onSuccess,
     Function(dynamic error)? onError,
   }) async {
-    _dio()
-        .get(
-      url!
-    )
-        .then((res) {
+    _dio().get(url!).then((res) {
       if (onSuccess != null) onSuccess(res.data);
     }).catchError((error) {
+      // catchAllError(error);
       if (onError != null) onError(error);
     });
   }
@@ -57,6 +50,7 @@ class ApiRequest {
     _dio().post(url!, data: data!).then((res) {
       if (onSuccess != null) onSuccess(res.data);
     }).catchError((error) {
+      catchAllError(error);
       if (onError != null) onError(error);
     });
   }
@@ -69,6 +63,7 @@ class ApiRequest {
     _dio().put(url!, data: data!).then((res) {
       if (onSuccess != null) onSuccess(res.data);
     }).catchError((error) {
+      catchAllError(error);
       if (onError != null) onError(error);
     });
   }
@@ -81,7 +76,18 @@ class ApiRequest {
     _dio().delete(url!, data: data!).then((res) {
       if (onSuccess != null) onSuccess(res.data);
     }).catchError((error) {
+      catchAllError(error);
       if (onError != null) onError(error);
     });
+  }
+
+  void catchAllError(dynamic error) {
+    print(error.response!.toString());
+    // final data = jsonDecode(error.response!.toString());
+    // if (error.response!.statusCode == 403 ||
+    //     data["status"] == 407 ||
+    //     data["status"] == 403) {
+    //   Get.offAllNamed(AppRoutes.LOGIN);
+    // }
   }
 }

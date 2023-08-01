@@ -43,12 +43,13 @@ class HomeScreenController extends GetxController {
     infinityStatus = LoadingStatus.searching;
     isInternetConnection = await SynchronizationData.isInternet();
     if (!isInternetConnection) {
-      List<lm.Medicament> localMedicamentsList = await SynchronizationData().readAllMedicament();
-      for (lm.Medicament m in localMedicamentsList){
+      List<lm.Medicament> localMedicamentsList =
+          await SynchronizationData().readAllMedicament();
+      for (lm.Medicament m in localMedicamentsList) {
         medicamentsList.add(m.convert());
       }
-    infinityStatus = LoadingStatus.completed;
-    update();
+      infinityStatus = LoadingStatus.completed;
+      update();
     } else {
       await getCurrentLocation();
       await filterList();

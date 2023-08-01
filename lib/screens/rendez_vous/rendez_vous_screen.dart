@@ -3,7 +3,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
-import 'package:pharmacy_app/components/search_bar.dart';
+import 'package:pharmacy_app/components/search_bar_action.dart';
 import 'package:pharmacy_app/components/title_text.dart';
 import 'package:pharmacy_app/core/app_colors.dart';
 import 'package:pharmacy_app/core/app_sizes.dart';
@@ -33,14 +33,18 @@ class RendezVousScreen extends GetView<RendezVousScreenController> {
                   const SizedBox(
                     height: kDefaultPadding * 1.5,
                   ),
-                  SearchBar(controller: controller.searchController, onTap: () {print("Search");}),
+                  SearchBar(
+                      controller: controller.searchController,
+                      onTap: () {
+                        print("Search");
+                      }),
                   const SizedBox(height: kDefaultMargin * 2),
                   const TitleText(title: "Catégories"),
                   const SizedBox(height: kDefaultMargin * 1.5),
-                  SingleChildScrollView(
+                  const SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
                     child: Row(
-                      children: const [
+                      children: [
                         SpecialityCard(
                             assetName: "assets/images/icon-dentist.svg",
                             title: "Dentiste",
@@ -121,6 +125,3 @@ class RendezVousScreen extends GetView<RendezVousScreenController> {
     );
   }
 }
-
-
-

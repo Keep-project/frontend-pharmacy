@@ -5,12 +5,10 @@ import 'package:get/get.dart';
 import 'package:location/location.dart' as l;
 import 'package:pharmacy_app/core/app_snackbar.dart';
 import 'package:pharmacy_app/core/app_state.dart';
+import 'package:pharmacy_app/core/helpers.dart';
 import 'package:pharmacy_app/database/Sync/synchronize.dart';
 import 'package:pharmacy_app/database/models/categorie.dart';
-import 'package:pharmacy_app/database/models/entrepot.dart';
 import 'package:pharmacy_app/database/models/medicament.dart';
-import 'package:pharmacy_app/database/models/pharmacie.dart';
-import 'package:pharmacy_app/database/sqflite_db.dart';
 import 'package:pharmacy_app/models/request_data_models/medicament_model.dart';
 import 'package:pharmacy_app/models/response_data_models/medicament_model.dart'
     as rm;
@@ -36,9 +34,8 @@ class StartScreenController extends GetxController {
 
   @override
   void onInit() async {
-    await getCurrentLocation();
-    // await SynchronizationData().fetchAllNotes();
-    isInternetConnection = await SynchronizationData.isInternet();
+    // await getCurrentLocation();
+    isInternetConnection = await ConnectivityPlus.checkInternetConnection();
     // await PharmacieDatabase.instance.createCategorie(Categorie(libelle: 'Adultes'));
     // categories = await PharmacieDatabase.instance.readAllCategorie();
     // for (Categorie cat in categories) {
@@ -146,8 +143,7 @@ class StartScreenController extends GetxController {
       print(medicaments);
       print("=====================================");
 
-      await verifyLocalData(null);
-
+      // await verifyLocalData(null);
     } catch (e) {
       print("Une erreur est survenue : $e");
     }
@@ -261,7 +257,6 @@ class StartScreenController extends GetxController {
         });
   }
 
-
   // Recupération des médicaments stokés en local
   Future<List<Medicament>> readAllMedicament() async {
     return await SynchronizationData().readAllMedicament();
@@ -269,12 +264,11 @@ class StartScreenController extends GetxController {
 
   Future<void> verifyLocalData(BuildContext? context) async {
     // Si la table médicament de la BD local n'a pas de données alors on fait le pull des données en ligne
-      List<Medicament> localMedicaments = await readAllMedicament();
-      if (localMedicaments.isEmpty){
-        await pullData(context);
-      }
-      else{
-        print("Nombre trouvé : ${localMedicaments.length}" );
-      }
+    List<Medicament> localMedicaments = await readAllMedicament();
+    if (localMedicaments.isEmpty) {
+      await pullData(context);
+    } else {
+      print("Nombre trouvé : ${localMedicaments.length}");
+    }
   }
 }
