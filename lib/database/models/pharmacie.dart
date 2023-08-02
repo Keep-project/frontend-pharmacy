@@ -44,7 +44,7 @@ class PharmacieFields {
 
 class Pharmacie {
   final int? id;
-  final int? idPharmacie;
+  final String? idPharmacie;
   final String? nom;
   final String? localisation;
   final String? tel;
@@ -83,7 +83,7 @@ class Pharmacie {
 
   factory Pharmacie.fromMap(Map<String, dynamic> json) => Pharmacie(
         id: json[PharmacieFields.id] as int?,
-        idPharmacie: json[PharmacieFields.idPharmacie] as int?,
+        idPharmacie: json[PharmacieFields.idPharmacie] as String?,
         stock: json[PharmacieFields.stock] as int?,
         distance: json[PharmacieFields.distance] as double?,
         nom: json[PharmacieFields.nom] as String?,
@@ -121,7 +121,7 @@ class Pharmacie {
 
   Pharmacie copy({
     int? id,
-    int? idPharmacie,
+    String? idPharmacie,
     String? nom,
     String? localisation,
     String? tel,
